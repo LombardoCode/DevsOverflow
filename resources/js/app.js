@@ -19,7 +19,10 @@ window.Vue = require('vue').default;
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+// Elementos reutilizables
+Vue.component('navbar', require('./components/reutilizable/NavBar.vue').default);
+Vue.component('vue-input', require('./components/reutilizable/VueInput.vue').default);
+Vue.component('vue-input-submit', require('./components/reutilizable/VueInputSubmit.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

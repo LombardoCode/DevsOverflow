@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	return view('inicio', [
+		'titulo' => 'DevsOverflow'
+	]);
+});
+
+Route::get('/registrarse', function () {
+	return view('registrarse', [
+		'titulo' => 'Registrarse'
+	]);
+});
+
+Route::get('/login', function () {
+	return view('login', [
+		'titulo' => 'Iniciar sesión'
+	]);
+});
+
+Route::prefix('api')->group(function() {
+	Route::prefix('auth')->group(function() {
+		Route::post('/register', [UserController::class, 'store']);
+		Route::post('/login', [UserController::class, 'login']);
+	});
 });
