@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-	public function store(Request $request) {
+	public function registrar_usuario(Request $request) {
 		// Reglas de validación para crear un usuario
 		$reglas = [
 			'nombre' => 'required',

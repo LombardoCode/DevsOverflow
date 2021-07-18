@@ -6,7 +6,11 @@ module.exports = {
   ],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+			ringWidth: {
+        '1': '1px',
+      }
+		},
   },
   variants: {
     extend: {},
