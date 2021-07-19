@@ -24,7 +24,7 @@ Vue.component('navbar', require('./components/reutilizable/NavBar.vue').default)
 Vue.component('vue-input', require('./components/reutilizable/VueInput.vue').default);
 Vue.component('vue-input-submit', require('./components/reutilizable/VueInputSubmit.vue').default);
 Vue.component('vue-anchor-button', require('./components/reutilizable/VueAnchorButton.vue').default);
-Vue.component('listado-preguntas', require('./components/reutilizable/ListadoPreguntas.vue').default);
+Vue.component('seccion-preguntas', require('./components/reutilizable/SeccionPreguntas.vue').default);
 Vue.component('mostrar-pregunta', require('./components/reutilizable/MostrarPregunta.vue').default);
 
 Vue.component('crear-pregunta', require('./components/auth/CrearPregunta.vue').default);
