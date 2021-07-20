@@ -3,6 +3,7 @@
 use App\Http\Controllers\BusquedaController;
 use App\Http\Controllers\PreguntaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VotoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,7 +41,7 @@ Route::get('/', function () {
 
 // Búsqueda de preguntas
 Route::prefix('busqueda')->group(function() {
-	Route::get('/{query}', [BusquedaController::class, 'realizar_busqueda']);
+	Route::get('/{query}', [BusquedaController::class, 'mostrar_vista_resultados']);
 });
 
 
@@ -62,6 +63,13 @@ Route::prefix('api')->group(function() {
 		Route::post('/login', [UserController::class, 'login']);
 	});
 	Route::prefix('pregunta')->group(function() {
+		Route::get('/{pregunta_id}', [PreguntaController::class, 'show']);
 		Route::post('/', [PreguntaController::class, 'store']);
+	});
+	Route::prefix('busqueda')->group(function() {
+		Route::post('/', [BusquedaController::class, 'realizar_busqueda']);
+	});
+	Route::prefix('votar')->group(function() {
+		Route::post('/', [VotoController::class, 'votar_pregunta']);
 	});
 });

@@ -14,10 +14,8 @@
 			@include('reusable.navbar')
 			<div id="contenido">
 				<div class="container mx-auto text-sm flex h-screen">
-					<div id="secciones" style="width: 300px" class="bg-gray-400 hidden md:block">
-						<h3>Secciones</h3>
-					</div>
-					<seccion-preguntas :preguntas="{{ $preguntas }}" query="{{ $query }}"></seccion-preguntas>
+					<sidebar-izquierda></sidebar-izquierda>
+					<seccion-preguntas query="{{ $query }}"></seccion-preguntas>
 				</div>
 			</div>
 		</div>

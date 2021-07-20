@@ -13,7 +13,7 @@
 		<div id="app">
 			<div id="contenido" class="text-sm">
 				<navbar></navbar>
-        <mostrar-pregunta csrf="{{ csrf_token() }}" :pregunta="{{ $pregunta }}"></mostrar-pregunta>
+        <mostrar-pregunta csrf="{{ csrf_token() }}" pregunta_id="{{ $pregunta_id }}"></mostrar-pregunta>
 			</div>
 		</div>
 		<script src="{{ asset('/js/app.js') }}"></script>

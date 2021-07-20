@@ -27,6 +27,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "vue-ads-pagination": "^2.1.7",
         "vue2-editor": "^2.10.2"
     }
 }

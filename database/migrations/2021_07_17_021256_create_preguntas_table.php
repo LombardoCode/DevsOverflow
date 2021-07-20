@@ -17,8 +17,8 @@ class CreatePreguntasTable extends Migration
 			$table->id();
 			$table->unsignedBigInteger('user_id');
 			$table->string('pregunta');
+			$table->string('descripcion');
 			$table->longText('contenido_html');
-			$table->longText('resumen');
 			$table->integer('upvotes')->default(0);
 			$table->boolean('respondida')->default(false);
 			$table->string('identificador');
