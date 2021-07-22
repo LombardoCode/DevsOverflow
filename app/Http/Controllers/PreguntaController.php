@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pregunta;
+use App\Models\Respuesta;
+use App\Models\User;
 use App\Models\VotoPregunta;
+use App\Models\VotoRespuestas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -35,6 +38,7 @@ class PreguntaController extends Controller
 			$identificador_aleatorio = $this->generarIdentificador(16);
 
 			$resumen_pregunta = strip_tags($request['contenido_html']);
+			$resumen_pregunta = substr($resumen_pregunta, 0, 255);
 			$pregunta = new Pregunta([
 				'user_id' => Auth::user()->id,
 				'pregunta' => $request['titulo'],
@@ -71,6 +75,7 @@ class PreguntaController extends Controller
 		}
 	}
 
+	// Obtenemos los datos de la pregunta junto con los comentarios
 	public function show($pregunta_id) {
 		// Obtenemos la pregunta
 		$pregunta = Pregunta::find($pregunta_id);
@@ -102,17 +107,63 @@ class PreguntaController extends Controller
 
 				if ($voto_bool) {
 					$ha_votado = 1;
+					$pregunta['ha_votado'] = 1;
 				} else {
 					if (!$voto_bool) {
 						$ha_votado = -1;
+						$pregunta['ha_votado'] = -1;
 					}
+				}
+			} else {
+				$pregunta['ha_votado'] = 0;
+			}
+
+			// Obtenemos los comentario de la pregunta
+			$respuestas = Respuesta::where('pregunta_id', '=', $pregunta->id)->get();
+
+			// Recorremos las respuestas
+			for ($i=0; $i < count($respuestas); $i++) {
+				// Obtenemos el autor de la respuesta
+				$autor = User::find($respuestas[$i]['user_id']);
+				$autor = $autor->name;
+				$respuestas[$i]['autor'] = $autor;
+				$respuestas[$i]['ha_votado'] = 0;
+
+				// Obtenemos los votos positivos de la repsuesta
+				$votos_positivos = VotoRespuestas::where('respuesta_id', '=', $respuestas[$i]['id'])
+				->where('voto_bool', '=', true)
+				->get();
+				$respuestas[$i]['votos_positivos'] = count($votos_positivos);
+
+				// Obtenemos los votos negativos de la repsuesta
+				$votos_negativos = VotoRespuestas::where('respuesta_id', '=', $respuestas[$i]['id'])
+				->where('voto_bool', '=', false)
+				->get();
+				$respuestas[$i]['votos_negativos'] = count($votos_negativos);
+
+				// Verificamos si el usuario votó positivamente o negativamente a la respuesta
+				$ha_votado = VotoRespuestas::where('respuesta_id', '=', $respuestas[$i]['id'])
+				->where('user_id', '=', Auth::user()->id)
+				->get();
+
+				if (count($ha_votado) > 0) {
+					if ($ha_votado[0]['voto_bool'] == false) {
+						$respuestas[$i]['ha_votado'] = -1;
+					} else {
+						if ($ha_votado[0]['voto_bool'] == true) {
+							$respuestas[$i]['ha_votado'] = 1;
+						}
+					}
+				} else {
+					$respuestas[$i]['ha_votado'] = 0;
 				}
 			}
 
 			return response()->json([
 				'status' => true,
 				'pregunta' => $pregunta,
-				'ha_votado' => $ha_votado
+				'ha_votado' => $ha_votado,
+				'respuestas' => $respuestas
 			]);
 		} else {
 			return response()->json([

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BusquedaController;
 use App\Http\Controllers\PreguntaController;
+use App\Http\Controllers\RespuestaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VotoController;
 use Illuminate\Support\Facades\Route;
@@ -65,11 +66,17 @@ Route::prefix('api')->group(function() {
 	Route::prefix('pregunta')->group(function() {
 		Route::get('/{pregunta_id}', [PreguntaController::class, 'show']);
 		Route::post('/', [PreguntaController::class, 'store']);
+		Route::prefix('votar')->group(function() {
+			Route::post('/', [VotoController::class, 'votar_pregunta']);
+		});
+	});
+	Route::prefix('respuesta')->group(function() {
+		Route::post('/', [RespuestaController::class, 'store']);
+		Route::prefix('votar')->group(function() {
+			Route::post('/', [VotoController::class, 'votar_respuesta']);
+		});
 	});
 	Route::prefix('busqueda')->group(function() {
 		Route::post('/', [BusquedaController::class, 'realizar_busqueda']);
-	});
-	Route::prefix('votar')->group(function() {
-		Route::post('/', [VotoController::class, 'votar_pregunta']);
 	});
 });
