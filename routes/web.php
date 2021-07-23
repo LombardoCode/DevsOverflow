@@ -34,11 +34,7 @@ Route::group(['middleware' => ['guest']], function() {
 
 /* Rutas públicas */
 // Inicio
-Route::get('/', function () {
-	return view('inicio', [
-		'titulo' => 'DevsOverflow'
-	]);
-});
+Route::get('/', [BusquedaController::class, 'mostrar_vista_inicio']);
 
 // Búsqueda de preguntas
 Route::prefix('busqueda')->group(function() {
