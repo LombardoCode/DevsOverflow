@@ -11,13 +11,11 @@
 	</head>
 	<body>
 		<div id="app">
-			@include('reusable.navbar')
-			<div id="contenido">
-				<div class="container mx-auto text-sm flex h-screen">
-					<div id="secciones" style="width: 300px" class="bg-gray-400">
-						<h3>Secciones</h3>
-					</div>
-					<div id="contenido_principal" class="flex-1 px-3">
+			<navbar></navbar>
+			<div id="contenido" style="padding-top: 52px;">
+				<div class="container mx-auto text-sm flex h-screen" style="height: calc(100vh - 52px)">
+					<sidebar-izquierda></sidebar-izquierda>
+					<div id="contenido_principal" class="flex-1 px-3 overflow-y-scroll">
 						<h5 class="font-bold text-2xl my-6">Ultimas preguntas</h5>
 						@foreach($preguntas as $pregunta)
 							<div id="pregunta" class="flex mb-10">
@@ -49,6 +47,7 @@
 						@endforeach
 					</div>
 				</div>
+				<vue-footer></vue-footer>
 			</div>
 		</div>
 		<script src="{{ asset('/js/app.js') }}"></script>

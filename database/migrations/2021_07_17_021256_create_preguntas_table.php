@@ -22,7 +22,7 @@ class CreatePreguntasTable extends Migration
 			$table->integer('upvotes')->default(0);
 			$table->boolean('respondida')->default(false);
 			$table->string('identificador');
-			$table->foreign('user_id')->references('id')->on('users');
+			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 			$table->timestamps();
 		});
 	}

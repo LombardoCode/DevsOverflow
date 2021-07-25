@@ -96,7 +96,7 @@ class PreguntaController extends Controller
 
 			// Verificamos si el usuario autenticado ha votado por la pregunta
 			$voto = VotoPregunta::where('pregunta_id', '=', $pregunta->id)
-			->where('user_id', '=', Auth::user()->id)
+			->where('user_id', '=', Auth::check() ? Auth::user()->id : '')
 			->get();
 
 			$ha_votado = 0;
@@ -143,7 +143,7 @@ class PreguntaController extends Controller
 
 				// Verificamos si el usuario votó positivamente o negativamente a la respuesta
 				$ha_votado = VotoRespuestas::where('respuesta_id', '=', $respuestas[$i]['id'])
-				->where('user_id', '=', Auth::user()->id)
+				->where('user_id', '=', Auth::check() ? Auth::user()->id : '')
 				->get();
 
 				if (count($ha_votado) > 0) {

@@ -6,6 +6,10 @@ module.exports = {
   ],
   darkMode: false, // or 'media' or 'class'
   theme: {
+		backgroundColor: theme => ({
+			...theme('colors'),
+			'azul-100': '#d5e0ed',
+		}),
     extend: {
 			ringWidth: {
         '1': '1px',

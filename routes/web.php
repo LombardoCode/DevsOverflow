@@ -3,7 +3,8 @@
 use App\Http\Controllers\BusquedaController;
 use App\Http\Controllers\PreguntaController;
 use App\Http\Controllers\RespuestaController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VotoController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,17 @@ Route::prefix('busqueda')->group(function() {
 	Route::get('/{query}', [BusquedaController::class, 'mostrar_vista_resultados']);
 });
 
+Route::prefix('pregunta')->group(function() {
+	// Vista para mostrar la pregunta creada por un usuario
+	Route::get('/{identificador_pregunta}', [PreguntaController::class, 'mostrar_vista_pregunta']);
+});
+
+Route::prefix('usuarios')->group(function() {
+	// Vista para mostrar los usuarios
+	Route::get('/', [UsuarioController::class, 'mostrar_vista_usuarios']);
+	// Vista para mostrar un usuario en específico
+	Route::get('/{usuario_id}', [UsuarioController::class, 'mostrar_vista_usuario_especifico']);
+});
 
 /* Rutas protegidas */
 Route::group(['middleware' => 'api'], function() {
@@ -48,16 +60,14 @@ Route::group(['middleware' => 'api'], function() {
 	Route::prefix('pregunta')->group(function() {
 		// Vista para que los usuarios autenticados puedan crear preguntas
 		Route::get('/crear', [PreguntaController::class, 'mostrar_vista_crear_pregunta']);
-		// Vista para mostrar la pregunta creada por un usuario
-		Route::get('/{identificador_pregunta}', [PreguntaController::class, 'mostrar_vista_pregunta']);
 	});
 });
 
 /* API (web) */
 Route::prefix('api')->group(function() {
 	Route::prefix('auth')->group(function() {
-		Route::post('/register', [UserController::class, 'registrar_usuario']);
-		Route::post('/login', [UserController::class, 'login']);
+		Route::post('/register', [AuthController::class, 'registrar_usuario']);
+		Route::post('/login', [AuthController::class, 'login']);
 	});
 	Route::prefix('pregunta')->group(function() {
 		Route::get('/{pregunta_id}', [PreguntaController::class, 'show']);
@@ -74,5 +84,8 @@ Route::prefix('api')->group(function() {
 	});
 	Route::prefix('busqueda')->group(function() {
 		Route::post('/', [BusquedaController::class, 'realizar_busqueda']);
+	});
+	Route::prefix('usuarios')->group(function() {
+		Route::post('/', [UsuarioController::class, 'all']);
 	});
 });
