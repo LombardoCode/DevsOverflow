@@ -28,6 +28,26 @@
 									</div>
 								</div>
 							</div>
+							<div id="preguntas-y-respuestas" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+								<div id="preguntas">
+									<h5 class="text-lg font-medium mt-6 mb-3">Últimas preguntas realizadas por este usuario:</h5>
+									@foreach($preguntas as $pregunta)
+										<a href="/pregunta/{{ $pregunta->identificador }}" class="bg-azul-100 hover:bg-blue-200 px-3 py-2 rounded-md block mb-2">
+											<p>{{ $pregunta->pregunta }}</p>
+											<p class="text-right">Formulada el {{ $pregunta->created_at }}</p>
+										</a>
+									@endforeach
+								</div>
+								<div id="respuestas">
+									<h5 class="text-lg font-medium mt-6 mb-3">Últimas preguntas contestadas por este usuario:</h5>
+									@foreach($preguntas_contestadas as $pregunta_contestada)
+										<a href="/pregunta/{{ $pregunta_contestada->identificador }}" class="bg-azul-100 hover:bg-blue-200 px-3 py-2 rounded-md block mb-2">
+											<p>{{ $pregunta_contestada->pregunta }}</p>
+											<p class="text-right">Formulada el {{ $pregunta_contestada->created_at }}</p>
+										</a>
+									@endforeach
+								</div>
+							</div>
 						@else
 							<div class="my-6 bg-red-600 text-white py-3 px-4 rounded-md">
 								Usuario no encontrado.

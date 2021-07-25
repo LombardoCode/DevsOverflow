@@ -43,6 +43,11 @@ Route::prefix('busqueda')->group(function() {
 });
 
 Route::prefix('pregunta')->group(function() {
+	// Ruta protegida
+	Route::group(['middleware' => 'api'], function() {
+		// Vista para que los usuarios autenticados puedan crear preguntas
+		Route::get('/crear', [PreguntaController::class, 'mostrar_vista_crear_pregunta']);
+	});
 	// Vista para mostrar la pregunta creada por un usuario
 	Route::get('/{identificador_pregunta}', [PreguntaController::class, 'mostrar_vista_pregunta']);
 });
@@ -52,15 +57,6 @@ Route::prefix('usuarios')->group(function() {
 	Route::get('/', [UsuarioController::class, 'mostrar_vista_usuarios']);
 	// Vista para mostrar un usuario en específico
 	Route::get('/{usuario_id}', [UsuarioController::class, 'mostrar_vista_usuario_especifico']);
-});
-
-/* Rutas protegidas */
-Route::group(['middleware' => 'api'], function() {
-	// Preguntas
-	Route::prefix('pregunta')->group(function() {
-		// Vista para que los usuarios autenticados puedan crear preguntas
-		Route::get('/crear', [PreguntaController::class, 'mostrar_vista_crear_pregunta']);
-	});
 });
 
 /* API (web) */

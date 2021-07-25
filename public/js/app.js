@@ -67830,7 +67830,10 @@ var render = function() {
   return _c("div", [
     _c(
       "div",
-      { staticClass: "container mx-auto text-sm flex h-screen" },
+      {
+        staticClass: "container mx-auto text-sm flex h-screen",
+        staticStyle: { "padding-top": "52px" }
+      },
       [
         _c("sidebar-izquierda"),
         _vm._v(" "),

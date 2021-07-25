@@ -16,7 +16,10 @@
 				<div class="container mx-auto text-sm flex h-screen" style="height: calc(100vh - 52px)">
 					<sidebar-izquierda></sidebar-izquierda>
 					<div id="contenido_principal" class="flex-1 px-3 overflow-y-scroll">
-						<h5 class="font-bold text-2xl my-6">Ultimas preguntas</h5>
+						<div class="flex justify-between items-center">
+							<h5 class="font-bold text-2xl my-6">Ultimas preguntas</h5>
+							<vue-anchor-button href="/pregunta/crear" texto="Crear pregunta"></vue-anchor-button>
+						</div>
 						@foreach($preguntas as $pregunta)
 							<div id="pregunta" class="flex mb-10">
 								<div id="valoraciones" class="flex flex-col mr-4">

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="container mx-auto text-sm flex h-screen">
+		<div class="container mx-auto text-sm flex h-screen" style="padding-top: 52px;">
 			<sidebar-izquierda></sidebar-izquierda>
 			<div id="pregunta-y-respuestas" class="py-6 px-5">
 				<div id="pregunta" class="mb-14">

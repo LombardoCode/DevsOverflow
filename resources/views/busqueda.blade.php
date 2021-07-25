@@ -11,8 +11,8 @@
 	</head>
 	<body>
 		<div id="app">
-			@include('reusable.navbar')
-			<div id="contenido">
+			<navbar></navbar>
+			<div id="contenido" style="padding-top: 52px;">
 				<div class="container mx-auto text-sm flex h-screen">
 					<sidebar-izquierda></sidebar-izquierda>
 					<seccion-preguntas query="{{ $query }}"></seccion-preguntas>

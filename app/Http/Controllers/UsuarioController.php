@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pregunta;
+use App\Models\Respuesta;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,10 +21,34 @@ class UsuarioController extends Controller
 		$usuario = User::find($usuario_id);
 
 		if (isset($usuario->id)) {
+			// Obtenemos las últimas 5 preguntas realizadas por el usuario
+			$preguntas = Pregunta::where('user_id', '=', $usuario->id)
+			->offset(0)
+			->limit(5)
+			->orderBy('created_at', 'ASC')
+			->get();
+
+			// Obtenemos las últimas 5 preguntas las cuales fueron contestadas por el usuario
+			$respuestas = Respuesta::where('user_id', '=', $usuario->id)
+			->offset(0)
+			->limit(5)
+			->groupBy('pregunta_id')
+			->orderBy('created_at', 'ASC')
+			->get();
+
+			$preguntas_contestadas = [];
+
+			for ($i=0; $i < count($respuestas); $i++) {
+				$pregunta = Pregunta::find($respuestas[$i]['pregunta_id']);
+				$preguntas_contestadas[] = $pregunta;
+			}
+
 			return view('mostrar_usuario', [
 				'status' => true,
-				'titulo' => 'Usuario',
-				'usuario' => $usuario
+				'titulo' => 'Perfil - ' . $usuario->name,
+				'usuario' => $usuario,
+				'preguntas' => $preguntas,
+				'preguntas_contestadas' => $preguntas_contestadas
 			]);
 		} else {
 			return view('mostrar_usuario', [
