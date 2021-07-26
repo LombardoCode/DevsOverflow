@@ -11,8 +11,8 @@
 	</head>
 	<body>
 		<div id="app">
-			<div id="contenido" class="text-sm">
-				<navbar></navbar>
+			<navbar></navbar>
+			<div id="contenido" class="text-sm" style="padding-top: 76px;">
         <crear-pregunta csrf="{{ csrf_token() }}"></crear-pregunta>
 			</div>
 		</div>

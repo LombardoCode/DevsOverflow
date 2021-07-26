@@ -11925,6 +11925,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
@@ -11935,8 +11950,60 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      contenido_html: ''
+      formulario: {
+        titulo: '',
+        contenido_html: ''
+      },
+      categorias: {
+        input: '',
+        busqueda: [],
+        seleccionadas: []
+      }
     };
+  },
+  methods: {
+    crearPregunta: function crearPregunta() {
+      var datos = {
+        formulario: {
+          titulo: this.formulario.titulo,
+          contenido_html: this.formulario.contenido_html
+        },
+        categorias_seleccionadas: this.categorias.seleccionadas
+      };
+      axios.post('/api/pregunta', datos).then(function (res) {
+        console.log(res.data);
+
+        if (res.data.status) {
+          window.location = '/pregunta/' + res.data.identificador;
+        }
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+    escribiendoCategoria: function escribiendoCategoria() {
+      var _this = this;
+
+      if (this.categorias.input.length != 0) {
+        axios.get("/api/categoria/".concat(this.categorias.input)).then(function (res) {
+          console.log(res.data);
+          _this.categorias.busqueda = res.data.busqueda;
+        })["catch"](function (err) {
+          console.log(err);
+        });
+      } else {
+        this.categorias.busqueda = [];
+      }
+    },
+    agregarCategoria: function agregarCategoria(categoria) {
+      // Agregamos la categoría
+      this.categorias.seleccionadas.push(categoria); // Limpiamos el input y los resultados de búsqueda
+
+      this.categorias.input = '';
+      this.categorias.busqueda = [];
+    },
+    eliminarCategoria: function eliminarCategoria(categoria, index) {
+      this.categorias.seleccionadas.splice(index, 1);
+    }
   }
 });
 
@@ -11954,6 +12021,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vue2_editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue2-editor */ "./node_modules/vue2-editor/dist/vue2-editor.esm.js");
+//
+//
+//
+//
+//
 //
 //
 //
@@ -12051,7 +12123,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get("/api/pregunta/".concat(this.pregunta_id)).then(function (res) {
-        // Obtenemos la pregunta
+        console.log(res.data); // Obtenemos la pregunta
+
         _this.pregunta = res.data.pregunta; // Obtenemos la votación
 
         _this.votacion.num_votos_positivos = res.data.pregunta.votos_positivos;
@@ -67705,7 +67778,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", { staticClass: "container mx-auto" }, [
-      _c("h1", { staticClass: "font-bold text-2xl mt-8 mb-6" }, [
+      _c("h1", { staticClass: "font-bold text-2xl mb-6" }, [
         _vm._v("Realiza una pregunta a la comunidad")
       ]),
       _vm._v(" "),
@@ -67713,92 +67786,225 @@ var render = function() {
         "div",
         { staticClass: "bg-gray-300 flex-1 mt-3 rounded px-3 pt-4 pb-1" },
         [
-          _c("form", { attrs: { action: "/api/pregunta", method: "POST" } }, [
-            _c("input", {
-              attrs: { type: "hidden", name: "_token" },
-              domProps: { value: _vm.csrf }
-            }),
-            _vm._v(" "),
-            _c("input", {
-              attrs: { type: "hidden", name: "contenido_html" },
-              domProps: { value: _vm.contenido_html }
-            }),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "flex flex-col mb-3" },
-              [
-                _c(
-                  "label",
-                  {
-                    staticClass: "mb-1 font-bold text-lg",
-                    attrs: { for: "titulo" }
-                  },
-                  [_vm._v("Título")]
-                ),
-                _vm._v(" "),
-                _c("p", { staticClass: "mb-2" }, [
-                  _vm._v(
-                    "Sé específico e imagina que haces tú pregunta a otra persona."
-                  )
-                ]),
-                _vm._v(" "),
-                _c("vue-input", {
-                  attrs: {
-                    type: "text",
-                    name: "titulo",
-                    placeholder:
-                      'Por ejemplo, "Laravel me muestra un error 404 en una ruta aún cuando está definida como endpoint."'
-                  }
-                })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "flex flex-col mb-3" },
-              [
-                _c(
-                  "label",
-                  {
-                    staticClass: "mb-1 font-bold text-lg",
-                    attrs: { for: "contenido_html" }
-                  },
-                  [_vm._v("Cuerpo")]
-                ),
-                _vm._v(" "),
-                _c("p", { staticClass: "mb-2" }, [
-                  _vm._v(
-                    "Incluye toda la información que necesitaría una persona para resolver tu pregunta."
-                  )
-                ]),
-                _vm._v(" "),
-                _c("vue-editor", {
-                  staticClass: "bg-white",
-                  model: {
-                    value: _vm.contenido_html,
-                    callback: function($$v) {
-                      _vm.contenido_html = $$v
+          _c(
+            "form",
+            {
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.crearPregunta()
+                }
+              }
+            },
+            [
+              _c(
+                "div",
+                { staticClass: "flex flex-col mb-3" },
+                [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "mb-1 font-bold text-lg",
+                      attrs: { for: "titulo" }
                     },
-                    expression: "contenido_html"
-                  }
-                })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "flex flex-col mb-3" },
-              [
-                _c("vue-input-submit", {
-                  attrs: { value: "Crear pregunta", type: "submit" }
-                })
-              ],
-              1
-            )
-          ])
+                    [_vm._v("Título")]
+                  ),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "mb-2" }, [
+                    _vm._v(
+                      "Sé específico e imagina que haces tú pregunta a otra persona."
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("vue-input", {
+                    attrs: {
+                      type: "text",
+                      name: "titulo",
+                      placeholder:
+                        'Por ejemplo, "Laravel me muestra un error 404 en una ruta aún cuando está definida como endpoint."'
+                    },
+                    model: {
+                      value: _vm.formulario.titulo,
+                      callback: function($$v) {
+                        _vm.$set(_vm.formulario, "titulo", $$v)
+                      },
+                      expression: "formulario.titulo"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "flex flex-col mb-3" },
+                [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "mb-1 font-bold text-lg",
+                      attrs: { for: "contenido_html" }
+                    },
+                    [_vm._v("Cuerpo")]
+                  ),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "mb-2" }, [
+                    _vm._v(
+                      "Incluye toda la información que necesitaría una persona para resolver tu pregunta."
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("vue-editor", {
+                    staticClass: "bg-white",
+                    model: {
+                      value: _vm.formulario.contenido_html,
+                      callback: function($$v) {
+                        _vm.$set(_vm.formulario, "contenido_html", $$v)
+                      },
+                      expression: "formulario.contenido_html"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "flex flex-col mb-3" },
+                [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "mb-1 font-bold text-lg",
+                      attrs: { for: "titulo" }
+                    },
+                    [_vm._v("Categorías")]
+                  ),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "mb-2" }, [
+                    _vm._v(
+                      "Especifica los lenguajes/tecnologías/frameworks en la que se encuentra tu duda."
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "flex mb-3 text-xs",
+                      attrs: { id: "categorias-seleccionadas" }
+                    },
+                    _vm._l(_vm.categorias.seleccionadas, function(
+                      categoria_seleccionada,
+                      index
+                    ) {
+                      return _c(
+                        "span",
+                        {
+                          key: index,
+                          staticClass:
+                            "mr-3 bg-azul-100 ring-2 ring-blue-500 px-3 py-2 rounded-full"
+                        },
+                        [
+                          _vm._v(
+                            "\n\t\t\t\t\t\t\t" +
+                              _vm._s(categoria_seleccionada.categoria) +
+                              "\n\t\t\t\t\t\t\t"
+                          ),
+                          _c(
+                            "span",
+                            {
+                              staticClass: "px-3 py-2 cursor-pointer",
+                              on: {
+                                click: function($event) {
+                                  return _vm.eliminarCategoria(
+                                    categoria_seleccionada,
+                                    index
+                                  )
+                                }
+                              }
+                            },
+                            [_vm._v("X")]
+                          )
+                        ]
+                      )
+                    }),
+                    0
+                  ),
+                  _vm._v(" "),
+                  _c("vue-input", {
+                    attrs: {
+                      type: "text",
+                      name: "titulo",
+                      placeholder: 'Escriba una categoría..."',
+                      autocomplete: "off"
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.escribiendoCategoria()
+                      }
+                    },
+                    model: {
+                      value: _vm.categorias.input,
+                      callback: function($$v) {
+                        _vm.$set(_vm.categorias, "input", $$v)
+                      },
+                      expression: "categorias.input"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.categorias.busqueda
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "bg-white ring-2 ring-blue-600",
+                          attrs: { id: "busqueda", autocomplete: "off" }
+                        },
+                        _vm._l(_vm.categorias.busqueda, function(
+                          categoria,
+                          index
+                        ) {
+                          return _c(
+                            "div",
+                            {
+                              key: index,
+                              staticClass:
+                                "px-3 py-2 hover:bg-blue-500 hover:text-white cursor-pointer",
+                              on: {
+                                click: function($event) {
+                                  return _vm.agregarCategoria(categoria)
+                                }
+                              }
+                            },
+                            [
+                              _c("p", { staticClass: "font-bold" }, [
+                                _vm._v(_vm._s(categoria.categoria))
+                              ]),
+                              _vm._v(" "),
+                              _c("p", { staticClass: "text-xs italic " }, [
+                                _vm._v(_vm._s(categoria.descripcion))
+                              ])
+                            ]
+                          )
+                        }),
+                        0
+                      )
+                    : _vm._e()
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "flex flex-col mb-3" },
+                [
+                  _c("vue-input-submit", {
+                    attrs: { value: "Crear pregunta", type: "submit" }
+                  })
+                ],
+                1
+              )
+            ]
+          )
         ]
       )
     ])
@@ -67915,7 +68121,29 @@ var render = function() {
                     })
                   ]
                 )
-              ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "mt-4 text-xs", attrs: { id: "categorias" } },
+                _vm._l(_vm.pregunta.categorias, function(categoria, index) {
+                  return _c(
+                    "a",
+                    {
+                      key: index,
+                      staticClass:
+                        "mr-3 bg-azul-100 hover:bg-blue-200 ring-2 ring-blue-500 px-2 py-2 rounded cursor-pointer",
+                      attrs: { href: "/categorias/" + categoria }
+                    },
+                    [
+                      _vm._v(
+                        "\n\t\t\t\t\t\t" + _vm._s(categoria) + "\n\t\t\t\t\t"
+                      )
+                    ]
+                  )
+                }),
+                0
+              )
             ]),
             _vm._v(" "),
             _c("div", { attrs: { id: "seccion-respuestas" } }, [

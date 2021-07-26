@@ -18,6 +18,11 @@
 							<p v-html="pregunta.contenido_html"></p>
 						</div>
 					</div>
+					<div id="categorias" class="mt-4 text-xs">
+						<a :href="`/categorias/${categoria}`" v-for="(categoria, index) in pregunta.categorias" :key="index" class="mr-3 bg-azul-100 hover:bg-blue-200 ring-2 ring-blue-500 px-2 py-2 rounded cursor-pointer">
+							{{ categoria }}
+						</a>
+					</div>
 				</div>
 				<div id="seccion-respuestas">
 					<div id="encabezado-respuestas" class="mb-6">
@@ -96,6 +101,7 @@ export default {
 		obtenerDatosPregunta() {
 			axios.get(`/api/pregunta/${this.pregunta_id}`)
 			.then(res => {
+				console.log(res.data)
 				// Obtenemos la pregunta
 				this.pregunta = res.data.pregunta;
 

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
 use App\Models\Pregunta;
+use App\Models\RelacionCategoriaPregunta;
 use App\Models\Respuesta;
 use App\Models\User;
 use App\Models\VotoPregunta;
@@ -20,36 +22,61 @@ class PreguntaController extends Controller
 	}
 
 	public function store(Request $request) {
+		$datosAEvaluar = [];
+		$datosAEvaluar['titulo'] = $request['formulario']['titulo'];
+		$datosAEvaluar['contenido_html'] = $request['formulario']['contenido_html'];
+		$datosAEvaluar['categorias_seleccionadas'] = $request['categorias_seleccionadas'];
+
 		$reglas = [
 			'titulo' => 'required',
-			'contenido_html' => 'required'
+			'contenido_html' => 'required',
+			'categorias_seleccionadas' => 'required'
 		];
 
 		$erroresPersonalizados = [
 			'titulo.required' => 'Se requiere de un título para la pregunta.',
-			'contenido_html.required' => 'Se requiere del cuerpo de la pregunta'
+			'contenido_html.required' => 'Se requiere del cuerpo de la pregunta',
+			'categorias_seleccionadas.required' => 'Se requiere al menos una categoría para la pregunta'
 		];
 
-		$validaciones = Validator::make($request->all(), $reglas, $erroresPersonalizados);
+		$validaciones = Validator::make($datosAEvaluar, $reglas, $erroresPersonalizados);
 
 		if ($validaciones->fails()) {
+			return response()->json([
+				'status' => false,
+				'errores' => $validaciones->errors()
+			]);
 			return redirect()->back()->withErrors($validaciones)->withInput();
 		} else {
+			// Creamos la pregunta y la guardamos
 			$identificador_aleatorio = $this->generarIdentificador(16);
-
-			$resumen_pregunta = strip_tags($request['contenido_html']);
+			$resumen_pregunta = strip_tags($datosAEvaluar['contenido_html']);
 			$resumen_pregunta = substr($resumen_pregunta, 0, 255);
 			$pregunta = new Pregunta([
 				'user_id' => Auth::user()->id,
-				'pregunta' => $request['titulo'],
+				'pregunta' => $datosAEvaluar['titulo'],
 				'descripcion' => $resumen_pregunta,
-				'contenido_html' => $request['contenido_html'],
+				'contenido_html' => $datosAEvaluar['contenido_html'],
 				'identificador' => $identificador_aleatorio
 			]);
+			$pregunta->save();
 
-			if ($pregunta->save()) {
-				return redirect('/pregunta/'.$identificador_aleatorio);
+			// Relacionamos la pregunta con sus categorias elegidas
+			for ($i=0; $i < count($datosAEvaluar['categorias_seleccionadas']); $i++) {
+				// Obtenemos la categoría
+				$categoria = $datosAEvaluar['categorias_seleccionadas'][$i];
+
+				// Creamos la relación de la categoría con la pregunta
+				$relacion_categoria_pregunta = new RelacionCategoriaPregunta();
+				$relacion_categoria_pregunta->categoria_id = $categoria['id'];
+				$relacion_categoria_pregunta->pregunta_id = $pregunta->id;
+				$relacion_categoria_pregunta->save();
 			}
+
+			return response()->json([
+				'status' => true,
+				'identificador' => $identificador_aleatorio
+			]);
 		}
 	}
 
@@ -82,6 +109,18 @@ class PreguntaController extends Controller
 
 		// Si la pregunta existe...
 		if (isset($pregunta)) {
+			// Obtenemos las categorías de la pregunta
+			$categorias = [];
+			$relacion_categoria_pregunta = RelacionCategoriaPregunta::where('pregunta_id', '=', $pregunta->id)->get();
+
+			// Recorremos las categorías de la pregunta
+			for ($i=0; $i < count($relacion_categoria_pregunta); $i++) {
+				$relacion = $relacion_categoria_pregunta[$i];
+				$categoria = Categoria::find($relacion->categoria_id);
+				$categorias[] = strtolower($categoria->categoria);
+			}
+			$pregunta['categorias'] = $categorias;
+
 			// Obtenemos la cantidad de votos positivos de la pregunta
 			$votos_positivos = VotoPregunta::where('pregunta_id', '=', $pregunta->id)
 			->where('voto_bool', '=', true)
