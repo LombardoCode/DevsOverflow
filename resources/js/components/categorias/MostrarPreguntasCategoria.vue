@@ -84,6 +84,7 @@ export default {
 			})
 		},
 		cambiarFiltro(filtro) {
+			this.paginacion.pagina = 0;
 			this.paginacion.filtro = filtro;
 			this.realizarBusqueda();
 		},

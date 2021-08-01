@@ -12185,6 +12185,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     cambiarFiltro: function cambiarFiltro(filtro) {
+      this.paginacion.pagina = 0;
       this.paginacion.filtro = filtro;
       this.realizarBusqueda();
     },
@@ -12814,11 +12815,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       usuarios: [],
       paginacion: {
+        query: '',
         filtro: 'todos',
         pagina: 0,
         itemsMaxPorPag: 30,
@@ -12843,6 +12847,10 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         console.log(err);
       });
+    },
+    busquedaEscrita: function busquedaEscrita() {
+      this.paginacion.pagina = 0;
+      this.obtenerUsuarios();
     },
     desdePaginacion: function desdePaginacion(datos) {
       this.paginacion.pagina = datos.pagina;
@@ -69786,43 +69794,67 @@ var render = function() {
           _vm._v(" "),
           _c(
             "div",
-            { staticClass: "flex flex-wrap ring-1 ring-gray-600 rounded" },
+            { staticClass: "flex items-center flex-1 justify-end" },
             [
-              _c("span", [_vm._v(_vm._s(_vm.paginacion.filtros))]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "px-3 py-2 border-r-2 border-gray-600",
-                  class: {
-                    "bg-gray-600 text-white": _vm.paginacion.filtro == "todos"
-                  },
-                  on: {
-                    click: function($event) {
-                      return _vm.cambiarFiltro("todos")
-                    }
+              _c("vue-input", {
+                staticClass: "max-w-md",
+                attrs: { placeholder: "Buscar un usuario..." },
+                on: {
+                  input: function($event) {
+                    return _vm.busquedaEscrita()
                   }
                 },
-                [_vm._v("Todos")]
-              ),
+                model: {
+                  value: _vm.paginacion.query,
+                  callback: function($$v) {
+                    _vm.$set(_vm.paginacion, "query", $$v)
+                  },
+                  expression: "paginacion.query"
+                }
+              }),
               _vm._v(" "),
               _c(
-                "button",
-                {
-                  staticClass: "px-3 py-2 border-gray-600",
-                  class: {
-                    "bg-gray-600 text-white":
-                      _vm.paginacion.filtro == "nuevos_usuarios"
-                  },
-                  on: {
-                    click: function($event) {
-                      return _vm.cambiarFiltro("nuevos_usuarios")
-                    }
-                  }
-                },
-                [_vm._v("Nuevos usuarios")]
+                "div",
+                { staticClass: "flex ring-1 ring-gray-600 rounded ml-3" },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "min-w-max px-3 py-2 border-r-2 border-gray-600",
+                      class: {
+                        "bg-gray-600 text-white":
+                          _vm.paginacion.filtro == "todos"
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.cambiarFiltro("todos")
+                        }
+                      }
+                    },
+                    [_vm._v("Todos")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "min-w-max px-3 py-2 border-gray-600",
+                      class: {
+                        "bg-gray-600 text-white":
+                          _vm.paginacion.filtro == "nuevos_usuarios"
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.cambiarFiltro("nuevos_usuarios")
+                        }
+                      }
+                    },
+                    [_vm._v("Nuevos usuarios")]
+                  )
+                ]
               )
-            ]
+            ],
+            1
           )
         ]),
         _vm._v(" "),

@@ -59,6 +59,7 @@ class UsuarioController extends Controller
 	}
 
 	public function all(Request $request) {
+		$query = $request['query'];
 		$filtro = $request['filtro'];
 		$itemsMaxPorPag = $request['itemsMaxPorPag'];
 		$offset = ((($request['pagina'] + 1) - 1) * $itemsMaxPorPag);
@@ -67,6 +68,7 @@ class UsuarioController extends Controller
 
 		if ($filtro == 'todos') {
 			$usuarios = DB::table('users')
+			->where('name', 'LIKE', '%'.$query.'%')
 			->orderBy('created_at', 'asc')
 			->offset($offset)
 			->limit($itemsMaxPorPag)
@@ -74,6 +76,7 @@ class UsuarioController extends Controller
 		} else {
 			if ($filtro == 'nuevos_usuarios') {
 				$usuarios = DB::table('users')
+				->where('name', 'LIKE', '%'.$query.'%')
 				->orderBy('created_at', 'desc')
 				->offset($offset)
 				->limit($itemsMaxPorPag)
@@ -82,6 +85,7 @@ class UsuarioController extends Controller
 		}
 
 		$cantidad_de_usuarios = DB::table('users')
+		->where('name', 'LIKE', '%'.$query.'%')
 		->orderBy('created_at', 'asc')
 		->count();
 
