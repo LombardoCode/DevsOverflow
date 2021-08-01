@@ -3,6 +3,7 @@
 		<div id="categorias">
 			<div class="flex items-center justify-between">
 				<h5 class="font-bold text-2xl my-6">Categorías</h5>
+				<vue-input class="max-w-md" v-model="paginacion.query" @input="busquedaEscrita()" placeholder="Buscar una categoria..."></vue-input>
 			</div>
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
 				<div v-for="(categoria, index) in categorias" :key="index" class="usuario bg-azul-100 hover:bg-blue-200 px-3 py-4 rounded">
@@ -28,6 +29,7 @@ export default {
 		return {
 			categorias: [],
 			paginacion: {
+				query: '',
 				filtro: 'todos',
 				pagina: 0,
 				itemsMaxPorPag: 30,
@@ -52,6 +54,10 @@ export default {
 				console.log(err);
 			})
 		},
+		busquedaEscrita() {
+			this.paginacion.pagina = 0;
+			this.obtenerCategorias();
+		},
 		desdePaginacion(datos) {
 			this.paginacion.pagina = datos.pagina;
 			this.paginacion.itemsMaxPorPag = datos.itemsMaxPorPag;
@@ -59,6 +65,7 @@ export default {
 			this.obtenerCategorias();
 		},
 		cambiarFiltro(filtro) {
+			this.paginacion.pagina = 0;
 			this.paginacion.filtro = filtro;
 			this.obtenerCategorias();
 		},

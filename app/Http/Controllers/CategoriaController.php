@@ -45,18 +45,21 @@ class CategoriaController extends Controller
 	}
 
 	public function all(Request $request) {
+		$query = $request['query'];
 		$itemsMaxPorPag = $request['itemsMaxPorPag'];
 		$offset = ((($request['pagina'] + 1) - 1) * $itemsMaxPorPag);
 		$cantidad_de_categorias = null;
 		$categorias = [];
 
 		$categorias = DB::table('categorias')
+		->where('categoria', 'LIKE', '%'.$query.'%')
 		->orderBy('created_at', 'asc')
 		->offset($offset)
 		->limit($itemsMaxPorPag)
 		->get();
 
 		$cantidad_de_categorias = DB::table('categorias')
+		->where('categoria', 'LIKE', '%'.$query.'%')
 		->orderBy('created_at', 'asc')
 		->count();
 

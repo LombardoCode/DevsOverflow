@@ -12044,11 +12044,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       categorias: [],
       paginacion: {
+        query: '',
         filtro: 'todos',
         pagina: 0,
         itemsMaxPorPag: 30,
@@ -12074,6 +12076,10 @@ __webpack_require__.r(__webpack_exports__);
         console.log(err);
       });
     },
+    busquedaEscrita: function busquedaEscrita() {
+      this.paginacion.pagina = 0;
+      this.obtenerCategorias();
+    },
     desdePaginacion: function desdePaginacion(datos) {
       this.paginacion.pagina = datos.pagina;
       this.paginacion.itemsMaxPorPag = datos.itemsMaxPorPag;
@@ -12081,6 +12087,7 @@ __webpack_require__.r(__webpack_exports__);
       this.obtenerCategorias();
     },
     cambiarFiltro: function cambiarFiltro(filtro) {
+      this.paginacion.pagina = 0;
       this.paginacion.filtro = filtro;
       this.obtenerCategorias();
     }
@@ -68382,7 +68389,33 @@ var render = function() {
       "div",
       { attrs: { id: "categorias" } },
       [
-        _vm._m(0),
+        _c(
+          "div",
+          { staticClass: "flex items-center justify-between" },
+          [
+            _c("h5", { staticClass: "font-bold text-2xl my-6" }, [
+              _vm._v("Categorías")
+            ]),
+            _vm._v(" "),
+            _c("vue-input", {
+              staticClass: "max-w-md",
+              attrs: { placeholder: "Buscar una categoria..." },
+              on: {
+                input: function($event) {
+                  return _vm.busquedaEscrita()
+                }
+              },
+              model: {
+                value: _vm.paginacion.query,
+                callback: function($$v) {
+                  _vm.$set(_vm.paginacion, "query", $$v)
+                },
+                expression: "paginacion.query"
+              }
+            })
+          ],
+          1
+        ),
         _vm._v(" "),
         _c(
           "div",
@@ -68431,18 +68464,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex items-center justify-between" }, [
-      _c("h5", { staticClass: "font-bold text-2xl my-6" }, [
-        _vm._v("Categorías")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
