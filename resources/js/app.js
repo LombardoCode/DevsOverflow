@@ -32,6 +32,10 @@ Vue.component('vue-footer', require('./components/reutilizable/VueFooter.vue').d
 
 Vue.component('crear-pregunta', require('./components/auth/CrearPregunta.vue').default);
 Vue.component('mostrar-usuarios', require('./components/usuarios/MostrarUsuarios.vue').default);
+Vue.component('mostrar-categorias', require('./components/categorias/MostrarCategorias.vue').default);
+Vue.component('mostrar-preguntas-categoria', require('./components/categorias/MostrarPreguntasCategoria.vue').default);
+
+
 
 
 /**

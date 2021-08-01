@@ -60,6 +60,11 @@ Route::prefix('usuarios')->group(function() {
 	Route::get('/{usuario_id}', [UsuarioController::class, 'mostrar_vista_usuario_especifico']);
 });
 
+Route::prefix('categorias')->group(function() {
+	Route::get('/', [CategoriaController::class, 'mostrar_vista_categorias']);
+	Route::get('/{nombre_categoria}', [CategoriaController::class, 'mostrar_vista_preguntas_con_categoria']);
+});
+
 /* API (web) */
 Route::prefix('api')->group(function() {
 	Route::prefix('auth')->group(function() {
@@ -81,11 +86,15 @@ Route::prefix('api')->group(function() {
 	});
 	Route::prefix('busqueda')->group(function() {
 		Route::post('/', [BusquedaController::class, 'realizar_busqueda']);
+		Route::prefix('categoria')->group(function() {
+			Route::post('/', [CategoriaController::class, 'realizar_busqueda']);
+		});
 	});
 	Route::prefix('usuarios')->group(function() {
 		Route::post('/', [UsuarioController::class, 'all']);
 	});
 	Route::prefix('categoria')->group(function() {
 		Route::get('/{nombre_categoria}', [CategoriaController::class, 'show']);
+		Route::post('/', [CategoriaController::class, 'all']);
 	});
 });
