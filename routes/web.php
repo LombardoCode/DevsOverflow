@@ -65,6 +65,10 @@ Route::prefix('categorias')->group(function() {
 	Route::get('/{nombre_categoria}', [CategoriaController::class, 'mostrar_vista_preguntas_con_categoria']);
 });
 
+Route::prefix('sin-responder')->group(function() {
+	Route::get('/', [BusquedaController::class, 'mostrar_vista_preguntas_sin_responder']);
+});
+
 /* API (web) */
 Route::prefix('api')->group(function() {
 	Route::prefix('auth')->group(function() {
@@ -88,6 +92,9 @@ Route::prefix('api')->group(function() {
 		Route::post('/', [BusquedaController::class, 'realizar_busqueda']);
 		Route::prefix('categoria')->group(function() {
 			Route::post('/', [CategoriaController::class, 'realizar_busqueda']);
+		});
+		Route::prefix('sin-responder')->group(function() {
+			Route::post('/', [BusquedaController::class, 'realizar_busqueda_sin_responder']);
 		});
 	});
 	Route::prefix('usuarios')->group(function() {

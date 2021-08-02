@@ -34,6 +34,9 @@ Vue.component('crear-pregunta', require('./components/auth/CrearPregunta.vue').d
 Vue.component('mostrar-usuarios', require('./components/usuarios/MostrarUsuarios.vue').default);
 Vue.component('mostrar-categorias', require('./components/categorias/MostrarCategorias.vue').default);
 Vue.component('mostrar-preguntas-categoria', require('./components/categorias/MostrarPreguntasCategoria.vue').default);
+Vue.component('mostrar-preguntas-sin-responder', require('./components/sinresponder/MostrarPreguntasSinResponder.vue').default);
+
+
 
 
 
