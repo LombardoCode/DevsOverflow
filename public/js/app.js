@@ -12606,8 +12606,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     query: String
@@ -12632,7 +12630,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.post('/api/busqueda', this.paginacion).then(function (res) {
-        //console.log(res.data);
         _this.preguntas = res.data.preguntas;
         _this.paginacion.totalItems = res.data.cantidad_de_preguntas;
       })["catch"](function (err) {
@@ -69376,23 +69373,6 @@ var render = function() {
                     staticClass: "px-3 py-2 border-r-2 border-gray-600",
                     class: {
                       "bg-gray-600 text-white":
-                        _vm.paginacion.filtro == "relevancia"
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.cambiarFiltro("relevancia")
-                      }
-                    }
-                  },
-                  [_vm._v("Relevancia")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "px-3 py-2 border-r-2 border-gray-600",
-                    class: {
-                      "bg-gray-600 text-white":
                         _vm.paginacion.filtro == "mas_reciente"
                     },
                     on: {
@@ -69407,7 +69387,7 @@ var render = function() {
                 _c(
                   "button",
                   {
-                    staticClass: "px-3 py-2 border-r-2 border-gray-600",
+                    staticClass: "px-3 py-2 border-gray-600",
                     class: {
                       "bg-gray-600 text-white": _vm.paginacion.filtro == "votos"
                     },
@@ -69418,23 +69398,6 @@ var render = function() {
                     }
                   },
                   [_vm._v("Votos")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "px-3 py-2 border-gray-600",
-                    class: {
-                      "bg-gray-600 text-white":
-                        _vm.paginacion.filtro == "activo"
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.cambiarFiltro("activo")
-                      }
-                    }
-                  },
-                  [_vm._v("Activo")]
                 )
               ]
             )

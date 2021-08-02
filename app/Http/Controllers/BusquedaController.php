@@ -60,54 +60,57 @@ class BusquedaController extends Controller
 
 		// Obtenemos las preguntas más recientes
 		if ($filtro == 'mas_reciente') {
-			$preguntas = Pregunta::where('pregunta', 'LIKE', '%'.$query.'%')
-			->orderBy('created_at', 'asc')
-			->offset($offset)
-			->limit($itemsMaxPorPag)
-			->get();
-
-			$cantidad_de_preguntas = Pregunta::where('pregunta', 'LIKE', '%'.$query.'%')
-			->orderBy('created_at', 'asc')
-			->count();
-
-			// Recorremos las preguntas
-			for ($i=0; $i < count($preguntas); $i++) {
-				// Obtenemos el autor de cada pregunta
-				$autor = User::find($preguntas[$i]['user_id']);
-				$preguntas[$i]['autor'] = $autor->name;
-
-				// Obtenemos la cantidad de votos de cada pregunta
-				$votos = VotoPregunta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
-				$preguntas[$i]['votos'] = count($votos) > 0 ? count($votos) : 0;
-
-				// Obtenemos la cantidad de respuestas de cada pregunta
-				$respuestas = Respuesta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
-				$preguntas[$i]['respuestas'] = count($respuestas) > 0 ? count($respuestas) : 0;
-			}
+				// Obtenemos las preguntas siguiendo el query y ordenadas de las más recientes hasta las no tan recientes dependiendo del estado de la paginación
+			$preguntas = DB::select(
+				'SELECT p.*, COALESCE(SUM(vp.voto_bool = 1), 0) AS votos_positivos, COALESCE(SUM(vp.voto_bool = 0), 0) AS votos_negativos
+				FROM preguntas p
+				LEFT OUTER JOIN voto_preguntas vp
+				ON p.id = vp.pregunta_id
+				WHERE p.pregunta LIKE "%'.$query. '%"
+				GROUP BY p.id
+				ORDER BY p.created_at DESC
+				LIMIT ?
+				OFFSET ?;', [$itemsMaxPorPag, $offset]);
 		} else {
 			if ($filtro == 'votos') {
-				$preguntas = DB::table('preguntas')
-				->where('pregunta', 'LIKE', '%'.$query.'%')
-				->offset($offset)
-				->limit($itemsMaxPorPag)
-        ->get();
-				$preguntas = json_decode($preguntas, true);
-
-				// Recorremos las preguntas
-				for ($i=0; $i < count($preguntas); $i++) {
-					// Obtenemos el autor de cada pregunta
-					$autor = User::find($preguntas[$i]['user_id']);
-					$preguntas[$i]['autor'] = $autor->name;
-
-					// Obtenemos la cantidad de votos de cada pregunta
-					$votos = VotoPregunta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
-					$preguntas[$i]['votos'] = count($votos) > 0 ? count($votos) : 0;
-
-					// Obtenemos la cantidad de respuestas de cada pregunta
-					$respuestas = Respuesta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
-					$preguntas[$i]['respuestas'] = count($respuestas) > 0 ? count($respuestas) : 0;
-				}
+				// Obtenemos las preguntas siguiendo el query y ordenadas de las más votadas hasta las no tan votadas dependiendo del estado de la paginación
+				$preguntas = DB::select(
+					'SELECT p.id, p.pregunta, p.user_id, COALESCE(SUM(vp.voto_bool = 1), 0) AS votos_positivos, COALESCE(SUM(vp.voto_bool = 0), 0) AS votos_negativos
+					FROM preguntas p
+					LEFT OUTER JOIN voto_preguntas vp
+					ON p.id = vp.pregunta_id
+					WHERE p.pregunta LIKE "%'.$query. '%"
+					GROUP BY p.id
+					ORDER BY votos_positivos DESC
+					LIMIT ?
+					OFFSET ?;', [$itemsMaxPorPag, $offset]);
 			}
+		}
+
+		// Hacemos los resultados accesibles
+		$preguntas = json_decode(json_encode($preguntas), true);
+
+		// Obtenemos las preguntas totales
+		$cantidad_de_preguntas = DB::select(
+			'SELECT COUNT(DISTINCT(p.id)) AS cantidad_de_preguntas
+			FROM preguntas p
+			WHERE p.pregunta LIKE "%'.$query. '%"', []);
+		$cantidad_de_preguntas = json_decode(json_encode($cantidad_de_preguntas), true);
+		$cantidad_de_preguntas = $cantidad_de_preguntas[0]['cantidad_de_preguntas'];
+
+		// Recorremos las preguntas
+		for ($i=0; $i < count($preguntas); $i++) {
+			// Obtenemos el autor de cada pregunta
+			$autor = User::find($preguntas[$i]['user_id']);
+			$preguntas[$i]['autor'] = $autor->name;
+
+			// Obtenemos la cantidad de votos de cada pregunta
+			$votos = VotoPregunta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
+			$preguntas[$i]['votos'] = count($votos) > 0 ? count($votos) : 0;
+
+			// Obtenemos la cantidad de respuestas de cada pregunta
+			$respuestas = Respuesta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
+			$preguntas[$i]['respuestas'] = count($respuestas) > 0 ? count($respuestas) : 0;
 		}
 
 		return response()->json([

@@ -10,10 +10,8 @@
 				<span class="text-lg font-medium">{{ paginacion.totalItems }} resultados</span>
 				<div class="flex flex-wrap ring-1 ring-gray-600 rounded">
 					<span>{{paginacion.filtros}}</span>
-					<button class="px-3 py-2 border-r-2 border-gray-600" :class="{'bg-gray-600 text-white': paginacion.filtro == 'relevancia'}" @click="cambiarFiltro('relevancia')">Relevancia</button>
 					<button class="px-3 py-2 border-r-2 border-gray-600" :class="{'bg-gray-600 text-white': paginacion.filtro == 'mas_reciente'}" @click="cambiarFiltro('mas_reciente')">Más reciente</button>
-					<button class="px-3 py-2 border-r-2 border-gray-600" :class="{'bg-gray-600 text-white': paginacion.filtro == 'votos'}" @click="cambiarFiltro('votos')">Votos</button>
-					<button class="px-3 py-2 border-gray-600" :class="{'bg-gray-600 text-white': paginacion.filtro == 'activo'}" @click="cambiarFiltro('activo')">Activo</button>
+					<button class="px-3 py-2 border-gray-600" :class="{'bg-gray-600 text-white': paginacion.filtro == 'votos'}" @click="cambiarFiltro('votos')">Votos</button>
 				</div>
 			</div>
 			<div id="preguntas">
@@ -78,7 +76,6 @@ export default {
 		realizarBusqueda() {
 			axios.post('/api/busqueda', this.paginacion)
 			.then(res => {
-				//console.log(res.data);
 				this.preguntas = res.data.preguntas;
 				this.paginacion.totalItems = res.data.cantidad_de_preguntas;
 			})
