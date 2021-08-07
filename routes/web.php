@@ -5,6 +5,7 @@ use App\Http\Controllers\PreguntaController;
 use App\Http\Controllers\RespuestaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VotoController;
 use Illuminate\Support\Facades\Route;
@@ -103,5 +104,8 @@ Route::prefix('api')->group(function() {
 	Route::prefix('categoria')->group(function() {
 		Route::get('/{nombre_categoria}', [CategoriaController::class, 'show']);
 		Route::post('/', [CategoriaController::class, 'all']);
+	});
+	Route::prefix('notificaciones')->group(function() {
+		Route::get('/', [NotificacionController::class, 'all']);
 	});
 });

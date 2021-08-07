@@ -11,7 +11,6 @@
 	</head>
 	<body>
 		<div id="app">
-			@include('reusable.navbar')
 			<div id="contenido" class="text-sm">
         <div class="bg-gradient-to-br from-purple-700 to-purple-900 h-screen flex justify-center items-start">
           <div class="bg-white max-w-md flex-1 mt-3 rounded px-3">

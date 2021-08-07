@@ -20,6 +20,8 @@ window.Vue = require('vue').default;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 // Elementos reutilizables
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('navbar', require('./components/reutilizable/NavBar.vue').default);
 Vue.component('vue-input', require('./components/reutilizable/VueInput.vue').default);
 Vue.component('vue-input-submit', require('./components/reutilizable/VueInputSubmit.vue').default);

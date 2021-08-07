@@ -23,7 +23,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "findIconDefinition": () => (/* binding */ findIconDefinition)
 /* harmony export */ });
 /*!
- * Font Awesome Free 5.15.3 by @fontawesome - https://fontawesome.com
+ * Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  */
 function _typeof(obj) {
@@ -220,7 +220,7 @@ var STYLE_TO_PREFIX = {
   'kit': 'fak'
 };
 var LAYERS_TEXT_CLASSNAME = 'fa-layers-text';
-var FONT_FAMILY_PATTERN = /Font Awesome ([5 ]*)(Solid|Regular|Light|Duotone|Brands|Free|Pro|Kit).*/; // TODO: do we need to handle font-weight for kit SVG pseudo-elements?
+var FONT_FAMILY_PATTERN = /Font Awesome ([5 ]*)(Solid|Regular|Light|Duotone|Brands|Free|Pro|Kit).*/i; // TODO: do we need to handle font-weight for kit SVG pseudo-elements?
 
 var FONT_WEIGHT_TO_PREFIX = {
   '900': 'fas',
@@ -1120,7 +1120,7 @@ var p = config.measurePerformance && PERFORMANCE && PERFORMANCE.mark && PERFORMA
   mark: noop$1,
   measure: noop$1
 };
-var preamble = "FA \"5.15.3\"";
+var preamble = "FA \"5.15.4\"";
 
 var begin = function begin(name) {
   p.mark("".concat(preamble, " ").concat(name, " begins"));
@@ -3476,7 +3476,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "faYinYang": () => (/* binding */ faYinYang)
 /* harmony export */ });
 /*!
- * Font Awesome Free 5.15.3 by @fontawesome - https://fontawesome.com
+ * Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  */
 var prefix = "fas";
@@ -12392,7 +12392,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _VueInput_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VueInput.vue */ "./resources/js/components/reutilizable/VueInput.vue");
+/* harmony import */ var _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fortawesome/fontawesome-svg-core */ "./node_modules/@fortawesome/fontawesome-svg-core/index.es.js");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
+/* harmony import */ var _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fortawesome/vue-fontawesome */ "./node_modules/@fortawesome/vue-fontawesome/index.es.js");
+/* harmony import */ var _VueInput_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./VueInput.vue */ "./resources/js/components/reutilizable/VueInput.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -12420,21 +12439,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
+_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__.library.add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__.faBell);
+Vue.component('font-awesome-icon', _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_1__.FontAwesomeIcon);
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    nombre_usuario: String
+    usuario: Object
   },
   components: {
-    VueInput: _VueInput_vue__WEBPACK_IMPORTED_MODULE_0__.default
+    VueInput: _VueInput_vue__WEBPACK_IMPORTED_MODULE_3__.default
+  },
+  mounted: function mounted() {
+    if (this.usuario.id) {
+      this.obtenerNotificaciones();
+    }
   },
   data: function data() {
     return {
-      busqueda_input: ''
+      busqueda_input: '',
+      notificaciones: {
+        datos: [],
+        cantidad_no_leida: 0,
+        mostrar: false
+      }
     };
   },
   methods: {
-    realizarBusqueda: function realizarBusqueda() {
-      console.log(this.busqueda_input);
+    obtenerNotificaciones: function obtenerNotificaciones() {
+      var _this = this;
+
+      axios.get('/api/notificaciones').then(function (res) {
+        _this.notificaciones.datos = res.data.notificaciones;
+
+        for (var i = 0; i < _this.notificaciones.datos.length; i++) {
+          var notificacion = _this.notificaciones.datos[i];
+
+          if (!notificacion.visto) {
+            _this.notificaciones.cantidad_no_leida++;
+          }
+        }
+
+        console.log(_this.notificaciones);
+      })["catch"](function (err) {
+        console.log(err);
+      });
     }
   }
 });
@@ -12985,8 +13035,11 @@ __webpack_require__.r(__webpack_exports__);
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fortawesome/vue-fontawesome */ "./node_modules/@fortawesome/vue-fontawesome/index.es.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -13006,6 +13059,8 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js"
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 // Elementos reutilizables
 
+
+Vue.component('font-awesome-icon', _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon);
 Vue.component('navbar', __webpack_require__(/*! ./components/reutilizable/NavBar.vue */ "./resources/js/components/reutilizable/NavBar.vue").default);
 Vue.component('vue-input', __webpack_require__(/*! ./components/reutilizable/VueInput.vue */ "./resources/js/components/reutilizable/VueInput.vue").default);
 Vue.component('vue-input-submit', __webpack_require__(/*! ./components/reutilizable/VueInputSubmit.vue */ "./resources/js/components/reutilizable/VueInputSubmit.vue").default);
@@ -19519,7 +19574,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".altura-nabvar {\n  height: 54px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".altura-nabvar {\n  height: 54px;\n}\n::-webkit-scrollbar {\n  width: 0px;\n  background: transparent;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -69280,17 +69335,125 @@ var render = function() {
           ),
           _vm._v(" "),
           _c("div", { attrs: { id: "navbar-items" } }, [
-            !_vm.nombre_usuario
-              ? _c("ul", { staticClass: "flex" }, [
+            !_vm.usuario.id
+              ? _c("ul", { staticClass: "flex items-center" }, [
                   _vm._m(1),
                   _vm._v(" "),
                   _vm._m(2)
                 ])
-              : _vm._e(),
-            _vm._v(" "),
-            _c("div", { attrs: { else: "" } }, [
-              _c("div", [_vm._v(_vm._s(_vm.nombre_usuario))])
-            ])
+              : _vm.usuario.id
+              ? _c("div", { staticClass: "flex items-center" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "select-none",
+                      attrs: { id: "notificaciones-contenedor" }
+                    },
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "relative text-xl px-2 py-3 mr-7 text-gray-500 cursor-pointer",
+                          attrs: { id: "campana-notificacion" }
+                        },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "relative",
+                              on: {
+                                click: function($event) {
+                                  _vm.notificaciones.mostrar = !_vm
+                                    .notificaciones.mostrar
+                                }
+                              }
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "absolute text-xs bg-blue-600 text-white font-bold rounded-full",
+                                  staticStyle: {
+                                    padding: "2px 4px",
+                                    top: "-20%",
+                                    left: "70%"
+                                  },
+                                  attrs: { id: "contador-de-notificaciones" }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(_vm.notificaciones.cantidad_no_leida)
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("font-awesome-icon", {
+                                staticClass:
+                                  "hover:text-blue-800 transition-all duration-100",
+                                attrs: { icon: "bell" }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _vm.notificaciones.mostrar
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "absolute bg-azul-100 w-96 max-h-72 overflow-hidden overflow-y-scroll text-sm text-black border-l-2 border-r-2 border-gray-400",
+                                  staticStyle: { right: "0%", top: "53px" },
+                                  attrs: { id: "notificaciones-lista" }
+                                },
+                                _vm._l(_vm.notificaciones.datos, function(
+                                  notificacion,
+                                  index
+                                ) {
+                                  return _c(
+                                    "div",
+                                    {
+                                      key: index,
+                                      staticClass:
+                                        "py-3 px-2 hover:bg-blue-300 border-b-2 border-gray-400 transition-all duration-100"
+                                    },
+                                    [
+                                      _c(
+                                        "a",
+                                        { attrs: { href: notificacion.url } },
+                                        [
+                                          _c(
+                                            "p",
+                                            { staticClass: "font-bold" },
+                                            [
+                                              _vm._v(
+                                                _vm._s(notificacion.mensaje)
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("p", [
+                                            _vm._v(_vm._s(notificacion.cuerpo))
+                                          ])
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                }),
+                                0
+                              )
+                            : _vm._e()
+                        ]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm.usuario.name
+                    ? _c("div", [_vm._v(_vm._s(_vm.usuario.name))])
+                    : _vm._e()
+                ])
+              : _vm._e()
           ])
         ]
       )

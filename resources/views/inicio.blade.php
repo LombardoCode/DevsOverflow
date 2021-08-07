@@ -11,7 +11,7 @@
 	</head>
 	<body>
 		<div id="app">
-			<navbar></navbar>
+			<navbar :usuario="{{ Auth::check() ? Auth::user() : "{}" }}"></navbar>
 			<div id="contenido" style="padding-top: 52px;">
 				<div class="container mx-auto text-sm flex h-screen" style="height: calc(100vh - 52px)">
 					<sidebar-izquierda></sidebar-izquierda>
