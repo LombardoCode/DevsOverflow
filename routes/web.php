@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VotoController;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,12 +26,14 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['guest']], function() {
 	Route::get('/registrarse', function () {
 		return view('registrarse', [
-			'titulo' => 'Registrarse'
+			'titulo' => 'Registrarse',
+			'anio_actual' => Carbon::now()->format('Y')
 		]);
 	});
 	Route::get('/login', function () {
 		return view('login', [
-			'titulo' => 'Iniciar sesión'
+			'titulo' => 'Iniciar sesión',
+			'anio_actual' => Carbon::now()->format('Y')
 		]);
 	})->name('login');
 });

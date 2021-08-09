@@ -70087,7 +70087,8 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("input", {
     staticClass:
-      "w-full px-3 py-2 rounded-md text-white font-bold cursor-pointer ring-2 bg-blue-600 ring-blue-700 outline-none"
+      "w-full px-3 py-4 rounded-md text-white font-bold cursor-pointer bg-blue-600 hover:bg-blue-700 transition-all duration-100 outline-none",
+    domProps: { value: _vm.texto }
   })
 }
 var staticRenderFns = []
