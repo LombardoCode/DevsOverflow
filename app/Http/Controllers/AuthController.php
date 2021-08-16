@@ -62,7 +62,7 @@ class AuthController extends Controller
 		$erroresPersonalizados = [
 			'email.required' => 'El email es obligatorio.',
 			'email.email' => 'El formato del email no es correcto.',
-			'password' => 'La contraseña es obligatoria'
+			'password.required' => 'La contraseña es obligatoria'
 		];
 
 		// Validamos el formulario
@@ -74,17 +74,24 @@ class AuthController extends Controller
 		} else { // Si no falla...
 			// Obtenemos las credenciales del usuario
 			$credenciales = $request->only('email','password');
-		}
 
-		// Si la autenticación es exitosa...
-		if (Auth::attempt($credenciales)) {
-			$request->session()->regenerate();
-			return redirect()->intended('/');
-		} else { // Si las credenciales no son las correctas...
-			// Devolvemos al usuario con el error de credenciales
-			return redirect()->back()->withErrors([
-				'credenciales' => 'Las credenciales de acceso no son correctas.'
-			]);
+			// Si la autenticación es exitosa...
+			if (Auth::attempt($credenciales)) {
+				$request->session()->regenerate();
+				return redirect()->intended('/');
+			} else { // Si las credenciales no son las correctas...
+				// Devolvemos al usuario con el error de credenciales
+				return redirect()->back()->withErrors([
+					'credenciales' => 'Las credenciales de acceso no son correctas.'
+				]);
+			}
 		}
+	}
+
+	public function cerrar_sesion(Request $request) {
+		Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect('/');
 	}
 }

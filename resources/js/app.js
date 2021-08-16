@@ -24,11 +24,13 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('navbar', require('./components/reutilizable/NavBar.vue').default);
 Vue.component('vue-input', require('./components/reutilizable/VueInput.vue').default);
+Vue.component('vue-textarea', require('./components/reutilizable/VueTextarea.vue').default);
 Vue.component('vue-input-submit', require('./components/reutilizable/VueInputSubmit.vue').default);
 Vue.component('vue-anchor-button', require('./components/reutilizable/VueAnchorButton.vue').default);
 Vue.component('seccion-preguntas', require('./components/reutilizable/SeccionPreguntas.vue').default);
 Vue.component('mostrar-pregunta', require('./components/reutilizable/MostrarPregunta.vue').default);
-Vue.component('sidebar-izquierda', require('./components/reutilizable/SidebarIzquierda.vue').default);
+Vue.component('sidebar-izquierda', require('./components/reutilizable/Sidebars/SidebarIzquierda.vue').default);
+Vue.component('sidebar-cuenta', require('./components/reutilizable/Sidebars/SidebarCuenta.vue').default);
 Vue.component('paginacion', require('./components/reutilizable/Paginacion.vue').default);
 Vue.component('vue-footer', require('./components/reutilizable/VueFooter.vue').default);
 

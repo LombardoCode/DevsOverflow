@@ -73,11 +73,24 @@ Route::prefix('sin-responder')->group(function() {
 	Route::get('/', [BusquedaController::class, 'mostrar_vista_preguntas_sin_responder']);
 });
 
+Route::prefix('ajustes')->group(function() {
+	Route::prefix('cuenta')->group(function() {
+		Route::get('/', [UsuarioController::class, 'mostrar_vista_cuenta']);
+	});
+	Route::prefix('categorias')->group(function() {
+		Route::get('/', [UsuarioController::class, 'mostrar_vista_crear_categorias']);
+	});
+});
+
 /* API (web) */
 Route::prefix('api')->group(function() {
 	Route::prefix('auth')->group(function() {
 		Route::post('/register', [AuthController::class, 'registrar_usuario']);
 		Route::post('/login', [AuthController::class, 'login']);
+		Route::post('/logout', [AuthController::class, 'cerrar_sesion']);
+	});
+	Route::prefix('usuario')->group(function() {
+		Route::put('/', [UsuarioController::class, 'update']);
 	});
 	Route::prefix('pregunta')->group(function() {
 		Route::get('/{pregunta_id}', [PreguntaController::class, 'show']);

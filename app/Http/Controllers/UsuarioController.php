@@ -6,7 +6,9 @@ use App\Models\Pregunta;
 use App\Models\Respuesta;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class UsuarioController extends Controller
 {
@@ -94,5 +96,55 @@ class UsuarioController extends Controller
 			'usuarios' => $usuarios,
 			'cantidad_de_usuarios' => $cantidad_de_usuarios
 		]);
+	}
+
+	public function mostrar_vista_cuenta() {
+		// Obtenemos el usuarios
+		$usuario = Auth::user();
+		return view('auth.ajustes.cuenta.datos_usuario', [
+			'titulo' => 'Datos del usuario',
+			'usuario' => $usuario
+		]);
+	}
+
+	public function mostrar_vista_crear_categorias() {
+		// Obtenemos el usuarios
+		return view('auth.ajustes.cuenta.crear_categorias', [
+			'titulo' => 'Crear categorias'
+		]);
+	}
+
+	public function update(Request $request) {
+		// Reglas de validación de los inputs
+		$reglas = [
+			'nombre' => 'required',
+			'email' => 'required|email'
+		];
+
+		// Errores personalizados de la validación de inputs
+		$erroresPersonalizados = [
+			'nombre.required' => 'El nombre es obligatoria',
+			'email.required' => 'El email es obligatorio.',
+			'email.email' => 'El formato del email no es correcto.',
+		];
+
+		// Validamos el formulario
+		$validaciones = Validator::make($request->all(), $reglas, $erroresPersonalizados);
+
+		// Si la validación de los inputs falla...
+		if ($validaciones->fails()) {
+			return redirect()->back()->withErrors($validaciones)->withInput();
+		} else { // Si no falla...
+			// Buscamos y editamos los datos del usuario
+			$usuario = User::find(Auth::user()->id);
+			$usuario->name = $request['nombre'];
+			$usuario->email = $request['email'];
+			$usuario->description = $request['bio'];
+
+			// Redireccionamos al usuario hacia los ajustes de cuenta
+			if ($usuario->save()) {
+				return redirect()->back()->withSuccess('Los datos fueron editados satisfactoriamente.');
+			}
+		}
 	}
 }
