@@ -31,13 +31,12 @@
 						<div class="flex justify-end mt-3">
 							<form @submit.prevent="crearRespuesta()">
 								<input type="hidden" name="_token" :value="csrf">
-								<input type="submit" class="bg-blue-600 px-5 py-3 text-white rounded-md hover:bg-blue-800 transition-all duration-100 outline-none text-base" value="Enviar respuesta">
+								<input type="submit" class="bg-blue-600 px-5 py-3 text-white rounded-md hover:bg-blue-800 transition-all duration-100 outline-none text-base cursor-pointer" value="Enviar respuesta">
 							</form>
 						</div>
 						<h1 class="text-lg mt-7 mb-3">Respuesta(s)</h1>
 						<div id="respuestas">
 							<div class="respuesta mb-14" v-for="(respuesta, index) in respuestas" :key="index">
-
 								<div class="contenido-respuesta">
 									<div class="flex">
 										<div id="votos" class="flex items-center flex-col pr-4">
@@ -61,26 +60,29 @@
 										</div>
 									</div>
 								</div>
-
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<modal-invitacion-registro v-if="modal.mostrar" @cerrarModal="cerrarModal()"></modal-invitacion-registro>
 	</div>
 </template>
 
 <script>
 import { VueEditor } from "vue2-editor";
+import ModalInvitacionRegistro from './Modals/ModalnvitacionRegistro.vue';
 
 export default {
 	props: {
+		usuario: Object,
 		csrf: String,
 		pregunta_id: {}
 	},
 	components: {
-    VueEditor
+    VueEditor,
+		ModalInvitacionRegistro
   },
 	data() {
 		return {
@@ -91,7 +93,15 @@ export default {
 				num_votos_negativos: null,
 				ha_votado: null
 			},
-			respuesta_contenido_html: null
+			respuesta_contenido_html: null,
+			modal: {
+				mostrar: false,
+				datos: {
+					id: null,
+					titulo: null,
+					cuerpo: null
+				},
+			}
 		}
 	},
 	mounted() {
@@ -117,50 +127,69 @@ export default {
 			})
 		},
 		votarPregunta(accion) {
-			let data = new FormData();
-			data.append('pregunta_id', this.pregunta.id);
-			data.append('accion', accion);
-			data.append('tipo', 'pregunta');
-			axios.post(`/api/pregunta/votar`, data)
-			.then(res => {
-				this.pregunta.ha_votado = res.data.ha_votado;
-				this.votacion.ha_votado = res.data.ha_votado;
-				this.votacion.num_votos_positivos = res.data.votos_positivos;
-				this.votacion.num_votos_negativos = res.data.votos_negativos;
-			})
-			.catch(err => {
-				console.log(err);
-			})
+			if (this.usuario.id) {
+
+				let data = new FormData();
+				data.append('pregunta_id', this.pregunta.id);
+				data.append('accion', accion);
+				data.append('tipo', 'pregunta');
+				axios.post(`/api/pregunta/votar`, data)
+				.then(res => {
+					this.pregunta.ha_votado = res.data.ha_votado;
+					this.votacion.ha_votado = res.data.ha_votado;
+					this.votacion.num_votos_positivos = res.data.votos_positivos;
+					this.votacion.num_votos_negativos = res.data.votos_negativos;
+				})
+				.catch(err => {
+					console.log(err);
+				})
+			} else {
+				this.abrirModal();
+			}
 		},
 		votarRespuesta(accion, respuesta) {
-			let data = new FormData();
-			data.append('respuesta_id', respuesta.id);
-			data.append('accion', accion);
-			data.append('tipo', 'respuesta');
-			axios.post(`/api/respuesta/votar`, data)
-			.then(res => {
-				console.log(res.data);
-				respuesta.ha_votado = res.data.ha_votado;
-				respuesta.votos_positivos = res.data.votos_positivos;
-				respuesta.votos_negativos = res.data.votos_negativos;
-			})
-			.catch(err => {
-				console.log(err);
-			})
+			if (this.usuario.id) {
+				let data = new FormData();
+				data.append('respuesta_id', respuesta.id);
+				data.append('accion', accion);
+				data.append('tipo', 'respuesta');
+				axios.post(`/api/respuesta/votar`, data)
+				.then(res => {
+					console.log(res.data);
+					respuesta.ha_votado = res.data.ha_votado;
+					respuesta.votos_positivos = res.data.votos_positivos;
+					respuesta.votos_negativos = res.data.votos_negativos;
+				})
+				.catch(err => {
+					console.log(err);
+				})
+			} else {
+				this.abrirModal();
+			}
 		},
 		crearRespuesta() {
-			let datos = new FormData();
-			datos.append('pregunta_id', this.pregunta_id);
-			datos.append('contenido_html', this.respuesta_contenido_html);
-			axios.post('/api/respuesta', datos)
-			.then(res => {
-				//console.log(res.data);
-				this.respuestas.push(res.data.respuesta);
-			})
-			.catch(err => {
-				console.log(err);
-			})
+			if (this.usuario.id) {
+				let datos = new FormData();
+				datos.append('pregunta_id', this.pregunta_id);
+				datos.append('contenido_html', this.respuesta_contenido_html);
+				axios.post('/api/respuesta', datos)
+				.then(res => {
+					//console.log(res.data);
+					this.respuestas.push(res.data.respuesta);
+				})
+				.catch(err => {
+					console.log(err);
+				})
+			} else {
+				this.abrirModal();
+			}
 		},
+		abrirModal() {
+			this.modal.mostrar = true;
+		},
+		cerrarModal() {
+			this.modal.mostrar = false;
+		}
 	}
 }
 </script>
