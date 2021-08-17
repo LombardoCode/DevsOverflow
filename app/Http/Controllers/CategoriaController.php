@@ -10,12 +10,35 @@ use App\Models\User;
 use App\Models\VotoPregunta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class CategoriaController extends Controller
 {
 	public function mostrar_vista_categorias() {
 		return view('mostrar_categorias', [
+			'titulo' => 'Crear nueva categoría'
+		]);
+	}
+
+	public function mostrar_vista_crear_categorias() {
+		return view('auth.ajustes.categorias.crear_categoria', [
+			'titulo' => 'Crear nueva categoría'
+		]);
+	}
+
+	public function mostrar_vista_mostrar_categorias() {
+		// Obtenemos el usuarios
+		return view('auth.ajustes.categorias.mostrar_categorias', [
 			'titulo' => 'Categorias'
+		]);
+	}
+
+	public function mostrar_vista_editar_categoria($categoria_id) {
+		// Obtenemos la categoría
+		$categoria = Categoria::find($categoria_id);
+		return view('auth.ajustes.categorias.editar_categoria', [
+			'titulo' => 'Categorias',
+			'categoria' => $categoria
 		]);
 	}
 
@@ -44,7 +67,7 @@ class CategoriaController extends Controller
 		}
 	}
 
-	public function all(Request $request) {
+	public function obtener_categorias(Request $request) {
 		$query = $request['query'];
 		$itemsMaxPorPag = $request['itemsMaxPorPag'];
 		$offset = ((($request['pagina'] + 1) - 1) * $itemsMaxPorPag);
@@ -70,11 +93,85 @@ class CategoriaController extends Controller
 		]);
 	}
 
+	public function store(Request $request) {
+		// Reglas de validación de los inputs
+		$reglas = [
+			'nombre_categoria' => 'required',
+			'descripcion_categoria' => 'required'
+		];
+
+		// Errores personalizados de la validación de inputs
+		$erroresPersonalizados = [
+			'nombre_categoria.required' => 'El nombre es obligatorio',
+			'descripcion_categoria.required' => 'La descripción es obligatoria'
+		];
+
+		// Validamos el formulario
+		$validaciones = Validator::make($request->all(), $reglas, $erroresPersonalizados);
+
+		// Si la validación de los inputs falla...
+		if ($validaciones->fails()) {
+			return redirect()->back()->withErrors($validaciones)->withInput();
+		} else {
+			// Rellenamos los datos de la categoría
+			$categoria = new Categoria();
+			$categoria->categoria = $request['nombre_categoria'];
+			$categoria->descripcion = $request['descripcion_categoria'];
+			if ($categoria->save()) {
+				return redirect()->back()->withSuccess('La categoría se ha creado satisfactoriamente.');
+			}
+		}
+	}
+
 	public function show($nombre_categoria) {
 		$busqueda = Categoria::where('categoria', 'LIKE', '%'.$nombre_categoria.'%')->get();
 		return response()->json([
 			'busqueda' => $busqueda
 		]);
+	}
+
+	public function delete($id) {
+		$categoria = Categoria::find($id);
+
+		if ($categoria->delete()) {
+			return response()->json([
+				'status' => true
+			]);
+		} else {
+			return response()->json([
+				'status' => false
+			]);
+		}
+	}
+
+	public function update(Request $request, $id) {
+		// Reglas de validación de los inputs
+		$reglas = [
+			'nombre_categoria' => 'required',
+			'descripcion_categoria' => 'required'
+		];
+
+		// Errores personalizados de la validación de inputs
+		$erroresPersonalizados = [
+			'nombre_categoria.required' => 'El nombre es obligatorio',
+			'descripcion_categoria.required' => 'La descripción es obligatoria'
+		];
+
+		// Validamos el formulario
+		$validaciones = Validator::make($request->all(), $reglas, $erroresPersonalizados);
+
+		// Si la validación de los inputs falla...
+		if ($validaciones->fails()) {
+			return redirect()->back()->withErrors($validaciones)->withInput();
+		} else {
+			// Actializamos los datos de la categoría
+			$categoria = Categoria::find($id);
+			$categoria->categoria = $request['nombre_categoria'];
+			$categoria->descripcion = $request['descripcion_categoria'];
+			if ($categoria->save()) {
+				return redirect()->back()->withSuccess('Los datos de la sucursal fueron editados satisfactoriamente.');
+			}
+		}
 	}
 
 	public function realizar_busqueda(Request $request) {

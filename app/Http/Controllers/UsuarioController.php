@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
 use App\Models\Pregunta;
 use App\Models\Respuesta;
 use App\Models\User;
@@ -104,13 +105,6 @@ class UsuarioController extends Controller
 		return view('auth.ajustes.cuenta.datos_usuario', [
 			'titulo' => 'Datos del usuario',
 			'usuario' => $usuario
-		]);
-	}
-
-	public function mostrar_vista_crear_categorias() {
-		// Obtenemos el usuarios
-		return view('auth.ajustes.cuenta.crear_categorias', [
-			'titulo' => 'Crear categorias'
 		]);
 	}
 

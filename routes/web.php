@@ -78,7 +78,11 @@ Route::prefix('ajustes')->group(function() {
 		Route::get('/', [UsuarioController::class, 'mostrar_vista_cuenta']);
 	});
 	Route::prefix('categorias')->group(function() {
-		Route::get('/', [UsuarioController::class, 'mostrar_vista_crear_categorias']);
+		Route::get('/', [CategoriaController::class, 'mostrar_vista_mostrar_categorias']);
+		Route::prefix('crear')->group(function() {
+			Route::get('/', [CategoriaController::class, 'mostrar_vista_crear_categorias']);
+		});
+		Route::get('/{categoria_id}', [CategoriaController::class, 'mostrar_vista_editar_categoria']);
 	});
 });
 
@@ -119,7 +123,10 @@ Route::prefix('api')->group(function() {
 	});
 	Route::prefix('categoria')->group(function() {
 		Route::get('/{nombre_categoria}', [CategoriaController::class, 'show']);
-		Route::post('/', [CategoriaController::class, 'all']);
+		Route::post('/obtener_categorias', [CategoriaController::class, 'obtener_categorias']);
+		Route::post('/', [CategoriaController::class, 'store']);
+		Route::delete('/{categoria_id}', [CategoriaController::class, 'delete']);
+		Route::put('/{categoria_id}', [CategoriaController::class, 'update']);
 	});
 	Route::prefix('notificaciones')->group(function() {
 		Route::get('/', [NotificacionController::class, 'all']);

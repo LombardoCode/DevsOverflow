@@ -42,7 +42,7 @@ export default {
 	},
 	methods: {
 		obtenerCategorias() {
-			axios.post('/api/categoria', this.paginacion)
+			axios.post('/api/categoria/obtener_categorias', this.paginacion)
 			.then(res => {
 				console.log(res.data);
 				if (res.data.status) {
