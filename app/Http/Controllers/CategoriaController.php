@@ -124,7 +124,9 @@ class CategoriaController extends Controller
 	}
 
 	public function show($nombre_categoria) {
-		$busqueda = Categoria::where('categoria', 'LIKE', '%'.$nombre_categoria.'%')->get();
+		$busqueda = Categoria::where('categoria', 'LIKE', '%'.$nombre_categoria.'%')
+		->limit(5)
+		->get();
 		return response()->json([
 			'busqueda' => $busqueda
 		]);
