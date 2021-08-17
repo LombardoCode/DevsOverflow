@@ -158,7 +158,9 @@ class PreguntaController extends Controller
 			}
 
 			// Obtenemos los comentario de la pregunta
-			$respuestas = Respuesta::where('pregunta_id', '=', $pregunta->id)->get();
+			$respuestas = Respuesta::where('pregunta_id', '=', $pregunta->id)
+			->orderBy('created_at', 'DESC')
+			->get();
 
 			// Recorremos las respuestas
 			for ($i=0; $i < count($respuestas); $i++) {

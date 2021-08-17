@@ -11,8 +11,9 @@
 					<div id="descripcion" class="flex">
 						<div id="votos" class="flex items-center flex-col pr-4">
 							<button class="bg-gray-400 text-white px-4 py-2 rounded" :class="{'bg-blue-600': pregunta.ha_votado == 1}" @click="votarPregunta('positivo')">+</button>
-							<span>{{ votacion.num_votos_positivos - votacion.num_votos_negativos }}</span>
+							<span>{{ votacion.num_votos_positivos }}</span>
 							<button class="bg-gray-400 text-white px-4 py-2 rounded" :class="{'bg-red-600': pregunta.ha_votado == -1}" @click="votarPregunta('negativo')">-</button>
+							<span>{{ votacion.num_votos_negativos }}</span>
 						</div>
 						<div id="descripcion-pregunta" class="pl-4">
 							<p v-html="pregunta.contenido_html"></p>
@@ -43,8 +44,7 @@
 											<button class="bg-gray-400 text-white px-4 py-2 rounded" :class="{'bg-blue-600': respuesta.ha_votado == 1}" @click="votarRespuesta('positivo', respuesta)">+</button>
 											<span>{{ respuesta.votos_positivos }}</span>
 											<button class="bg-gray-400 text-white px-4 py-2 rounded" :class="{'bg-red-600': respuesta.ha_votado == -1}" @click="votarRespuesta('negativo', respuesta)">-</button>
-											<span v-if="respuesta.votos_negativos == 0">{{ respuesta.votos_negativos }}</span>
-											<span v-else>-{{ respuesta.votos_negativos }}</span>
+											<span>{{ respuesta.votos_negativos }}</span>
 										</div>
 										<div id="descripcion-respuesta" class="pl-4">
 											<p v-html="respuesta.contenido_html"></p>
@@ -128,7 +128,6 @@ export default {
 		},
 		votarPregunta(accion) {
 			if (this.usuario.id) {
-
 				let data = new FormData();
 				data.append('pregunta_id', this.pregunta.id);
 				data.append('accion', accion);
@@ -174,8 +173,8 @@ export default {
 				datos.append('contenido_html', this.respuesta_contenido_html);
 				axios.post('/api/respuesta', datos)
 				.then(res => {
-					//console.log(res.data);
-					this.respuestas.push(res.data.respuesta);
+					console.log(res.data);
+					this.respuestas.unshift(res.data.respuesta);
 				})
 				.catch(err => {
 					console.log(err);

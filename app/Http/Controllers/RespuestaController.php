@@ -42,6 +42,10 @@ class RespuestaController extends Controller
 				// Obtenemos el nombre del autor de la respuesta
 				$respuesta['autor'] = Auth::user()->name;
 
+				// Agregamos la cantidad de votos positivos y votos negativos
+				$respuesta['votos_positivos'] = 0;
+				$respuesta['votos_negativos'] = 0;
+
 				// Obtenemos los datos de la pregunta
 				$pregunta = Pregunta::find($request['pregunta_id']);
 

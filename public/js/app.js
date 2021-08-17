@@ -12716,8 +12716,9 @@ __webpack_require__.r(__webpack_exports__);
         datos.append('pregunta_id', this.pregunta_id);
         datos.append('contenido_html', this.respuesta_contenido_html);
         axios.post('/api/respuesta', datos).then(function (res) {
-          //console.log(res.data);
-          _this3.respuestas.push(res.data.respuesta);
+          console.log(res.data);
+
+          _this3.respuestas.unshift(res.data.respuesta);
         })["catch"](function (err) {
           console.log(err);
         });
@@ -70442,12 +70443,7 @@ var render = function() {
                         ),
                         _vm._v(" "),
                         _c("span", [
-                          _vm._v(
-                            _vm._s(
-                              _vm.votacion.num_votos_positivos -
-                                _vm.votacion.num_votos_negativos
-                            )
-                          )
+                          _vm._v(_vm._s(_vm.votacion.num_votos_positivos))
                         ]),
                         _vm._v(" "),
                         _c(
@@ -70465,7 +70461,11 @@ var render = function() {
                             }
                           },
                           [_vm._v("-")]
-                        )
+                        ),
+                        _vm._v(" "),
+                        _c("span", [
+                          _vm._v(_vm._s(_vm.votacion.num_votos_negativos))
+                        ])
                       ]
                     ),
                     _vm._v(" "),
@@ -70626,18 +70626,9 @@ var render = function() {
                                       [_vm._v("-")]
                                     ),
                                     _vm._v(" "),
-                                    respuesta.votos_negativos == 0
-                                      ? _c("span", [
-                                          _vm._v(
-                                            _vm._s(respuesta.votos_negativos)
-                                          )
-                                        ])
-                                      : _c("span", [
-                                          _vm._v(
-                                            "-" +
-                                              _vm._s(respuesta.votos_negativos)
-                                          )
-                                        ])
+                                    _c("span", [
+                                      _vm._v(_vm._s(respuesta.votos_negativos))
+                                    ])
                                   ]
                                 ),
                                 _vm._v(" "),
