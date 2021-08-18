@@ -12500,30 +12500,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
 _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__.library.add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__.faCheck);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      razones: ['Publicar preguntas', 'Responder preguntas', 'Votar preguntas y respuestas', '¡Y mucho más!']
+    };
+  },
   methods: {
     cerrarModal: function cerrarModal() {
       this.$emit('cerrarModal');
@@ -12858,6 +12844,17 @@ Vue.component('font-awesome-icon', _fortawesome_vue_fontawesome__WEBPACK_IMPORTE
         }
 
         console.log(_this.notificaciones);
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+    clicNotificacion: function clicNotificacion(notificacion) {
+      axios.get('/api/notificaciones/leer/' + notificacion.id).then(function (res) {
+        console.log(res.data);
+
+        if (res.data.status) {
+          window.location = res.data.url;
+        }
       })["catch"](function (err) {
         console.log(err);
       });
@@ -70161,7 +70158,7 @@ var render = function() {
             "div",
             {
               staticClass:
-                "inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+                "inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg lg:max-w-3xl sm:w-full"
             },
             [
               _c(
@@ -70226,91 +70223,51 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "mt-2 text-sm text-gray-500" },
+                          { staticClass: "grid grid-cols-12 mt-0 lg:mt-2" },
                           [
-                            _c("p", [
-                              _vm._v(
-                                "Registrate hoy mismo en DevsOverflow y podrás:"
-                              )
-                            ]),
+                            _vm._m(0),
                             _vm._v(" "),
-                            _c("ul", { staticClass: "mt-1" }, [
-                              _c("li", { staticClass: "razon flex" }, [
-                                _c(
-                                  "div",
-                                  { staticClass: "text-blue-500 mr-2" },
-                                  [
-                                    _c("font-awesome-icon", {
-                                      attrs: { icon: "check" }
-                                    })
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c("span", [
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "col-span-12 lg:col-span-8 mt-2 text-sm text-gray-500",
+                                attrs: { id: "lista-de-razones" }
+                              },
+                              [
+                                _c("p", [
                                   _vm._v(
-                                    "\n\t\t\t\t\t\t\t\t\t\tPublicar preguntas\n\t\t\t\t\t\t\t\t\t"
+                                    "Registrate hoy mismo en DevsOverflow y podrás:"
                                   )
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c("li", { staticClass: "razon flex" }, [
-                                _c(
-                                  "div",
-                                  { staticClass: "text-blue-500 mr-2" },
-                                  [
-                                    _c("font-awesome-icon", {
-                                      attrs: { icon: "check" }
-                                    })
-                                  ],
-                                  1
-                                ),
+                                ]),
                                 _vm._v(" "),
-                                _c("span", [
-                                  _vm._v(
-                                    "\n\t\t\t\t\t\t\t\t\t\tResponder preguntas\n\t\t\t\t\t\t\t\t\t"
-                                  )
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c("li", { staticClass: "razon flex" }, [
                                 _c(
-                                  "div",
-                                  { staticClass: "text-blue-500 mr-2" },
-                                  [
-                                    _c("font-awesome-icon", {
-                                      attrs: { icon: "check" }
-                                    })
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c("span", [
-                                  _vm._v(
-                                    "\n\t\t\t\t\t\t\t\t\t\tVotar preguntas y respuestas\n\t\t\t\t\t\t\t\t\t"
-                                  )
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c("li", { staticClass: "razon flex" }, [
-                                _c(
-                                  "div",
-                                  { staticClass: "text-blue-500 mr-2" },
-                                  [
-                                    _c("font-awesome-icon", {
-                                      attrs: { icon: "check" }
-                                    })
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c("span", [
-                                  _vm._v(
-                                    "\n\t\t\t\t\t\t\t\t\t\t¡Y mucho más!\n\t\t\t\t\t\t\t\t\t"
-                                  )
-                                ])
-                              ])
-                            ])
+                                  "ul",
+                                  { staticClass: "mt-1" },
+                                  _vm._l(_vm.razones, function(razon, index) {
+                                    return _c(
+                                      "li",
+                                      { key: index, staticClass: "razon flex" },
+                                      [
+                                        _c(
+                                          "div",
+                                          { staticClass: "text-blue-500 mr-2" },
+                                          [
+                                            _c("font-awesome-icon", {
+                                              attrs: { icon: "check" }
+                                            })
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c("span", [_vm._v(_vm._s(razon))])
+                                      ]
+                                    )
+                                  }),
+                                  0
+                                )
+                              ]
+                            )
                           ]
                         )
                       ]
@@ -70359,7 +70316,18 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "hidden lg:block lg:col-span-4" }, [
+      _c("img", {
+        attrs: { src: "/imagenes/invitacion_registro.png", alt: "" }
+      })
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -70827,24 +70795,30 @@ var render = function() {
                             "div",
                             { staticClass: "relative" },
                             [
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "absolute text-xs bg-blue-600 text-white font-bold rounded-full",
-                                  staticStyle: {
-                                    padding: "2px 4px",
-                                    top: "-20%",
-                                    left: "70%"
-                                  },
-                                  attrs: { id: "contador-de-notificaciones" }
-                                },
-                                [
-                                  _vm._v(
-                                    _vm._s(_vm.notificaciones.cantidad_no_leida)
+                              _vm.notificaciones.cantidad_no_leida > 0
+                                ? _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "absolute text-xs bg-blue-600 text-white font-bold rounded-full",
+                                      staticStyle: {
+                                        padding: "2px 4px",
+                                        top: "-20%",
+                                        left: "70%"
+                                      },
+                                      attrs: {
+                                        id: "contador-de-notificaciones"
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.notificaciones.cantidad_no_leida
+                                        )
+                                      )
+                                    ]
                                   )
-                                ]
-                              ),
+                                : _vm._e(),
                               _vm._v(" "),
                               _c("font-awesome-icon", {
                                 staticClass:
@@ -70860,7 +70834,7 @@ var render = function() {
                                 "div",
                                 {
                                   staticClass:
-                                    "absolute bg-azul-100 w-96 max-h-72 overflow-hidden overflow-y-scroll text-sm text-black border-l-2 border-r-2 border-gray-400",
+                                    "absolute bg-white w-96 max-h-72 overflow-hidden overflow-y-scroll text-sm text-black border-l-2 border-r-2 border-gray-400",
                                   staticStyle: { right: "0%", top: "53px" },
                                   attrs: { id: "notificaciones-lista" }
                                 },
@@ -70873,12 +70847,25 @@ var render = function() {
                                     {
                                       key: index,
                                       staticClass:
-                                        "py-3 px-2 hover:bg-blue-300 border-b-2 border-gray-400 transition-all duration-100"
+                                        "py-3 px-2 border-b-2 border-gray-400 transition-all duration-100",
+                                      class: {
+                                        "bg-blue-200 hover:bg-blue-300": !notificacion.visto,
+                                        "bg-white hover:bg-gray-300":
+                                          notificacion.visto
+                                      }
                                     },
                                     [
                                       _c(
                                         "a",
-                                        { attrs: { href: notificacion.url } },
+                                        {
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.clicNotificacion(
+                                                notificacion
+                                              )
+                                            }
+                                          }
+                                        },
                                         [
                                           _c(
                                             "p",

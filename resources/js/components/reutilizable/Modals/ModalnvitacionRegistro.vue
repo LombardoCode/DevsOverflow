@@ -3,7 +3,7 @@
 		<div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 			<div class="fixed inset-0 bg-black bg-opacity-75 transition-opacity" aria-hidden="true" @click="cerrarModal()"></div>
 			<span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-			<div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+			<div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg lg:max-w-3xl sm:w-full">
 				<div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
 					<div class="sm:flex sm:items-start">
 						<div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
@@ -15,42 +15,23 @@
 							<h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
 								Parece que no estás registrado...
 							</h3>
-							<div class="mt-2 text-sm text-gray-500">
-								<p>Registrate hoy mismo en DevsOverflow y podrás:</p>
-								<ul class="mt-1">
-									<li class="razon flex">
-										<div class="text-blue-500 mr-2">
-											<font-awesome-icon icon="check"/>
-										</div>
-										<span>
-											Publicar preguntas
-										</span>
-									</li>
-									<li class="razon flex">
-										<div class="text-blue-500 mr-2">
-											<font-awesome-icon icon="check"/>
-										</div>
-										<span>
-											Responder preguntas
-										</span>
-									</li>
-									<li class="razon flex">
-										<div class="text-blue-500 mr-2">
-											<font-awesome-icon icon="check"/>
-										</div>
-										<span>
-											Votar preguntas y respuestas
-										</span>
-									</li>
-									<li class="razon flex">
-										<div class="text-blue-500 mr-2">
-											<font-awesome-icon icon="check"/>
-										</div>
-										<span>
-											¡Y mucho más!
-										</span>
-									</li>
-								</ul>
+							<div class="grid grid-cols-12 mt-0 lg:mt-2">
+								<div class="hidden lg:block lg:col-span-4">
+									<img src="/imagenes/invitacion_registro.png" alt="">
+								</div>
+
+								<div id="lista-de-razones" class="col-span-12 lg:col-span-8 mt-2 text-sm text-gray-500">
+									<p>Registrate hoy mismo en DevsOverflow y podrás:</p>
+									<ul class="mt-1">
+										<li v-for="(razon, index) in razones" :key="index" class="razon flex">
+											<div class="text-blue-500 mr-2">
+												<font-awesome-icon icon="check"/>
+											</div>
+											<span>{{ razon }}</span>
+										</li>
+									</ul>
+								</div>
+
 							</div>
 						</div>
 					</div>
@@ -75,6 +56,11 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(faCheck)
 export default {
+	data() {
+		return {
+			razones: ['Publicar preguntas', 'Responder preguntas', 'Votar preguntas y respuestas', '¡Y mucho más!']
+		}
+	},
 	methods: {
 		cerrarModal() {
 			this.$emit('cerrarModal')

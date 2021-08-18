@@ -130,5 +130,8 @@ Route::prefix('api')->group(function() {
 	});
 	Route::prefix('notificaciones')->group(function() {
 		Route::get('/', [NotificacionController::class, 'all']);
+		Route::prefix('leer')->group(function() {
+			Route::get('/{notificacion_id}', [NotificacionController::class, 'leer_notificacion']);
+		});
 	});
 });

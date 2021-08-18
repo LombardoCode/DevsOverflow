@@ -20,12 +20,12 @@
 					<div id="notificaciones-contenedor" class="select-none">
 						<div id="campana-notificacion" class="relative text-xl mr-2 text-gray-500 cursor-pointer px-3 py-3" @click="notificaciones.mostrar = !notificaciones.mostrar">
 							<div class="relative">
-								<div id="contador-de-notificaciones" class="absolute text-xs bg-blue-600 text-white font-bold rounded-full" style="padding: 2px 4px; top: -20%; left: 70%;">{{notificaciones.cantidad_no_leida}}</div>
+								<div v-if="notificaciones.cantidad_no_leida > 0" id="contador-de-notificaciones" class="absolute text-xs bg-blue-600 text-white font-bold rounded-full" style="padding: 2px 4px; top: -20%; left: 70%;">{{notificaciones.cantidad_no_leida}}</div>
 								<font-awesome-icon icon="bell" class="hover:text-blue-800 transition-all duration-100" />
 							</div>
-							<div id="notificaciones-lista" class="absolute bg-azul-100 w-96 max-h-72 overflow-hidden overflow-y-scroll text-sm text-black border-l-2 border-r-2 border-gray-400" style="right: 0%; top: 53px;" v-if="notificaciones.mostrar">
-								<div v-for="(notificacion, index) in notificaciones.datos" :key="index" class="py-3 px-2 hover:bg-blue-300 border-b-2 border-gray-400 transition-all duration-100">
-									<a :href="notificacion.url">
+							<div id="notificaciones-lista" class="absolute bg-white w-96 max-h-72 overflow-hidden overflow-y-scroll text-sm text-black border-l-2 border-r-2 border-gray-400" style="right: 0%; top: 53px;" v-if="notificaciones.mostrar">
+								<div v-for="(notificacion, index) in notificaciones.datos" :key="index" class="py-3 px-2 border-b-2 border-gray-400 transition-all duration-100" :class="{'bg-blue-200 hover:bg-blue-300' : !notificacion.visto, 'bg-white hover:bg-gray-300': notificacion.visto}">
+									<a @click="clicNotificacion(notificacion)">
 										<p class="font-bold">{{notificacion.mensaje}}</p>
 										<p>{{notificacion.cuerpo}}</p>
 									</a>
@@ -106,6 +106,18 @@ export default {
 				}
 
 				console.log(this.notificaciones);
+			})
+			.catch(err => {
+				console.log(err);
+			})
+		},
+		clicNotificacion(notificacion) {
+			axios.get('/api/notificaciones/leer/' + notificacion.id)
+			.then(res => {
+				console.log(res.data);
+				if (res.data.status) {
+					window.location = res.data.url;
+				}
 			})
 			.catch(err => {
 				console.log(err);
