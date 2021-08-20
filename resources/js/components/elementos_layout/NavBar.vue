@@ -64,7 +64,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 library.add(faBell, faCaretDown)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-import VueInput from './VueInput.vue';
+import VueInput from '../elementos_html/VueInput.vue';
 export default {
 	props: {
 		usuario: Object

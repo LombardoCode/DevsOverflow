@@ -3,7 +3,12 @@
 @section('contenido-principal')
 	<div id="contenido">
 		<div class="container mx-auto text-sm flex h-screen">
-			<mostrar-preguntas-sin-responder></mostrar-preguntas-sin-responder>
+			<listado-preguntas
+				query="{{ null }}"
+				:sin_responder="true"
+				categoria="{{ null }}"
+			>
+			</listado-preguntas>
 		</div>
 	</div>
 @stop

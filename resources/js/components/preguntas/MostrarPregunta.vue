@@ -71,7 +71,7 @@
 
 <script>
 import { VueEditor } from "vue2-editor";
-import ModalInvitacionRegistro from './Modals/ModalnvitacionRegistro.vue';
+import ModalInvitacionRegistro from '../modals/ModalInvitacionRegistro.vue';
 
 export default {
 	props: {
