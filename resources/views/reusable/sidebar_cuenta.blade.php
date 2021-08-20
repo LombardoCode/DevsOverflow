@@ -1,10 +1,10 @@
 <div id="secciones" style="min-width: 180px" class="hidden md:block px-2 py-8 text-xs text-gray-700">
-	<div class="fixed bg-red-300">
+	<div class="fixed">
 		<nav>
 			<ul>
 				<div class="categoria mb-6">
 					<p class="uppercase mb-3">Cuenta</p>
-					<li class="mb-3 ml-3"><a href="/ajustes/mis-datos">Datos personales</a></li>
+					<li class="mb-3 ml-3"><a href="/ajustes/cuenta">Datos personales</a></li>
 				</div>
 				@role('administrador')
 					<div class="categoria">

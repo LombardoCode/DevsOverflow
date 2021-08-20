@@ -27,25 +27,21 @@ Vue.component('vue-input', require('./components/reutilizable/VueInput.vue').def
 Vue.component('vue-textarea', require('./components/reutilizable/VueTextarea.vue').default);
 Vue.component('vue-input-submit', require('./components/reutilizable/VueInputSubmit.vue').default);
 Vue.component('vue-anchor-button', require('./components/reutilizable/VueAnchorButton.vue').default);
-Vue.component('seccion-preguntas', require('./components/reutilizable/SeccionPreguntas.vue').default);
+Vue.component('listado-preguntas', require('./components/reutilizable/ListadoPreguntas.vue').default);
 Vue.component('mostrar-pregunta', require('./components/reutilizable/MostrarPregunta.vue').default);
 Vue.component('sidebar-izquierda', require('./components/reutilizable/Sidebars/SidebarIzquierda.vue').default);
 Vue.component('sidebar-cuenta', require('./components/reutilizable/Sidebars/SidebarCuenta.vue').default);
 Vue.component('paginacion', require('./components/reutilizable/Paginacion.vue').default);
 Vue.component('vue-footer', require('./components/reutilizable/VueFooter.vue').default);
 Vue.component('modal-eliminar', require('./components/reutilizable/Modals/ModalEliminar.vue').default);
+Vue.component('pregunta-en-lista', require('./components/reutilizable/PreguntaEnLista.vue').default);
 
 
-Vue.component('administrar-categorias', require('./components/auth/admin/AdministrarCategorias.vue').default);
 Vue.component('crear-pregunta', require('./components/auth/CrearPregunta.vue').default);
 Vue.component('mostrar-usuarios', require('./components/usuarios/MostrarUsuarios.vue').default);
 Vue.component('mostrar-categorias', require('./components/categorias/MostrarCategorias.vue').default);
 Vue.component('mostrar-preguntas-categoria', require('./components/categorias/MostrarPreguntasCategoria.vue').default);
 Vue.component('mostrar-preguntas-sin-responder', require('./components/sinresponder/MostrarPreguntasSinResponder.vue').default);
-
-
-
-
 
 
 /**

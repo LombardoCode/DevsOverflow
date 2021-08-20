@@ -1,22 +1,7 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="csrf-token" content="{{ csrf_token() }}">
-		<title>{{$titulo}}</title>
-		<!-- Fonts -->
-		<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-		<!-- Styles -->
-		<link href="{{ asset('css/app.css') }}" rel="stylesheet">
-	</head>
-	<body>
-		<div id="app">
-			<div id="contenido" class="text-sm">
-				<navbar :usuario="{{ Auth::check() ? Auth::user() : "{}" }}"></navbar>
-        <mostrar-pregunta csrf="{{ csrf_token() }}" pregunta_id="{{ $pregunta_id }}" :usuario="{{ Auth::check() ? Auth::user() : "{}" }}"></mostrar-pregunta>
-			</div>
-		</div>
-		<script src="{{ asset('/js/app.js') }}"></script>
-	</body>
-</html>
+@extends('layouts.main')
+
+@section('contenido-principal')
+	<div id="contenido" class="text-sm">
+		<mostrar-pregunta csrf="{{ csrf_token() }}" pregunta_id="{{ $pregunta_id }}" :usuario="{{ Auth::check() ? Auth::user() : "{}" }}"></mostrar-pregunta>
+	</div>
+@stop

@@ -2,15 +2,31 @@
 	<div>
 		<div id="categorias">
 			<div class="flex items-center justify-between">
-				<h5 class="font-bold text-2xl my-6">Categorías</h5>
+				<h5 class="font-bold text-2xl my-6">{{ titulo }}</h5>
 				<vue-input class="max-w-md" v-model="paginacion.query" @input="busquedaEscrita()" placeholder="Buscar una categoria..."></vue-input>
+				<a href="/ajustes/categorias/crear" class="font-bold bg-blue-600 hover:bg-blue-700 transition duration-100 text-white px-3 py-2 rounded-md flex items-center">
+					<div class="text-lg mr-2">
+						<font-awesome-icon icon="plus"/>
+					</div>
+					<span>Crear categoría</span>
+				</a>
 			</div>
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-				<div v-for="(categoria, index) in categorias" :key="index" class="usuario bg-azul-100 hover:bg-blue-200 px-3 py-4 rounded">
-					<a :href="`/categorias/${categoria.categoria}`">
-						<p class="ml-3 text-base mb-1 font-bold">{{categoria.categoria}}</p>
-						<p class="ml-3 text-xs italic">{{categoria.descripcion}}</p>
-					</a>
+				<div v-for="(categoria, index) in categorias" :key="index" class="usuario bg-azul-100 hover:bg-blue-200 px-3 py-4 rounded flex justify-between items-center">
+					<div class="flex items-center justify-between w-full">
+						<a :href="`/categorias/${categoria.categoria}`">
+							<p class="ml-3 text-base mb-1 font-bold">{{categoria.categoria}}</p>
+							<p class="ml-3 text-xs italic">{{categoria.descripcion}}</p>
+						</a>
+						<div class="opciones ml-3 flex">
+							<a :href="`/ajustes/categorias/${categoria.id}`" class="px-2 py-1 text-lg bg-blue-500 rounded text-white mr-1">
+								<font-awesome-icon icon="edit"/>
+							</a>
+							<div class="px-2 py-1 text-lg bg-red-500 rounded text-white cursor-pointer" @click="abrirModal(categoria, index)">
+								<font-awesome-icon icon="trash-alt"/>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<paginacion
@@ -20,11 +36,21 @@
 				v-on:datosDesdePaginacion="desdePaginacion">
 			</paginacion>
 		</div>
+		<modal-eliminar v-if="modal.mostrar" :datos="modal.datos" :API_URL="`/api/categoria/${modal.datos.id}`" @cerrarModal="cerrarModal()" @indexRecursoEliminado="indexRecursoEliminado"></modal-eliminar>
 	</div>
 </template>
 
 <script>
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faEdit, faTrashAlt, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+library.add(faEdit, faTrashAlt, faPlus)
+
 export default {
+	props: {
+		titulo: String
+	},
 	data() {
 		return {
 			categorias: [],
@@ -34,6 +60,14 @@ export default {
 				pagina: 0,
 				itemsMaxPorPag: 30,
 				totalItems: 0
+			},
+			modal: {
+				mostrar: false,
+				datos: {
+					id: null,
+					titulo: null,
+					cuerpo: null
+				},
 			}
 		}
 	},
@@ -69,6 +103,33 @@ export default {
 			this.paginacion.filtro = filtro;
 			this.obtenerCategorias();
 		},
+		abrirModal(datos, index) {
+			console.log(datos);
+			this.modal = {
+				mostrar: true,
+				datos: {
+					id: datos.id,
+					index,
+					titulo: 'Eliminar categoría',
+					cuerpo: '¿Desea eliminar la categoría?',
+				}
+			}
+		},
+		cerrarModal() {
+			this.modal = {
+				mostrar: false,
+				datos: {
+					id: null,
+					index: null,
+					titulo: null,
+					cuerpo: null
+				}
+			}
+		},
+		indexRecursoEliminado(index_recurso) {
+			// Eliminamos localmente la categoría deseada
+			this.categorias.splice(index_recurso, 1);
+		}
 	}
 }
 </script>

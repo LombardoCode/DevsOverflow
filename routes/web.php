@@ -49,7 +49,7 @@ Route::prefix('busqueda')->group(function() {
 
 Route::prefix('pregunta')->group(function() {
 	// Ruta protegida
-	Route::group(['middleware' => 'api'], function() {
+	Route::group(['middleware' => 'auth'], function() {
 		// Vista para que los usuarios autenticados puedan crear preguntas
 		Route::get('/crear', [PreguntaController::class, 'mostrar_vista_crear_pregunta']);
 	});
@@ -73,16 +73,18 @@ Route::prefix('sin-responder')->group(function() {
 	Route::get('/', [BusquedaController::class, 'mostrar_vista_preguntas_sin_responder']);
 });
 
-Route::prefix('ajustes')->group(function() {
-	Route::prefix('cuenta')->group(function() {
-		Route::get('/', [UsuarioController::class, 'mostrar_vista_cuenta']);
-	});
-	Route::prefix('categorias')->group(function() {
-		Route::get('/', [CategoriaController::class, 'mostrar_vista_mostrar_categorias']);
-		Route::prefix('crear')->group(function() {
-			Route::get('/', [CategoriaController::class, 'mostrar_vista_crear_categorias']);
+Route::group(['middleware' => 'auth'], function() {
+	Route::prefix('ajustes')->group(function() {
+		Route::prefix('cuenta')->group(function() {
+			Route::get('/', [UsuarioController::class, 'mostrar_vista_cuenta']);
 		});
-		Route::get('/{categoria_id}', [CategoriaController::class, 'mostrar_vista_editar_categoria']);
+		Route::prefix('categorias')->group(function() {
+			Route::get('/', [CategoriaController::class, 'mostrar_vista_mostrar_categorias']);
+			Route::prefix('crear')->group(function() {
+				Route::get('/', [CategoriaController::class, 'mostrar_vista_crear_categorias']);
+			});
+			Route::get('/{categoria_id}', [CategoriaController::class, 'mostrar_vista_editar_categoria']);
+		});
 	});
 });
 

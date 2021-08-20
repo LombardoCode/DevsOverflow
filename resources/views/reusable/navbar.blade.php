@@ -1,1 +1,1 @@
-<navbar nombre_usuario="{{ Auth::check() ? Auth::user()->name : '' }}"></navbar>
+<navbar :usuario="{{ Auth::check() ? Auth::user() : "{}" }}"></navbar>
