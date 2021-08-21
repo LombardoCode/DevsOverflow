@@ -12071,7 +12071,9 @@ __webpack_require__.r(__webpack_exports__);
 _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__.library.add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__.faEdit, _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__.faTrashAlt, _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__.faPlus);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    titulo: String
+    titulo: String,
+    roles: [],
+    permisos: []
   },
   data: function data() {
     return {
@@ -12261,9 +12263,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fortawesome/fontawesome-svg-core */ "./node_modules/@fortawesome/fontawesome-svg-core/index.es.js");
-/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
 /* harmony import */ var _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fortawesome/vue-fontawesome */ "./node_modules/@fortawesome/vue-fontawesome/index.es.js");
-/* harmony import */ var _elementos_html_VueInput_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../elementos_html/VueInput.vue */ "./resources/js/components/elementos_html/VueInput.vue");
+/* harmony import */ var vue_clickaway__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-clickaway */ "./node_modules/vue-clickaway/dist/vue-clickaway.common.js");
+/* harmony import */ var _elementos_html_VueInput_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../elementos_html/VueInput.vue */ "./resources/js/components/elementos_html/VueInput.vue");
 //
 //
 //
@@ -12325,15 +12328,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__.library.add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__.faBell, _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__.faCaretDown);
+
+_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__.library.add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_3__.faBell, _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_3__.faCaretDown);
 Vue.component('font-awesome-icon', _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_1__.FontAwesomeIcon);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mixins: [vue_clickaway__WEBPACK_IMPORTED_MODULE_2__.mixin],
   props: {
     usuario: Object
   },
   components: {
-    VueInput: _elementos_html_VueInput_vue__WEBPACK_IMPORTED_MODULE_3__.default
+    VueInput: _elementos_html_VueInput_vue__WEBPACK_IMPORTED_MODULE_4__.default
   },
   mounted: function mounted() {
     if (this.usuario.id) {
@@ -12384,6 +12389,11 @@ Vue.component('font-awesome-icon', _fortawesome_vue_fontawesome__WEBPACK_IMPORTE
       })["catch"](function (err) {
         console.log(err);
       });
+    },
+    cerrarMenus: function cerrarMenus() {
+      // Cerramos el menú de las notificaciones y el menú de cuenta
+      this.notificaciones.mostrar = false;
+      this.dropdown_cuenta.mostrar = false;
     }
   }
 });
@@ -13079,6 +13089,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     cantidad_votos: [String, Number],
@@ -13087,6 +13099,7 @@ __webpack_require__.r(__webpack_exports__);
     titulo_pregunta: String,
     descripcion_pregunta: String,
     fecha_de_creacion: String,
+    categorias: Array,
     autor: String
   }
 });
@@ -67456,6 +67469,99 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/vue-clickaway/dist/vue-clickaway.common.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/vue-clickaway/dist/vue-clickaway.common.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+Vue = 'default' in Vue ? Vue['default'] : Vue;
+
+var version = '2.2.2';
+
+var compatible = (/^2\./).test(Vue.version);
+if (!compatible) {
+  Vue.util.warn('VueClickaway ' + version + ' only supports Vue 2.x, and does not support Vue ' + Vue.version);
+}
+
+
+
+// @SECTION: implementation
+
+var HANDLER = '_vue_clickaway_handler';
+
+function bind(el, binding, vnode) {
+  unbind(el);
+
+  var vm = vnode.context;
+
+  var callback = binding.value;
+  if (typeof callback !== 'function') {
+    if (true) {
+      Vue.util.warn(
+        'v-' + binding.name + '="' +
+        binding.expression + '" expects a function value, ' +
+        'got ' + callback
+      );
+    }
+    return;
+  }
+
+  // @NOTE: Vue binds directives in microtasks, while UI events are dispatched
+  //        in macrotasks. This causes the listener to be set up before
+  //        the "origin" click event (the event that lead to the binding of
+  //        the directive) arrives at the document root. To work around that,
+  //        we ignore events until the end of the "initial" macrotask.
+  // @REFERENCE: https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/
+  // @REFERENCE: https://github.com/simplesmiler/vue-clickaway/issues/8
+  var initialMacrotaskEnded = false;
+  setTimeout(function() {
+    initialMacrotaskEnded = true;
+  }, 0);
+
+  el[HANDLER] = function(ev) {
+    // @NOTE: this test used to be just `el.containts`, but working with path is better,
+    //        because it tests whether the element was there at the time of
+    //        the click, not whether it is there now, that the event has arrived
+    //        to the top.
+    // @NOTE: `.path` is non-standard, the standard way is `.composedPath()`
+    var path = ev.path || (ev.composedPath ? ev.composedPath() : undefined);
+    if (initialMacrotaskEnded && (path ? path.indexOf(el) < 0 : !el.contains(ev.target))) {
+      return callback.call(vm, ev);
+    }
+  };
+
+  document.documentElement.addEventListener('click', el[HANDLER], false);
+}
+
+function unbind(el) {
+  document.documentElement.removeEventListener('click', el[HANDLER], false);
+  delete el[HANDLER];
+}
+
+var directive = {
+  bind: bind,
+  update: function(el, binding) {
+    if (binding.value === binding.oldValue) return;
+    bind(el, binding);
+  },
+  unbind: unbind,
+};
+
+var mixin = {
+  directives: { onClickaway: directive },
+};
+
+exports.version = version;
+exports.directive = directive;
+exports.mixin = mixin;
+
+/***/ }),
+
 /***/ "./resources/js/components/auth/CrearPregunta.vue":
 /*!********************************************************!*\
   !*** ./resources/js/components/auth/CrearPregunta.vue ***!
@@ -69017,41 +69123,46 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _c("div", { staticClass: "opciones ml-3 flex" }, [
-                        _c(
-                          "a",
-                          {
-                            staticClass:
-                              "px-2 py-1 text-lg bg-blue-500 rounded text-white mr-1",
-                            attrs: {
-                              href: "/ajustes/categorias/" + categoria.id
-                            }
-                          },
-                          [
-                            _c("font-awesome-icon", { attrs: { icon: "edit" } })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "px-2 py-1 text-lg bg-red-500 rounded text-white cursor-pointer",
-                            on: {
-                              click: function($event) {
-                                return _vm.abrirModal(categoria, index)
-                              }
-                            }
-                          },
-                          [
-                            _c("font-awesome-icon", {
-                              attrs: { icon: "trash-alt" }
-                            })
-                          ],
-                          1
-                        )
-                      ])
+                      _vm.roles.includes("administrador") &&
+                      _vm.permisos.includes("crear-categorias")
+                        ? _c("div", { staticClass: "opciones ml-3 flex" }, [
+                            _c(
+                              "a",
+                              {
+                                staticClass:
+                                  "px-2 py-1 text-lg bg-blue-500 rounded text-white mr-1",
+                                attrs: {
+                                  href: "/ajustes/categorias/" + categoria.id
+                                }
+                              },
+                              [
+                                _c("font-awesome-icon", {
+                                  attrs: { icon: "edit" }
+                                })
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "px-2 py-1 text-lg bg-red-500 rounded text-white cursor-pointer",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.abrirModal(categoria, index)
+                                  }
+                                }
+                              },
+                              [
+                                _c("font-awesome-icon", {
+                                  attrs: { icon: "trash-alt" }
+                                })
+                              ],
+                              1
+                            )
+                          ])
+                        : _vm._e()
                     ]
                   )
                 ]
@@ -69259,6 +69370,14 @@ var render = function() {
   return _c(
     "div",
     {
+      directives: [
+        {
+          name: "on-clickaway",
+          rawName: "v-on-clickaway",
+          value: _vm.cerrarMenus,
+          expression: "cerrarMenus"
+        }
+      ],
       staticClass:
         "w-full altura-nabvar bg-gray-300 text-sm fixed flex items-center"
     },
@@ -70928,7 +71047,26 @@ var render = function() {
             attrs: { id: "secciones-y-creador" }
           },
           [
-            _vm._m(0),
+            _c(
+              "div",
+              { staticClass: "flex", attrs: { id: "secciones" } },
+              _vm._l(_vm.categorias, function(categoria, index) {
+                return _c(
+                  "div",
+                  {
+                    key: index,
+                    staticClass:
+                      "text-sm px-3 mr-2 bg-blue-200 text-blue-600 rounded flex justify-center items-center"
+                  },
+                  [
+                    _c("a", { attrs: { href: "/categorias/" + categoria } }, [
+                      _vm._v(_vm._s(categoria))
+                    ])
+                  ]
+                )
+              }),
+              0
+            ),
             _vm._v(" "),
             _c(
               "div",
@@ -70954,23 +71092,7 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex", attrs: { id: "secciones" } }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "text-sm px-3 mr-2 bg-blue-200 text-blue-600 rounded flex justify-center items-center"
-        },
-        [_c("a", { attrs: { href: "/categoria/vue" } }, [_vm._v("vue.js")])]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

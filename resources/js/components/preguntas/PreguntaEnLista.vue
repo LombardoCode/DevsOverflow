@@ -17,7 +17,9 @@
 			</div>
 			<div id="secciones-y-creador" class="grid grid-cols-2 mt-2">
 				<div id="secciones" class="flex">
-					<div class="text-sm px-3 mr-2 bg-blue-200 text-blue-600 rounded flex justify-center items-center"><a href="/categoria/vue">vue.js</a></div>
+					<div v-for="(categoria, index) in categorias" :key="index" class="text-sm px-3 mr-2 bg-blue-200 text-blue-600 rounded flex justify-center items-center">
+						<a :href="`/categorias/${categoria}`">{{categoria}}</a>
+					</div>
 				</div>
 				<div id="creador" class="flex justify-end items-center">
 					<span class="text-xs text-right">Formulada el {{ fecha_de_creacion }} por {{ autor }}.</span>
@@ -36,6 +38,7 @@ export default {
 		titulo_pregunta: String,
 		descripcion_pregunta: String,
 		fecha_de_creacion: String,
+		categorias: Array,
 		autor: String
 	}
 }

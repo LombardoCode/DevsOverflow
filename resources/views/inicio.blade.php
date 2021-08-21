@@ -14,6 +14,7 @@
 				titulo_pregunta="{{ $pregunta['pregunta'] }}"
 				descripcion_pregunta="{{ $pregunta['descripcion'] }}"
 				fecha_de_creacion="{{ $pregunta['created_at'] }}"
+				:categorias='{!! json_encode($pregunta['categorias']) !!}'
 				autor="{{ $pregunta['autor'] }}"
 			>
 			</pregunta-en-lista>

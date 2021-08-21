@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use App\Models\Pregunta;
+use App\Models\RelacionCategoriaPregunta;
 use App\Models\Respuesta;
 use App\Models\User;
 use App\Models\VotoPregunta;
@@ -36,6 +37,19 @@ class BusquedaController extends Controller
 			// Obtenemos la cantidad de respuestas de cada pregunta
 			$respuestas = Respuesta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
 			$preguntas[$i]['respuestas'] = count($respuestas) > 0 ? count($respuestas) : 0;
+
+			// Obtenemos las categorías de la pregunta
+			$categorias = RelacionCategoriaPregunta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
+
+			// Recorremos las categorías
+			if (count($categorias) > 0) {
+				for ($j=0; $j < count($categorias); $j++) {
+					$categoria = Categoria::find($categorias[$j]['categoria_id']);
+					$preguntas[$i]['categorias'][$j] = $categoria['categoria'];
+				}
+			} else {
+				$preguntas[$i]['categorias'] = [];
+			}
 		}
 
 		return view('inicio', [

@@ -33,6 +33,7 @@
         "@fortawesome/free-solid-svg-icons": "^5.15.4",
         "@fortawesome/vue-fontawesome": "^2.0.2",
         "vue-ads-pagination": "^2.1.7",
+        "vue-clickaway": "^2.2.2",
         "vue2-editor": "^2.10.2"
     }
 }

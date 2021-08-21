@@ -18,7 +18,7 @@
 							<p class="ml-3 text-base mb-1 font-bold">{{categoria.categoria}}</p>
 							<p class="ml-3 text-xs italic">{{categoria.descripcion}}</p>
 						</a>
-						<div class="opciones ml-3 flex">
+						<div v-if="roles.includes('administrador') && permisos.includes('crear-categorias')" class="opciones ml-3 flex">
 							<a :href="`/ajustes/categorias/${categoria.id}`" class="px-2 py-1 text-lg bg-blue-500 rounded text-white mr-1">
 								<font-awesome-icon icon="edit"/>
 							</a>
@@ -49,7 +49,9 @@ library.add(faEdit, faTrashAlt, faPlus)
 
 export default {
 	props: {
-		titulo: String
+		titulo: String,
+		roles: [],
+		permisos: []
 	},
 	data() {
 		return {

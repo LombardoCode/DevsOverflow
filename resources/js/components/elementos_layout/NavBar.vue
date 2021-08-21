@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full altura-nabvar bg-gray-300 text-sm fixed flex items-center">
+	<div class="w-full altura-nabvar bg-gray-300 text-sm fixed flex items-center" v-on-clickaway="cerrarMenus">
 		<div class="container mx-auto flex justify-between items-center">
 			<div id="logo">
 				<a href="/">
@@ -60,12 +60,15 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faBell, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { mixin as clickaway } from 'vue-clickaway';
+
 
 library.add(faBell, faCaretDown)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 import VueInput from '../elementos_html/VueInput.vue';
 export default {
+	mixins: [ clickaway ],
 	props: {
 		usuario: Object
 	},
@@ -122,6 +125,11 @@ export default {
 			.catch(err => {
 				console.log(err);
 			})
+		},
+		cerrarMenus() {
+			// Cerramos el menú de las notificaciones y el menú de cuenta
+			this.notificaciones.mostrar = false;
+			this.dropdown_cuenta.mostrar = false;
 		}
 	}
 }
