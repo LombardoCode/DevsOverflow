@@ -3,11 +3,19 @@
 		<div class="fixed">
 			<nav>
 				<ul>
-					<li class="mb-6"><a href="/">Inicio</a></li>
-					<p class="uppercase mb-3">Público</p>
-					<li class="mb-3 ml-3"><a href="/categorias">Categorías</a></li>
-					<li class="mb-3 ml-3"><a href="/usuarios">Usuarios</a></li>
-					<li class="mb-3 ml-3"><a href="/sin-responder">Sin responder</a></li>
+					<div class="categoria mb-6">
+						<li class="mb-3"><a href="/">Inicio</a></li>
+					</div>
+					<div class="categoria mb-6">
+						<p class="uppercase mb-3">PÚBLICO</p>
+						<li class="mb-3 ml-3"><a href="/categorias">Categorías</a></li>
+						<li class="mb-3 ml-3"><a href="/usuarios">Usuarios</a></li>
+						<li class="mb-3 ml-3"><a href="/sin-responder">Sin responder</a></li>
+					</div>
+					<div class="categoria mb-6">
+						<p class="uppercase mb-3">MI ACTIVIDAD</p>
+						<li class="mb-3 ml-3"><a href="/mis_preguntas">Mis preguntas</a></li>
+					</div>
 				</ul>
 			</nav>
 		</div>

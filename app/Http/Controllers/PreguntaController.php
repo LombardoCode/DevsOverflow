@@ -21,6 +21,41 @@ class PreguntaController extends Controller
 		]);
 	}
 
+	public function mostrar_vista_mis_preguntas() {
+		return view('auth.mi_actividad.mis_preguntas', [
+			'titulo' => 'Crear pregunta'
+		]);
+	}
+
+	public function mostrar_vista_editar_pregunta($identificador_pregunta) {
+		$pregunta = Pregunta::where('identificador', '=', $identificador_pregunta)->get();
+		$pregunta = json_decode($pregunta, true);
+
+		if (isset($pregunta[0]['id'])) {
+			$pregunta = $pregunta[0];
+
+			// Obtenemos las categorías de la pregunta
+			$relacion_categorias = RelacionCategoriaPregunta::where('pregunta_id', '=', $pregunta['id'])->get();
+
+			// Recorremos las relaciones de categoría
+			for ($i=0; $i < count($relacion_categorias); $i++) {
+				$categoria = Categoria::find($relacion_categorias[$i]['categoria_id']);
+				$pregunta['categorias'][] = $categoria;
+			}
+
+			return view('auth.crear_pregunta', [
+				'titulo' => 'Editar pregunta',
+				'pregunta' => $pregunta
+			]);
+		} else {
+			return "No";
+		}
+	}
+
+	public function mostrar_vista_eliminar_pregunta($identificador_pregunta) {
+		return $identificador_pregunta;
+	}
+
 	public function store(Request $request) {
 		$datosAEvaluar = [];
 		$datosAEvaluar['titulo'] = $request['formulario']['titulo'];
@@ -76,6 +111,66 @@ class PreguntaController extends Controller
 			return response()->json([
 				'status' => true,
 				'identificador' => $identificador_aleatorio
+			]);
+		}
+	}
+
+	public function update(Request $request, $pregunta_id) {
+		$datosAEvaluar = [];
+		$datosAEvaluar['titulo'] = $request['formulario']['titulo'];
+		$datosAEvaluar['contenido_html'] = $request['formulario']['contenido_html'];
+		$datosAEvaluar['categorias_seleccionadas'] = $request['categorias_seleccionadas'];
+
+		$reglas = [
+			'titulo' => 'required',
+			'contenido_html' => 'required',
+			'categorias_seleccionadas' => 'required'
+		];
+
+		$erroresPersonalizados = [
+			'titulo.required' => 'Se requiere de un título para la pregunta.',
+			'contenido_html.required' => 'Se requiere del cuerpo de la pregunta',
+			'categorias_seleccionadas.required' => 'Se requiere al menos una categoría para la pregunta'
+		];
+
+		$validaciones = Validator::make($datosAEvaluar, $reglas, $erroresPersonalizados);
+
+		if ($validaciones->fails()) {
+			return response()->json([
+				'status' => false,
+				'errores' => $validaciones->errors()
+			]);
+			return redirect()->back()->withErrors($validaciones)->withInput();
+		} else {
+			// Obtenemos la pregunta
+			$pregunta = Pregunta::find($pregunta_id);
+
+			// Editamos la pregunta y la guardamos
+			$resumen_pregunta = strip_tags($datosAEvaluar['contenido_html']);
+			$resumen_pregunta = substr($resumen_pregunta, 0, 255);
+			$pregunta->pregunta = $datosAEvaluar['titulo'];
+			$pregunta->descripcion = $resumen_pregunta;
+			$pregunta->contenido_html = $datosAEvaluar['contenido_html'];
+			$pregunta->save();
+
+			// Eliminamos las relaciones actuales
+			$categorias_pregunta = RelacionCategoriaPregunta::where('pregunta_id', '=', $pregunta_id)->delete();
+
+			// Relacionamos la pregunta con sus categorias elegidas
+			for ($i=0; $i < count($datosAEvaluar['categorias_seleccionadas']); $i++) {
+				// Obtenemos la categoría
+				$categoria = $datosAEvaluar['categorias_seleccionadas'][$i];
+
+				// Creamos la relación de la categoría con la pregunta
+				$relacion_categoria_pregunta = new RelacionCategoriaPregunta();
+				$relacion_categoria_pregunta->categoria_id = $categoria['id'];
+				$relacion_categoria_pregunta->pregunta_id = $pregunta->id;
+				$relacion_categoria_pregunta->save();
+			}
+
+			return response()->json([
+				'status' => true,
+				'identificador' => $pregunta->identificador
 			]);
 		}
 	}

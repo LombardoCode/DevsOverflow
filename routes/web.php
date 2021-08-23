@@ -53,8 +53,12 @@ Route::prefix('pregunta')->group(function() {
 		// Vista para que los usuarios autenticados puedan crear preguntas
 		Route::get('/crear', [PreguntaController::class, 'mostrar_vista_crear_pregunta']);
 	});
-	// Vista para mostrar la pregunta creada por un usuario
-	Route::get('/{identificador_pregunta}', [PreguntaController::class, 'mostrar_vista_pregunta']);
+	Route::prefix('{identificador_pregunta}')->group(function() {
+		// Vista para mostrar la pregunta creada por un usuario
+		Route::get('/', [PreguntaController::class, 'mostrar_vista_pregunta']);
+		Route::get('/editar', [PreguntaController::class, 'mostrar_vista_editar_pregunta']);
+		Route::get('/eliminar', [PreguntaController::class, 'mostrar_vista_eliminar_pregunta']);
+	});
 });
 
 Route::prefix('usuarios')->group(function() {
@@ -74,6 +78,9 @@ Route::prefix('sin-responder')->group(function() {
 });
 
 Route::group(['middleware' => 'auth'], function() {
+	Route::prefix('mis_preguntas')->group(function() {
+		Route::get('/', [PreguntaController::class, 'mostrar_vista_mis_preguntas']);
+	});
 	Route::prefix('ajustes')->group(function() {
 		Route::prefix('cuenta')->group(function() {
 			Route::get('/', [UsuarioController::class, 'mostrar_vista_cuenta']);
@@ -105,6 +112,7 @@ Route::prefix('api')->group(function() {
 	Route::prefix('pregunta')->group(function() {
 		Route::get('/{pregunta_id}', [PreguntaController::class, 'show']);
 		Route::post('/', [PreguntaController::class, 'store']);
+		Route::put('/{pregunta_id}', [PreguntaController::class, 'update']);
 		Route::prefix('votar')->group(function() {
 			Route::post('/', [VotoController::class, 'votar_pregunta']);
 		});

@@ -3,11 +3,11 @@
 		<div class="container mx-auto">
 			<h1 class="font-bold text-2xl mb-6">Realiza una pregunta a la comunidad</h1>
 			<div class="bg-gray-300 flex-1 mt-3 rounded px-3 pt-4 pb-1">
-				<form @submit.prevent="crearPregunta()">
+				<form v-if="pregunta != null" @submit.prevent="submitFormulario()">
 					<div class="flex flex-col mb-3">
 						<label for="titulo" class="mb-1 font-bold text-lg">Título</label>
 						<p class="mb-2">Sé específico e imagina que haces tú pregunta a otra persona.</p>
-						<vue-input type="text" name="titulo" placeholder='Por ejemplo, "Laravel me muestra un error 404 en una ruta aún cuando está definida como endpoint."' v-model="formulario.titulo"></vue-input>
+						<vue-input  type="text" name="titulo" placeholder='Por ejemplo, "Laravel me muestra un error 404 en una ruta aún cuando está definida como endpoint."' v-model="formulario.titulo"></vue-input>
 					</div>
 					<div class="flex flex-col mb-3">
 						<label for="contenido_html" class="mb-1 font-bold text-lg">Cuerpo</label>
@@ -45,7 +45,8 @@ import { VueEditor } from "vue2-editor";
 
 export default {
 	props: {
-		csrf: String
+		csrf: String,
+		pregunta: Object
 	},
 	components: {
     VueEditor
@@ -53,17 +54,24 @@ export default {
 	data() {
 		return {
 			formulario: {
-				titulo: '',
-				contenido_html: '',
+				titulo: this.pregunta.pregunta || '',
+				contenido_html: this.pregunta.contenido_html || '',
 			},
 			categorias: {
 				input: '',
 				busqueda: [],
-				seleccionadas: []
+				seleccionadas: this.pregunta.categorias || []
 			}
 		}
 	},
 	methods: {
+		submitFormulario() {
+			if (this.pregunta.id == null) {
+				this.crearPregunta();
+			} else {
+				this.editarPregunta();
+			}
+		},
 		crearPregunta() {
 			let datos = {
 				formulario: {
@@ -74,6 +82,26 @@ export default {
 			}
 
 			axios.post('/api/pregunta', datos)
+			.then(res => {
+				console.log(res.data);
+				if (res.data.status) {
+					window.location = '/pregunta/' + res.data.identificador;
+				}
+			})
+			.catch(err => {
+				console.log(err);
+			})
+		},
+		editarPregunta() {
+			let datos = {
+				formulario: {
+					titulo: this.formulario.titulo,
+					contenido_html: this.formulario.contenido_html,
+				},
+				categorias_seleccionadas: this.categorias.seleccionadas
+			}
+
+			axios.put(`/api/pregunta/${this.pregunta.id}`, datos)
 			.then(res => {
 				console.log(res.data);
 				if (res.data.status) {

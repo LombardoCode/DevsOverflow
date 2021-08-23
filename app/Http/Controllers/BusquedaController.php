@@ -8,7 +8,9 @@ use App\Models\RelacionCategoriaPregunta;
 use App\Models\Respuesta;
 use App\Models\User;
 use App\Models\VotoPregunta;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BusquedaController extends Controller
@@ -34,6 +36,9 @@ class BusquedaController extends Controller
 			// Obtenemos la cantidad de votos de cada pregunta
 			$votos = VotoPregunta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
 			$preguntas[$i]['votos'] = count($votos) > 0 ? count($votos) : 0;
+
+			// Formateamos la fecha de creación
+			$preguntas[$i]['created_at'] = Carbon::parse($preguntas[$i]['created_at'])->diffForHumans();
 
 			// Obtenemos la cantidad de respuestas de cada pregunta
 			$respuestas = Respuesta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
@@ -83,8 +88,12 @@ class BusquedaController extends Controller
 			return $this->realizar_busqueda_sin_responder($request);
 		}
 		// Para obtener las preguntas de categoría
-		if (isset($request['categoria'])) {
+		if (isset($request['categoria']) && $request['categoria'] != null) {
 			return $this->realizar_busqueda_mediante_categoria($request);
+		}
+		// Para obtener las preguntas propias del usuario
+		if ($request['preguntas_propias'] == true) {
+			return $this->realizar_busqueda_preguntas_propias($request);
 		}
 	}
 
@@ -140,11 +149,15 @@ class BusquedaController extends Controller
 		for ($i=0; $i < count($preguntas); $i++) {
 			// Obtenemos el autor de cada pregunta
 			$autor = User::find($preguntas[$i]['user_id']);
-			$preguntas[$i]['autor'] = $autor->name;
+			$preguntas[$i]['autor']['id'] = $autor->id;
+			$preguntas[$i]['autor']['nombre'] = $autor->name;
 
 			// Obtenemos la cantidad de votos de cada pregunta
 			$votos = VotoPregunta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
 			$preguntas[$i]['votos'] = count($votos) > 0 ? count($votos) : 0;
+
+			// Formateamos la fecha de creación
+			$preguntas[$i]['created_at'] = Carbon::parse($preguntas[$i]['created_at'])->diffForHumans();
 
 			// Obtenemos la cantidad de respuestas de cada pregunta
 			$respuestas = Respuesta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
@@ -221,11 +234,15 @@ class BusquedaController extends Controller
 		for ($i=0; $i < count($preguntas); $i++) {
 			// Obtenemos el autor de cada pregunta
 			$autor = User::find($preguntas[$i]['user_id']);
-			$preguntas[$i]['autor'] = $autor->name;
+			$preguntas[$i]['autor']['id'] = $autor->id;
+			$preguntas[$i]['autor']['nombre'] = $autor->name;
 
 			// Obtenemos la cantidad de votos de cada pregunta
 			$votos = VotoPregunta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
 			$preguntas[$i]['votos'] = count($votos) > 0 ? count($votos) : 0;
+
+			// Formateamos la fecha de creación
+			$preguntas[$i]['created_at'] = Carbon::parse($preguntas[$i]['created_at'])->diffForHumans();
 
 			// Obtenemos la cantidad de respuestas de cada pregunta
 			$respuestas = Respuesta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
@@ -251,7 +268,7 @@ class BusquedaController extends Controller
 			// Obtenemos las preguntas más recientes
 			if ($filtro == 'mas_reciente') {
 				// Obtenemos las preguntas de la categoría solicitada ordenadas de las más recientes hasta las no tan recientes dependiendo del estado de la paginación
-				$preguntas_de_categoria = DB::select(
+				$preguntas = DB::select(
 					'SELECT p.*, COALESCE(SUM(vp.voto_bool = 1), 0) AS votos_positivos, COALESCE(SUM(vp.voto_bool = 0), 0) AS votos_negativos
 					FROM preguntas p
 					INNER JOIN relacion_categoria_preguntas rcp
@@ -282,7 +299,7 @@ class BusquedaController extends Controller
 			}
 
 			// Hacemos los resultados accesibles
-			$preguntas_de_categoria = json_decode(json_encode($preguntas_de_categoria), true);
+			$preguntas = json_decode(json_encode($preguntas), true);
 
 			// Obtenemos las preguntas totales de la categoría solicitada
 			$cantidad_de_preguntas = DB::select(
@@ -297,21 +314,21 @@ class BusquedaController extends Controller
 			$cantidad_de_preguntas = $cantidad_de_preguntas[0]['cantidad_de_preguntas'];
 
 			// Recorremos las relaciones de pregunta-categoria
-			for ($i=0; $i < count($preguntas_de_categoria); $i++) {
-				// Obtenemos la pregunta
-				$pregunta = Pregunta::find($preguntas_de_categoria[$i]['id']);
-				$preguntas[$i] = $pregunta;
-
+			for ($i=0; $i < count($preguntas); $i++) {
 				// Obtenemos el autor de cada pregunta
-				$autor = User::find($pregunta['user_id']);
-				$preguntas[$i]['autor'] = $autor->name;
+				$autor = User::find($preguntas[$i]['user_id']);
+				$preguntas[$i]['autor']['id'] = $autor->id;
+				$preguntas[$i]['autor']['nombre'] = $autor->name;
 
 				// Obtenemos la cantidad de votos de cada pregunta
-				$votos = VotoPregunta::where('pregunta_id', '=', $pregunta['id'])->get();
+				$votos = VotoPregunta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
 				$preguntas[$i]['votos'] = count($votos) > 0 ? count($votos) : 0;
 
+				// Formateamos la fecha de creación
+				$preguntas[$i]['created_at'] = Carbon::parse($preguntas[$i]['created_at'])->diffForHumans();
+
 				// Obtenemos la cantidad de respuestas de cada pregunta
-				$respuestas = Respuesta::where('pregunta_id', '=', $pregunta['id'])->get();
+				$respuestas = Respuesta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
 				$preguntas[$i]['respuestas'] = count($respuestas) > 0 ? count($respuestas) : 0;
 			}
 
@@ -320,5 +337,79 @@ class BusquedaController extends Controller
 				'cantidad_de_preguntas' => $cantidad_de_preguntas
 			]);
 		}
+	}
+
+	public function realizar_busqueda_preguntas_propias(Request $request) {
+		$filtro = $request['filtro'];
+		$itemsMaxPorPag = $request['itemsMaxPorPag'];
+		$offset = ((($request['pagina'] + 1) - 1) * $itemsMaxPorPag);
+		$query = $request['query'];
+		$preguntas = [];
+		$cantidad_de_preguntas = null;
+
+		// Obtenemos las preguntas más recientes
+		if ($filtro == 'mas_reciente') {
+				// Obtenemos las preguntas siguiendo el query y ordenadas de las más recientes hasta las no tan recientes dependiendo del estado de la paginación
+			$preguntas = DB::select(
+				'SELECT p.*, COALESCE(SUM(vp.voto_bool = 1), 0) AS votos_positivos, COALESCE(SUM(vp.voto_bool = 0), 0) AS votos_negativos
+				FROM preguntas p
+				LEFT OUTER JOIN voto_preguntas vp
+				ON p.id = vp.pregunta_id
+				WHERE p.pregunta LIKE "%'.$query. '%"
+				AND p.user_id = ?
+				GROUP BY p.id
+				ORDER BY p.created_at DESC
+				LIMIT ?
+				OFFSET ?;', [Auth::user()->id, $itemsMaxPorPag, $offset]);
+		} else {
+			if ($filtro == 'votos') {
+				// Obtenemos las preguntas siguiendo el query y ordenadas de las más votadas hasta las no tan votadas dependiendo del estado de la paginación
+				$preguntas = DB::select(
+					'SELECT p.id, p.pregunta, p.user_id, COALESCE(SUM(vp.voto_bool = 1), 0) AS votos_positivos, COALESCE(SUM(vp.voto_bool = 0), 0) AS votos_negativos
+					FROM preguntas p
+					LEFT OUTER JOIN voto_preguntas vp
+					ON p.id = vp.pregunta_id
+					WHERE p.pregunta LIKE "%'.$query. '%"
+					GROUP BY p.id
+					ORDER BY votos_positivos DESC
+					LIMIT ?
+					OFFSET ?;', [$itemsMaxPorPag, $offset]);
+			}
+		}
+
+		// Hacemos los resultados accesibles
+		$preguntas = json_decode(json_encode($preguntas), true);
+
+		// Obtenemos las preguntas totales
+		$cantidad_de_preguntas = DB::select(
+			'SELECT COUNT(DISTINCT(p.id)) AS cantidad_de_preguntas
+			FROM preguntas p
+			WHERE p.pregunta LIKE "%'.$query. '%" AND p.user_id = ?', [Auth::user()->id]);
+		$cantidad_de_preguntas = json_decode(json_encode($cantidad_de_preguntas), true);
+		$cantidad_de_preguntas = $cantidad_de_preguntas[0]['cantidad_de_preguntas'];
+
+		// Recorremos las preguntas
+		for ($i=0; $i < count($preguntas); $i++) {
+			// Obtenemos el autor de cada pregunta
+			$autor = User::find($preguntas[$i]['user_id']);
+			$preguntas[$i]['autor']['id'] = $autor->id;
+			$preguntas[$i]['autor']['nombre'] = $autor->name;
+
+			// Obtenemos la cantidad de votos de cada pregunta
+			$votos = VotoPregunta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
+			$preguntas[$i]['votos'] = count($votos) > 0 ? count($votos) : 0;
+
+			// Formateamos la fecha de creación
+			$preguntas[$i]['created_at'] = Carbon::parse($preguntas[$i]['created_at'])->diffForHumans();
+
+			// Obtenemos la cantidad de respuestas de cada pregunta
+			$respuestas = Respuesta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
+			$preguntas[$i]['respuestas'] = count($respuestas) > 0 ? count($respuestas) : 0;
+		}
+
+		return response()->json([
+			'preguntas' => $preguntas,
+			'cantidad_de_preguntas' => $cantidad_de_preguntas
+		]);
 	}
 }

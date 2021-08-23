@@ -24,6 +24,7 @@
 					:descripcion_pregunta="pregunta.descripcion"
 					:fecha_de_creacion="pregunta.created_at"
 					:autor="pregunta.autor"
+					:mismo_autor="usuario.id === pregunta.user_id"
 				>
 				</pregunta-en-lista>
 			</div>
@@ -40,9 +41,11 @@
 <script>
 export default {
 	props: {
+		usuario: Object,
 		query: String,
 		sin_responder: Boolean,
-		categoria: String
+		categoria: String,
+		preguntas_propias: Boolean
 	},
 	data() {
 		return {
@@ -51,6 +54,7 @@ export default {
 				query: this.query,
 				sin_responder: this.sin_responder,
 				categoria: this.categoria,
+				preguntas_propias: this.preguntas_propias,
 				filtro: 'mas_reciente',
 				pagina: 0,
 				itemsMaxPorPag: 3,
@@ -59,11 +63,6 @@ export default {
 		}
 	},
 	mounted() {
-		console.log("Inicio de props")
-		console.log(this.query)
-		console.log(this.sin_responder)
-		console.log(this.categoria)
-		console.log("Fin de props")
 		this.realizarBusqueda();
 	},
 	methods: {

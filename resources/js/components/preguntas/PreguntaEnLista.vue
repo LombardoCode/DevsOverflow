@@ -12,7 +12,17 @@
 		</div>
 		<div class="w-full">
 			<div>
-				<a :href="`/pregunta/${identificador_pregunta}`" class="text-blue-700 text-base">{{ titulo_pregunta }}</a>
+				<div class="flex">
+					<a :href="`/pregunta/${identificador_pregunta}`" class="flex-1 text-blue-700 text-base">{{ titulo_pregunta }}</a>
+					<div v-if="mismo_autor" class="flex">
+						<a id="editar" :href="`/pregunta/${identificador_pregunta}/editar`" class="bg-blue-600 text-white px-2 py-2 rounded-md mr-1">
+							Editar
+						</a>
+						<a id="eliminar" :href="`/pregunta/${identificador_pregunta}/eliminar`" class="bg-red-600 text-white px-2 py-2 rounded-md">
+							Eliminar
+						</a>
+					</div>
+				</div>
 				<p>{{ descripcion_pregunta }}</p>
 			</div>
 			<div id="secciones-y-creador" class="grid grid-cols-2 mt-2">
@@ -22,7 +32,7 @@
 					</div>
 				</div>
 				<div id="creador" class="flex justify-end items-center">
-					<span class="text-xs text-right">Formulada el {{ fecha_de_creacion }} por <a :href="`/usuarios/${autor.id}`" class="text-blue-600">{{ autor.nombre }}</a>.</span>
+					<span class="text-xs text-right">Formulada {{ fecha_de_creacion }} por <a :href="`/usuarios/${autor.id}`" class="text-blue-600">{{ autor.nombre }}</a>.</span>
 				</div>
 			</div>
 		</div>
@@ -32,6 +42,7 @@
 <script>
 export default {
 	props: {
+		mismo_autor: Boolean,
 		cantidad_votos: [String, Number],
 		cantidad_respuestas: [String, Number],
 		identificador_pregunta: String,

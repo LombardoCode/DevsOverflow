@@ -6,7 +6,8 @@
 			<listado-preguntas
 				query="{{ null }}"
 				:sin_responder="false"
-				categoria="{{ $categoria }}"
+				categoria="{{ null }}"
+				:preguntas_propias="true"
 				:usuario="{{ Auth::check() ? Auth::user() : '{}' }}"
 			>
 			</listado-preguntas>
