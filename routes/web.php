@@ -86,6 +86,10 @@ Route::group(['middleware' => 'auth'], function() {
 			Route::get('/{categoria_id}', [CategoriaController::class, 'mostrar_vista_editar_categoria']);
 		});
 	});
+
+	Route::prefix('notificaciones')->group(function() {
+		Route::get('/', [NotificacionController::class, 'mostrar_vista_notificaciones']);
+	});
 });
 
 /* API (web) */
@@ -132,8 +136,12 @@ Route::prefix('api')->group(function() {
 	});
 	Route::prefix('notificaciones')->group(function() {
 		Route::get('/', [NotificacionController::class, 'all']);
+		Route::delete('/{notificacion_id}', [NotificacionController::class, 'delete']);
 		Route::prefix('leer')->group(function() {
 			Route::get('/{notificacion_id}', [NotificacionController::class, 'leer_notificacion']);
+		});
+		Route::prefix('historicas')->group(function() {
+			Route::post('/', [NotificacionController::class, 'notificaciones_historicas']);
 		});
 	});
 });

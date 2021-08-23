@@ -15,7 +15,7 @@
 				descripcion_pregunta="{{ $pregunta['descripcion'] }}"
 				fecha_de_creacion="{{ $pregunta['created_at'] }}"
 				:categorias='{!! json_encode($pregunta['categorias']) !!}'
-				autor="{{ $pregunta['autor'] }}"
+				:autor="{{ json_encode($pregunta['autor']) }}"
 			>
 			</pregunta-en-lista>
 		@endforeach

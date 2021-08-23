@@ -51,6 +51,11 @@ Vue.component('mostrar-usuarios', require('./components/usuarios/MostrarUsuarios
 // Categorías
 Vue.component('mostrar-categorias', require('./components/categorias/MostrarCategorias.vue').default);
 
+// Notificaciones
+Vue.component('listado-notificaciones', require('./components/notificaciones/ListadoNotificaciones.vue').default);
+Vue.component('notificacion-en-lista', require('./components/notificaciones/NotificacionEnLista.vue').default);
+
+
 
 /**
 * Next, we will create a fresh Vue application instance and attach it to

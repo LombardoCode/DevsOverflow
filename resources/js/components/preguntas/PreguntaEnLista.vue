@@ -22,7 +22,7 @@
 					</div>
 				</div>
 				<div id="creador" class="flex justify-end items-center">
-					<span class="text-xs text-right">Formulada el {{ fecha_de_creacion }} por {{ autor }}.</span>
+					<span class="text-xs text-right">Formulada el {{ fecha_de_creacion }} por <a :href="`/usuarios/${autor.id}`" class="text-blue-600">{{ autor.nombre }}</a>.</span>
 				</div>
 			</div>
 		</div>
@@ -39,7 +39,7 @@ export default {
 		descripcion_pregunta: String,
 		fecha_de_creacion: String,
 		categorias: Array,
-		autor: String
+		autor: Object
 	}
 }
 </script>

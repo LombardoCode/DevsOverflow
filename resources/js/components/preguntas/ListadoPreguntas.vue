@@ -15,32 +15,17 @@
 				</div>
 			</div>
 			<div id="preguntas">
-				<div id="pregunta" class="flex mb-10" v-for="(pregunta, index) in preguntas" :key="index">
-					<div id="valoraciones" class="flex flex-col mr-4">
-						<div class="text-center bg-blue-500 text-white px-3 py-1 rounded-md mb-2">
-							<p>{{pregunta.votos}}</p>
-							<p>voto(s)</p>
-						</div>
-						<div class="text-center bg-green-600 text-white px-3 py-1 rounded-md">
-							<p>{{pregunta.respuestas}}</p>
-							<p>respuesta(s)</p>
-						</div>
-					</div>
-					<div>
-						<div>
-							<a :href="`/pregunta/${pregunta.identificador}`" class="text-blue-700 text-base">{{pregunta.pregunta}}</a>
-							<p>{{pregunta.descripcion}}</p>
-						</div>
-						<div id="secciones-y-creador" class="grid grid-cols-2 mt-2">
-							<div id="secciones" class="flex">
-								<div class="text-sm px-3 mr-2 bg-blue-200 text-blue-600 rounded flex justify-center items-center"><a href="/categoria/vue">vue.js</a></div>
-							</div>
-							<div id="creador" class="flex justify-end items-center">
-								<span class="text-xs text-right">Formulada el {{ pregunta.created_at }} por {{ pregunta.autor }}.</span>
-							</div>
-						</div>
-					</div>
-				</div>
+				<pregunta-en-lista
+					v-for="(pregunta, index) in preguntas" :key="index"
+					:cantidad_votos="pregunta.votos"
+					:cantidad_respuestas="pregunta.respuestas"
+					:identificador_pregunta="pregunta.identificador"
+					:titulo_pregunta="pregunta.pregunta"
+					:descripcion_pregunta="pregunta.descripcion"
+					:fecha_de_creacion="pregunta.created_at"
+					:autor="pregunta.autor"
+				>
+				</pregunta-en-lista>
 			</div>
 			<paginacion
 				:pagina="paginacion.pagina"

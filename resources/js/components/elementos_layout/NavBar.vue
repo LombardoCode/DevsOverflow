@@ -20,15 +20,19 @@
 					<div id="notificaciones-contenedor" class="select-none">
 						<div id="campana-notificacion" class="relative text-xl mr-2 text-gray-500 cursor-pointer px-3 py-3" @click="notificaciones.mostrar = !notificaciones.mostrar">
 							<div class="relative">
-								<div v-if="notificaciones.cantidad_no_leida > 0" id="contador-de-notificaciones" class="absolute text-xs bg-blue-600 text-white font-bold rounded-full" style="padding: 2px 4px; top: -20%; left: 70%;">{{notificaciones.cantidad_no_leida}}</div>
+								<div v-if="notificaciones.cantidad_notificaciones_historicas_no_leidas > 0" id="contador-de-notificaciones" class="absolute text-xs bg-blue-600 text-white font-bold rounded-full" style="padding: 2px 4px; top: -20%; left: 70%;">{{notificaciones.cantidad_notificaciones_historicas_no_leidas}}</div>
 								<font-awesome-icon icon="bell" class="hover:text-blue-800 transition-all duration-100" />
 							</div>
-							<div id="notificaciones-lista" class="absolute bg-white w-96 max-h-72 overflow-hidden overflow-y-scroll text-sm text-black border-l-2 border-r-2 border-gray-400" style="right: 0%; top: 53px;" v-if="notificaciones.mostrar">
-								<div v-for="(notificacion, index) in notificaciones.datos" :key="index" class="py-3 px-2 border-b-2 border-gray-400 transition-all duration-100" :class="{'bg-blue-200 hover:bg-blue-300' : !notificacion.visto, 'bg-white hover:bg-gray-300': notificacion.visto}">
-									<a @click="clicNotificacion(notificacion)">
-										<p class="font-bold">{{notificacion.mensaje}}</p>
-										<p>{{notificacion.cuerpo}}</p>
-									</a>
+							<div id="notificaciones-lista" class="absolute bg-white w-96 max-h-96 overflow-hidden overflow-y-scroll text-sm text-black border-l-2 border-r-2 border-gray-400 rounded-b-md" style="right: 0%; top: 53px;" v-show="notificaciones.mostrar">
+								<notificacion-en-lista
+									v-for="(notificacion, index) in notificaciones.datos" :key="index"
+									:notificacion="notificacion"
+									:index="index"
+									@eliminarNotificacionLocal="eliminarNotificacionLocal"
+								>
+								</notificacion-en-lista>
+								<div id="historial-notificaciones" class="text-center bg-blue-600 text-white">
+									<a href="/notificaciones" class="inline-block w-full text-xs py-3 hover:underline">Ver notificaciones</a>
 								</div>
 							</div>
 						</div>
@@ -62,7 +66,6 @@ import { faBell, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { mixin as clickaway } from 'vue-clickaway';
 
-
 library.add(faBell, faCaretDown)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
@@ -79,14 +82,17 @@ export default {
 		if (this.usuario.id) {
 			this.obtenerNotificaciones();
 		}
+		this.$root.$on('eliminarIndexNotificacionGlobal', id => {
+			this.eliminarNotificacionLocalBD_ID(id);
+    });
 	},
 	data() {
 		return {
 			busqueda_input: '',
 			notificaciones: {
 				datos: [],
-				cantidad_no_leida: 0,
-				mostrar: false
+				mostrar: false,
+				cantidad_notificaciones_historicas_no_leidas: 0,
 			},
 			dropdown_cuenta: {
 				mostrar: false
@@ -99,16 +105,7 @@ export default {
 			axios.get('/api/notificaciones')
 			.then(res => {
 				this.notificaciones.datos = res.data.notificaciones;
-
-				for (let i = 0; i < this.notificaciones.datos.length; i++) {
-					let notificacion = this.notificaciones.datos[i];
-
-					if (!notificacion.visto) {
-						this.notificaciones.cantidad_no_leida++;
-					}
-				}
-
-				console.log(this.notificaciones);
+				this.notificaciones.cantidad_notificaciones_historicas_no_leidas = res.data.cantidad_notificaciones_historicas_no_leidas;
 			})
 			.catch(err => {
 				console.log(err);
@@ -125,6 +122,16 @@ export default {
 			.catch(err => {
 				console.log(err);
 			})
+		},
+		eliminarNotificacionLocal(index) {
+			// Eliminamos localmente la notificación deseada
+			this.notificaciones.datos.splice(index, 1);
+		},
+		eliminarNotificacionLocalBD_ID(id) {
+			let id_a_encontrar = this.notificaciones.datos.map(function(x) {return x.id; }).indexOf(id);
+			if (id_a_encontrar != -1) {
+				this.eliminarNotificacionLocal(id_a_encontrar);
+			}
 		},
 		cerrarMenus() {
 			// Cerramos el menú de las notificaciones y el menú de cuenta

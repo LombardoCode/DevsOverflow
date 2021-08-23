@@ -28,7 +28,8 @@ class BusquedaController extends Controller
 		for ($i=0; $i < count($preguntas); $i++) {
 			// Obtenemos el autor de cada pregunta
 			$autor = User::find($preguntas[$i]['user_id']);
-			$preguntas[$i]['autor'] = $autor->name;
+			$preguntas[$i]['autor']['id'] = $autor->id;
+			$preguntas[$i]['autor']['nombre'] = $autor->name;
 
 			// Obtenemos la cantidad de votos de cada pregunta
 			$votos = VotoPregunta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
