@@ -12927,10 +12927,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     usuario: Object,
@@ -12977,6 +12973,13 @@ __webpack_require__.r(__webpack_exports__);
       this.paginacion.pagina = datos.pagina;
       this.paginacion.itemsMaxPorPag = datos.itemsMaxPorPag;
       this.paginacion.totalItems = datos.totalItems;
+      this.realizarBusqueda();
+    },
+    indexRecursoEliminado: function indexRecursoEliminado(index_recurso) {
+      // Eliminamos localmente la categoría deseada
+      this.preguntas.splice(index_recurso, 1); // Realizamos la búsqueda nuevamente
+
+      this.paginacion.pagina = 0;
       this.realizarBusqueda();
     }
   }
@@ -13339,17 +13342,54 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    mismo_autor: Boolean,
-    cantidad_votos: [String, Number],
-    cantidad_respuestas: [String, Number],
-    identificador_pregunta: String,
-    titulo_pregunta: String,
-    descripcion_pregunta: String,
-    fecha_de_creacion: String,
+    index: Number,
+    pregunta: Object,
     categorias: Array,
-    autor: Object
+    mismo_autor: Boolean
+  },
+  data: function data() {
+    return {
+      modal: {
+        mostrar: false,
+        datos: {
+          id: null,
+          titulo: null,
+          cuerpo: null
+        }
+      }
+    };
+  },
+  methods: {
+    abrirModal: function abrirModal(datos, index) {
+      console.log(datos);
+      this.modal = {
+        mostrar: true,
+        datos: {
+          id: datos.id,
+          index: index,
+          titulo: 'Eliminar pregunta',
+          cuerpo: '¿Desea eliminar la pregunta?'
+        }
+      };
+    },
+    cerrarModal: function cerrarModal() {
+      this.modal = {
+        mostrar: false,
+        datos: {
+          id: null,
+          index: null,
+          titulo: null,
+          cuerpo: null
+        }
+      };
+    },
+    indexRecursoEliminado: function indexRecursoEliminado(index_recurso) {
+      // Emitimos una señal al componente padre para eliminar el index del recurso localmente
+      this.$emit('indexRecursoEliminado', index_recurso);
+    }
   }
 });
 
@@ -71668,15 +71708,11 @@ var render = function() {
             return _c("pregunta-en-lista", {
               key: index,
               attrs: {
-                cantidad_votos: pregunta.votos,
-                cantidad_respuestas: pregunta.respuestas,
-                identificador_pregunta: pregunta.identificador,
-                titulo_pregunta: pregunta.pregunta,
-                descripcion_pregunta: pregunta.descripcion,
-                fecha_de_creacion: pregunta.created_at,
-                autor: pregunta.autor,
+                index: index,
+                pregunta: pregunta,
                 mismo_autor: _vm.usuario.id === pregunta.user_id
-              }
+              },
+              on: { indexRecursoEliminado: _vm.indexRecursoEliminado }
             })
           }),
           1
@@ -72235,7 +72271,7 @@ var render = function() {
                 "text-center bg-blue-500 text-white px-3 py-1 rounded-md mb-2"
             },
             [
-              _c("p", [_vm._v(_vm._s(_vm.cantidad_votos))]),
+              _c("p", [_vm._v(_vm._s(_vm.pregunta.votos))]),
               _vm._v(" "),
               _c("p", [_vm._v("voto(s)")])
             ]
@@ -72248,7 +72284,7 @@ var render = function() {
                 "text-center bg-green-500 text-white px-3 py-1 rounded-md"
             },
             [
-              _c("p", [_vm._v(_vm._s(_vm.cantidad_respuestas))]),
+              _c("p", [_vm._v(_vm._s(_vm.pregunta.respuestas))]),
               _vm._v(" "),
               _c("p", [_vm._v("respuesta(s)")])
             ]
@@ -72263,9 +72299,9 @@ var render = function() {
               "a",
               {
                 staticClass: "flex-1 text-blue-700 text-base",
-                attrs: { href: "/pregunta/" + _vm.identificador_pregunta }
+                attrs: { href: "/pregunta/" + _vm.pregunta.identificador }
               },
-              [_vm._v(_vm._s(_vm.titulo_pregunta))]
+              [_vm._v(_vm._s(_vm.pregunta.pregunta))]
             ),
             _vm._v(" "),
             _vm.mismo_autor
@@ -72274,26 +72310,26 @@ var render = function() {
                     "a",
                     {
                       staticClass:
-                        "bg-blue-600 text-white px-2 py-2 rounded-md mr-1",
+                        "bg-blue-600 hover:bg-blue-700 transition-all duration-200 text-white px-2 py-2 rounded-md mr-1 cursor-pointer",
                       attrs: {
                         id: "editar",
                         href:
-                          "/pregunta/" + _vm.identificador_pregunta + "/editar"
+                          "/pregunta/" + _vm.pregunta.identificador + "/editar"
                       }
                     },
                     [_vm._v("\n\t\t\t\t\t\tEditar\n\t\t\t\t\t")]
                   ),
                   _vm._v(" "),
                   _c(
-                    "a",
+                    "div",
                     {
-                      staticClass: "bg-red-600 text-white px-2 py-2 rounded-md",
-                      attrs: {
-                        id: "eliminar",
-                        href:
-                          "/pregunta/" +
-                          _vm.identificador_pregunta +
-                          "/eliminar"
+                      staticClass:
+                        "bg-red-600 hover:bg-red-700 transition-all duration-200 text-white px-2 py-2 rounded-md cursor-pointer",
+                      attrs: { id: "eliminar" },
+                      on: {
+                        click: function($event) {
+                          return _vm.abrirModal(_vm.pregunta, _vm.index)
+                        }
                       }
                     },
                     [_vm._v("\n\t\t\t\t\t\tEliminar\n\t\t\t\t\t")]
@@ -72302,7 +72338,7 @@ var render = function() {
               : _vm._e()
           ]),
           _vm._v(" "),
-          _c("p", [_vm._v(_vm._s(_vm.descripcion_pregunta))])
+          _c("p", [_vm._v(_vm._s(_vm.pregunta.descripcion))])
         ]),
         _vm._v(" "),
         _c(
@@ -72342,15 +72378,17 @@ var render = function() {
               [
                 _c("span", { staticClass: "text-xs text-right" }, [
                   _vm._v(
-                    "Formulada " + _vm._s(_vm.fecha_de_creacion) + " por "
+                    "Formulada " +
+                      _vm._s(_vm.pregunta.fecha_de_creacion) +
+                      " por "
                   ),
                   _c(
                     "a",
                     {
                       staticClass: "text-blue-600",
-                      attrs: { href: "/usuarios/" + _vm.autor.id }
+                      attrs: { href: "/usuarios/" + _vm.pregunta.autor.id }
                     },
-                    [_vm._v(_vm._s(_vm.autor.nombre))]
+                    [_vm._v(_vm._s(_vm.pregunta.autor.nombre))]
                   ),
                   _vm._v(".")
                 ])
@@ -72358,8 +72396,24 @@ var render = function() {
             )
           ]
         )
-      ])
-    ]
+      ]),
+      _vm._v(" "),
+      _vm.modal.mostrar
+        ? _c("modal-eliminar", {
+            attrs: {
+              datos: _vm.modal.datos,
+              API_URL: "/api/pregunta/" + _vm.modal.datos.id
+            },
+            on: {
+              cerrarModal: function($event) {
+                return _vm.cerrarModal()
+              },
+              indexRecursoEliminado: _vm.indexRecursoEliminado
+            }
+          })
+        : _vm._e()
+    ],
+    1
   )
 }
 var staticRenderFns = []

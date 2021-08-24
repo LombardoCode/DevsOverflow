@@ -17,14 +17,10 @@
 			<div id="preguntas">
 				<pregunta-en-lista
 					v-for="(pregunta, index) in preguntas" :key="index"
-					:cantidad_votos="pregunta.votos"
-					:cantidad_respuestas="pregunta.respuestas"
-					:identificador_pregunta="pregunta.identificador"
-					:titulo_pregunta="pregunta.pregunta"
-					:descripcion_pregunta="pregunta.descripcion"
-					:fecha_de_creacion="pregunta.created_at"
-					:autor="pregunta.autor"
+					:index="index"
+					:pregunta="pregunta"
 					:mismo_autor="usuario.id === pregunta.user_id"
+					@indexRecursoEliminado="indexRecursoEliminado"
 				>
 				</pregunta-en-lista>
 			</div>
@@ -85,6 +81,14 @@ export default {
 			this.paginacion.pagina = datos.pagina;
 			this.paginacion.itemsMaxPorPag = datos.itemsMaxPorPag;
 			this.paginacion.totalItems = datos.totalItems;
+			this.realizarBusqueda();
+		},
+		indexRecursoEliminado(index_recurso) {
+			// Eliminamos localmente la categoría deseada
+			this.preguntas.splice(index_recurso, 1);
+
+			// Realizamos la búsqueda nuevamente
+			this.paginacion.pagina = 0;
 			this.realizarBusqueda();
 		}
 	}

@@ -175,6 +175,16 @@ class PreguntaController extends Controller
 		}
 	}
 
+	public function delete($id_pregunta) {
+		$pregunta = Pregunta::find($id_pregunta);
+
+		if ($pregunta->delete()) {
+			return response()->json([
+				'status' => true
+			]);
+		}
+	}
+
 	public function generarIdentificador($cantidad_caracteres) {
 		return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($cantidad_caracteres/strlen($x)) )),1,$cantidad_caracteres);
 	}

@@ -112,6 +112,7 @@ Route::prefix('api')->group(function() {
 	Route::prefix('pregunta')->group(function() {
 		Route::get('/{pregunta_id}', [PreguntaController::class, 'show']);
 		Route::post('/', [PreguntaController::class, 'store']);
+		Route::delete('/{pregunta_id}', [PreguntaController::class, 'delete']);
 		Route::put('/{pregunta_id}', [PreguntaController::class, 'update']);
 		Route::prefix('votar')->group(function() {
 			Route::post('/', [VotoController::class, 'votar_pregunta']);
