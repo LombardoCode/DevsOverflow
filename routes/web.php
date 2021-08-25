@@ -120,6 +120,7 @@ Route::prefix('api')->group(function() {
 	});
 	Route::prefix('respuesta')->group(function() {
 		Route::post('/', [RespuestaController::class, 'store']);
+		Route::delete('/{respuesta_id}', [RespuestaController::class, 'delete']);
 		Route::prefix('votar')->group(function() {
 			Route::post('/', [VotoController::class, 'votar_respuesta']);
 		});

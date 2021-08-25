@@ -14,7 +14,7 @@
 			<div>
 				<div class="flex">
 					<a :href="`/pregunta/${pregunta.identificador}`" class="flex-1 text-blue-700 text-base">{{ pregunta.pregunta }}</a>
-					<div v-if="mismo_autor" class="flex">
+					<div v-if="mismo_autor || usuario.id === pregunta.user_id" class="flex">
 						<a id="editar" :href="`/pregunta/${pregunta.identificador}/editar`" class="bg-blue-600 hover:bg-blue-700 transition-all duration-200 text-white px-2 py-2 rounded-md mr-1 cursor-pointer">
 							Editar
 						</a>
@@ -31,8 +31,9 @@
 						<a :href="`/categorias/${categoria}`">{{categoria}}</a>
 					</div>
 				</div>
-				<div id="creador" class="flex justify-end items-center">
-					<span class="text-xs text-right">Formulada {{ pregunta.fecha_de_creacion }} por <a :href="`/usuarios/${pregunta.autor.id}`" class="text-blue-600">{{ pregunta.autor.nombre }}</a>.</span>
+				<div id="creador" class="flex flex-col justify-center items-end">
+					<span class="text-xs text-right mb-1">Formulada por <a :href="`/usuarios/${pregunta.autor.id}`" class="text-blue-600">{{ pregunta.autor.nombre }}</a>.</span>
+					<span class="text-xs text-right">{{ pregunta.created_at }}.</span>
 				</div>
 			</div>
 		</div>
@@ -46,7 +47,8 @@ export default {
 		index: Number,
 		pregunta: Object,
 		categorias: Array,
-		mismo_autor: Boolean
+		mismo_autor: Boolean,
+		usuario: Object
 	},
 	data() {
 		return {

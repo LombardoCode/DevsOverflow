@@ -6,6 +6,7 @@ use App\Models\Notificacion;
 use App\Models\NotificacionesRespuesta;
 use App\Models\Pregunta;
 use App\Models\Respuesta;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -39,12 +40,18 @@ class RespuestaController extends Controller
 
 			// Si la respuesta se ha guardado en la base de datos...
 			if ($respuesta->save()) {
+				$respuesta = json_decode(json_encode($respuesta), true);
+
 				// Obtenemos el nombre del autor de la respuesta
-				$respuesta['autor'] = Auth::user()->name;
+				$respuesta['autor']['id'] = Auth::user()->id;
+				$respuesta['autor']['nombre'] = Auth::user()->name;
 
 				// Agregamos la cantidad de votos positivos y votos negativos
 				$respuesta['votos_positivos'] = 0;
 				$respuesta['votos_negativos'] = 0;
+
+				// Formateamos la fecha de creación
+				$respuesta['created_at'] = Carbon::parse($respuesta['created_at'])->diffForHumans();
 
 				// Obtenemos los datos de la pregunta
 				$pregunta = Pregunta::find($request['pregunta_id']);
@@ -73,6 +80,32 @@ class RespuestaController extends Controller
 				return response()->json([
 					'status' => true,
 					'respuesta' => $respuesta
+				]);
+			}
+		}
+	}
+
+	public function delete($pregunta_id) {
+		// Obtenemos la respuesta
+		$respuesta = Respuesta::find($pregunta_id);
+
+		// Si la respuesta existe...
+		if (isset($respuesta['id'])) {
+			// Verificamos si el usuario es propietario de la respuesta
+			$id_usuario = Auth::user()->id;
+			$respuesta_user_id = $respuesta['user_id'];
+
+			// Si el propietario coincide...
+			if ($id_usuario == $respuesta_user_id) {
+				// Eliminamos la respuesta
+				if ($respuesta->delete()) {
+					return response()->json([
+						'status' => true
+					]);
+				}
+			} else {
+				return response()->json([
+					'status' => false
 				]);
 			}
 		}

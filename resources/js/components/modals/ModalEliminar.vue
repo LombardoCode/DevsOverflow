@@ -47,6 +47,9 @@ export default {
 			this.$emit('cerrarModal')
 		},
 		eliminarRecurso() {
+			//this.cerrarModal();
+			//console.log(this.datos)
+			//this.$emit('indexRecursoEliminado', this.datos.index);
 			axios.delete(this.API_URL)
 			.then(res => {
 				// Si al respuesta es exitosa...

@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="container mx-auto text-sm flex h-screen">
-			<div id="pregunta-y-respuestas" class="py-6 px-5">
+			<div id="pregunta-y-respuestas" class="py-6 px-5 overflow-y-scroll">
 				<div id="pregunta" class="mb-14">
 					<div id="encabezado-pregunta" class="mb-6">
 						<h1 class="text-2xl mb-2">{{pregunta.pregunta}}</h1>
@@ -36,42 +36,27 @@
 						</div>
 						<h1 class="text-lg mt-7 mb-3">Respuesta(s)</h1>
 						<div id="respuestas">
-							<div class="respuesta mb-14" v-for="(respuesta, index) in respuestas" :key="index">
-								<div class="contenido-respuesta">
-									<div class="flex">
-										<div id="votos" class="flex items-center flex-col pr-4">
-											<button class="bg-gray-400 text-white px-4 py-2 rounded" :class="{'bg-blue-600': respuesta.ha_votado == 1}" @click="votarRespuesta('positivo', respuesta)">+</button>
-											<span>{{ respuesta.votos_positivos }}</span>
-											<button class="bg-gray-400 text-white px-4 py-2 rounded" :class="{'bg-red-600': respuesta.ha_votado == -1}" @click="votarRespuesta('negativo', respuesta)">-</button>
-											<span>{{ respuesta.votos_negativos }}</span>
-										</div>
-										<div id="descripcion-respuesta" class="pl-4">
-											<p v-html="respuesta.contenido_html"></p>
-										</div>
-									</div>
-									<div id="autor" class="flex justify-end">
-										<div class="flex flex-col">
-											<span class="text-xs">Respondida el {{ respuesta.created_at }}.</span>
-											<div class="foto-y-nombreautor flex items-center">
-												<img style="width: 50px; height: auto;" src="https://www.uic.mx/posgrados/files/2018/05/default-user.png" alt="">
-												<span class="text-xs">{{ respuesta.autor }}</span>
-											</div>
-										</div>
-									</div>
-								</div>
+							<div class="mb-14" v-for="(respuesta, index) in respuestas" :key="index">
+								<respuesta
+									:respuesta="respuesta"
+									:index="index"
+									:usuario="usuario"
+									@indexRecursoEliminado="indexRecursoEliminado"
+								>
+								</respuesta>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<modal-invitacion-registro v-if="modal.mostrar" @cerrarModal="cerrarModal()"></modal-invitacion-registro>
 	</div>
 </template>
 
 <script>
 import { VueEditor } from "vue2-editor";
 import ModalInvitacionRegistro from '../modals/ModalInvitacionRegistro.vue';
+import Respuesta from './Respuesta.vue';
 
 export default {
 	props: {
@@ -81,7 +66,8 @@ export default {
 	},
 	components: {
     VueEditor,
-		ModalInvitacionRegistro
+		ModalInvitacionRegistro,
+		Respuesta
   },
 	data() {
 		return {
@@ -92,15 +78,7 @@ export default {
 				num_votos_negativos: null,
 				ha_votado: null
 			},
-			respuesta_contenido_html: null,
-			modal: {
-				mostrar: false,
-				datos: {
-					id: null,
-					titulo: null,
-					cuerpo: null
-				},
-			}
+			respuesta_contenido_html: null
 		}
 	},
 	mounted() {
@@ -145,26 +123,6 @@ export default {
 				this.abrirModal();
 			}
 		},
-		votarRespuesta(accion, respuesta) {
-			if (this.usuario.id) {
-				let data = new FormData();
-				data.append('respuesta_id', respuesta.id);
-				data.append('accion', accion);
-				data.append('tipo', 'respuesta');
-				axios.post(`/api/respuesta/votar`, data)
-				.then(res => {
-					console.log(res.data);
-					respuesta.ha_votado = res.data.ha_votado;
-					respuesta.votos_positivos = res.data.votos_positivos;
-					respuesta.votos_negativos = res.data.votos_negativos;
-				})
-				.catch(err => {
-					console.log(err);
-				})
-			} else {
-				this.abrirModal();
-			}
-		},
 		crearRespuesta() {
 			if (this.usuario.id) {
 				let datos = new FormData();
@@ -182,11 +140,9 @@ export default {
 				this.abrirModal();
 			}
 		},
-		abrirModal() {
-			this.modal.mostrar = true;
-		},
-		cerrarModal() {
-			this.modal.mostrar = false;
+		indexRecursoEliminado(index_recurso) {
+			// Eliminamos localmente la categoría deseada
+			this.respuestas.splice(index_recurso, 1);
 		}
 	}
 }

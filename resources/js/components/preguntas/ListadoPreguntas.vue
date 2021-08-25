@@ -20,6 +20,7 @@
 					:index="index"
 					:pregunta="pregunta"
 					:mismo_autor="usuario.id === pregunta.user_id"
+					:usuario="usuario"
 					@indexRecursoEliminado="indexRecursoEliminado"
 				>
 				</pregunta-en-lista>
@@ -38,6 +39,7 @@
 export default {
 	props: {
 		usuario: Object,
+		todas: Boolean,
 		query: String,
 		sin_responder: Boolean,
 		categoria: String,
@@ -47,13 +49,14 @@ export default {
 		return {
 			preguntas: [],
 			paginacion: {
+				todas: this.todas,
 				query: this.query,
 				sin_responder: this.sin_responder,
 				categoria: this.categoria,
 				preguntas_propias: this.preguntas_propias,
 				filtro: 'mas_reciente',
 				pagina: 0,
-				itemsMaxPorPag: 3,
+				itemsMaxPorPag: 10,
 				totalItems: 0
 			}
 		}

@@ -9,6 +9,7 @@ use App\Models\Respuesta;
 use App\Models\User;
 use App\Models\VotoPregunta;
 use App\Models\VotoRespuestas;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -266,14 +267,18 @@ class PreguntaController extends Controller
 			$respuestas = Respuesta::where('pregunta_id', '=', $pregunta->id)
 			->orderBy('created_at', 'DESC')
 			->get();
+			$respuestas = json_decode(json_encode($respuestas), true);
 
 			// Recorremos las respuestas
 			for ($i=0; $i < count($respuestas); $i++) {
 				// Obtenemos el autor de la respuesta
 				$autor = User::find($respuestas[$i]['user_id']);
-				$autor = $autor->name;
-				$respuestas[$i]['autor'] = $autor;
+				$respuestas[$i]['autor']['id'] = $autor->id;
+				$respuestas[$i]['autor']['nombre'] = $autor->name;
 				$respuestas[$i]['ha_votado'] = 0;
+
+				// Formateamos la fecha de creación
+				$respuestas[$i]['created_at'] = Carbon::parse($respuestas[$i]['created_at'])->diffForHumans();
 
 				// Obtenemos los votos positivos de la repsuesta
 				$votos_positivos = VotoRespuestas::where('respuesta_id', '=', $respuestas[$i]['id'])

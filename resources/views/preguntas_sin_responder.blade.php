@@ -7,6 +7,7 @@
 				query="{{ null }}"
 				:sin_responder="true"
 				categoria="{{ null }}"
+				:usuario="{{ Auth::check() ? Auth::user() : '{}' }}"
 			>
 			</listado-preguntas>
 		</div>

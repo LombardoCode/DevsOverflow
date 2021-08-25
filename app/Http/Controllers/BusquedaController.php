@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\DB;
 class BusquedaController extends Controller
 {
 	public function mostrar_vista_inicio() {
+		return view('inicio', [
+			'titulo' => 'DevsOverflow'
+		]);
 		// Obtenemos las últimas preguntas realizadas por los usuarios
 		$cantidad_de_preguntas = 15;
 
@@ -80,6 +83,11 @@ class BusquedaController extends Controller
 
 	public function realizar_busqueda(Request $request) {
 		// Si la búsqueda fué realizada mediante una barra de búsqueda...
+		if ($request['query'] == null && $request['todas'] == true) {
+			$request['query'] = "";
+			return $this->realizar_busqueda_mediante_query($request);
+		}
+
 		if (isset($request['query']) && $request['query'] != null) {
 			return $this->realizar_busqueda_mediante_query($request);
 		}
@@ -122,7 +130,7 @@ class BusquedaController extends Controller
 			if ($filtro == 'votos') {
 				// Obtenemos las preguntas siguiendo el query y ordenadas de las más votadas hasta las no tan votadas dependiendo del estado de la paginación
 				$preguntas = DB::select(
-					'SELECT p.id, p.pregunta, p.user_id, COALESCE(SUM(vp.voto_bool = 1), 0) AS votos_positivos, COALESCE(SUM(vp.voto_bool = 0), 0) AS votos_negativos
+					'SELECT p.*, COALESCE(SUM(vp.voto_bool = 1), 0) AS votos_positivos, COALESCE(SUM(vp.voto_bool = 0), 0) AS votos_negativos
 					FROM preguntas p
 					LEFT OUTER JOIN voto_preguntas vp
 					ON p.id = vp.pregunta_id
@@ -283,8 +291,8 @@ class BusquedaController extends Controller
 			} else {
 				if ($filtro == 'votos') {
 					// Obtenemos las preguntas de la categoría solicitada ordenadas de las más votadas hasta las no tan votadas dependiendo del estado de la paginación
-					$preguntas_de_categoria = DB::select(
-						'SELECT p.id, p.pregunta, p.user_id, COALESCE(SUM(vp.voto_bool = 1), 0) AS votos_positivos, COALESCE(SUM(vp.voto_bool = 0), 0) AS votos_negativos
+					$preguntas = DB::select(
+						'SELECT p.*, COALESCE(SUM(vp.voto_bool = 1), 0) AS votos_positivos, COALESCE(SUM(vp.voto_bool = 0), 0) AS votos_negativos
 						FROM preguntas p
 						INNER JOIN relacion_categoria_preguntas rcp
 						ON p.id = rcp.pregunta_id
@@ -365,15 +373,16 @@ class BusquedaController extends Controller
 			if ($filtro == 'votos') {
 				// Obtenemos las preguntas siguiendo el query y ordenadas de las más votadas hasta las no tan votadas dependiendo del estado de la paginación
 				$preguntas = DB::select(
-					'SELECT p.id, p.pregunta, p.user_id, COALESCE(SUM(vp.voto_bool = 1), 0) AS votos_positivos, COALESCE(SUM(vp.voto_bool = 0), 0) AS votos_negativos
+					'SELECT p.*, COALESCE(SUM(vp.voto_bool = 1), 0) AS votos_positivos, COALESCE(SUM(vp.voto_bool = 0), 0) AS votos_negativos
 					FROM preguntas p
 					LEFT OUTER JOIN voto_preguntas vp
 					ON p.id = vp.pregunta_id
 					WHERE p.pregunta LIKE "%'.$query. '%"
+					AND p.user_id = ?
 					GROUP BY p.id
 					ORDER BY votos_positivos DESC
 					LIMIT ?
-					OFFSET ?;', [$itemsMaxPorPag, $offset]);
+					OFFSET ?;', [Auth::user()->id, $itemsMaxPorPag, $offset]);
 			}
 		}
 
