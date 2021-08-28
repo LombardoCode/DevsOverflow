@@ -13,7 +13,10 @@ module.exports = {
     extend: {
 			ringWidth: {
         '1': '1px',
-      }
+      },
+			width: {
+				'contenedor-notificaciones': '30rem'
+			}
 		},
   },
   variants: {
