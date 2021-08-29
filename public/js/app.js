@@ -12063,8 +12063,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fortawesome/fontawesome-svg-core */ "./node_modules/@fortawesome/fontawesome-svg-core/index.es.js");
-/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
-/* harmony import */ var _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fortawesome/vue-fontawesome */ "./node_modules/@fortawesome/vue-fontawesome/index.es.js");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
 //
 //
 //
@@ -12107,8 +12106,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 
-
-_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__.library.add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__.faEdit, _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__.faTrashAlt, _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__.faPlus);
+_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__.library.add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_1__.faEdit, _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_1__.faTrashAlt, _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_1__.faPlus);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     titulo: String,
@@ -13012,7 +13010,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     usuario: Object,
@@ -13349,6 +13346,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fortawesome/fontawesome-svg-core */ "./node_modules/@fortawesome/fontawesome-svg-core/index.es.js");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
 //
 //
 //
@@ -13390,6 +13389,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
+
+_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__.library.add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_1__.faEdit, _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_1__.faTrashAlt);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     index: Number,
@@ -13575,8 +13579,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
-//
 //
 //
 //
@@ -72117,13 +72119,19 @@ var render = function() {
       [
         _c(
           "div",
-          { staticClass: "flex justify-between items-center" },
+          {
+            staticClass:
+              "flex flex-col lg:flex-row justify-between items-center"
+          },
           [
-            _c("h5", { staticClass: "font-bold text-2xl my-6" }, [
-              _vm._v(_vm._s(_vm.titulo))
-            ]),
+            _c(
+              "h5",
+              { staticClass: "w-full lg:w-auto font-bold text-2xl my-6" },
+              [_vm._v(_vm._s(_vm.titulo))]
+            ),
             _vm._v(" "),
             _c("vue-anchor-button", {
+              staticClass: "w-full lg:w-auto text-center lg:text-left",
               attrs: { href: "/pregunta/crear", texto: "Crear pregunta" }
             })
           ],
@@ -72139,24 +72147,40 @@ var render = function() {
         _c(
           "div",
           {
-            staticClass: "flex justify-between items-center mt-2 mb-6",
+            staticClass:
+              "flex flex-col lg:flex-row justify-between items-center mt-2 mb-6",
             attrs: { id: "header-resultados-filtros" }
           },
           [
-            _c("span", { staticClass: "text-lg font-medium" }, [
-              _vm._v(_vm._s(_vm.paginacion.totalItems) + " resultados")
-            ]),
+            _c(
+              "span",
+              {
+                staticClass:
+                  "text-lg font-medium order-last lg:order-none w-full lg:w-auto mt-3 lg:mt-0"
+              },
+              [
+                _vm._v(
+                  _vm._s(_vm.paginacion.totalItems) +
+                    " " +
+                    _vm._s(
+                      _vm.paginacion.totalItems > 1 ? "resultados" : "resultado"
+                    )
+                )
+              ]
+            ),
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "flex flex-wrap ring-1 ring-gray-600 rounded" },
+              {
+                staticClass:
+                  "flex flex-col lg:flex-row ring-1 ring-gray-600 rounded mt-2 lg:mt-0 w-full lg:w-auto"
+              },
               [
-                _c("span", [_vm._v(_vm._s(_vm.paginacion.filtros))]),
-                _vm._v(" "),
                 _c(
                   "button",
                   {
-                    staticClass: "px-3 py-2 border-r-2 border-gray-600",
+                    staticClass:
+                      "flex-1 min-w-max px-3 py-3 lg:py-2 border-r-2 border-gray-600",
                     class: {
                       "bg-gray-600 text-white":
                         _vm.paginacion.filtro == "mas_reciente"
@@ -72173,13 +72197,14 @@ var render = function() {
                 _c(
                   "button",
                   {
-                    staticClass: "px-3 py-2 border-gray-600",
+                    staticClass:
+                      "flex-1 min-w-max px-3 py-3 lg:py-2 border-gray-600",
                     class: {
-                      "bg-gray-600 text-white": _vm.paginacion.filtro == "votos"
+                      "bg-gray-600 text-white": _vm.paginacion.filtro == "voto"
                     },
                     on: {
                       click: function($event) {
-                        return _vm.cambiarFiltro("votos")
+                        return _vm.cambiarFiltro("voto")
                       }
                     }
                   },
@@ -72619,17 +72644,24 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "flex mb-10 w-full", attrs: { id: "pregunta" } },
+    {
+      staticClass: "flex flex-col lg:flex-row mb-10 w-full",
+      attrs: { id: "pregunta" }
+    },
     [
       _c(
         "div",
-        { staticClass: "flex flex-col mr-4", attrs: { id: "valoraciones" } },
+        {
+          staticClass:
+            "flex flex-col sm:flex-row lg:flex-col  items-stretch lg:mr-4 order-2 lg:order-none",
+          attrs: { id: "valoraciones" }
+        },
         [
           _c(
             "div",
             {
               staticClass:
-                "text-center bg-blue-500 text-white px-3 py-1 rounded-md mb-2"
+                "flex-1 lg:flex-initial text-center bg-blue-500 text-white px-3 py-1 rounded-md lg:mb-2 mb-2 sm:mb-0 sm:mr-1 lg:mr-0"
             },
             [
               _c("p", [_vm._v(_vm._s(_vm.pregunta.votos))]),
@@ -72642,7 +72674,7 @@ var render = function() {
             "div",
             {
               staticClass:
-                "text-center bg-green-500 text-white px-3 py-1 rounded-md"
+                "flex-1 lg:flex-initial text-center bg-green-500 text-white px-3 py-1 rounded-md sm:ml-1 lg:ml-0"
             },
             [
               _c("p", [_vm._v(_vm._s(_vm.pregunta.respuestas))]),
@@ -72670,21 +72702,31 @@ var render = function() {
                   "a",
                   {
                     staticClass:
-                      "bg-blue-600 hover:bg-blue-700 transition-all duration-200 text-white px-2 py-2 rounded-md mr-1 cursor-pointer",
+                      "bg-blue-600 hover:bg-blue-700 transition-all duration-200 text-white px-4 lg:px-2 py-3 lg:py-2 rounded-md mr-1 cursor-pointer",
                     attrs: {
                       id: "editar",
                       href:
                         "/pregunta/" + _vm.pregunta.identificador + "/editar"
                     }
                   },
-                  [_vm._v("\n\t\t\t\t\tEditar\n\t\t\t\t")]
+                  [
+                    _c("span", { staticClass: "hidden lg:inline-block" }, [
+                      _vm._v("Editar")
+                    ]),
+                    _vm._v(" "),
+                    _c("font-awesome-icon", {
+                      staticClass: "lg:hidden",
+                      attrs: { icon: "edit" }
+                    })
+                  ],
+                  1
                 ),
                 _vm._v(" "),
                 _c(
                   "div",
                   {
                     staticClass:
-                      "bg-red-600 hover:bg-red-700 transition-all duration-200 text-white px-2 py-2 rounded-md cursor-pointer",
+                      "bg-red-600 hover:bg-red-700 transition-all duration-200 text-white px-4 lg:px-2 py-3 lg:py-2 rounded-md cursor-pointer",
                     attrs: { id: "eliminar" },
                     on: {
                       click: function($event) {
@@ -72692,7 +72734,17 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v("\n\t\t\t\t\tEliminar\n\t\t\t\t")]
+                  [
+                    _c("span", { staticClass: "hidden lg:inline-block" }, [
+                      _vm._v("Eliminar")
+                    ]),
+                    _vm._v(" "),
+                    _c("font-awesome-icon", {
+                      staticClass: "lg:hidden",
+                      attrs: { icon: "trash-alt" }
+                    })
+                  ],
+                  1
                 )
               ])
             : _vm._e()
@@ -72703,25 +72755,33 @@ var render = function() {
         _c(
           "div",
           {
-            staticClass: "grid grid-cols-2 mt-2",
+            staticClass: "grid grid-cols-12 mt-2",
             attrs: { id: "secciones-y-creador" }
           },
           [
             _c(
               "div",
-              { staticClass: "flex", attrs: { id: "secciones" } },
-              _vm._l(_vm.categorias, function(categoria, index) {
+              {
+                staticClass: "col-span-12 flex flex-wrap  items-end mb-2",
+                attrs: { id: "secciones" }
+              },
+              _vm._l(_vm.pregunta.categorias, function(categoria, index) {
                 return _c(
                   "div",
                   {
                     key: index,
                     staticClass:
-                      "text-sm px-3 mr-2 bg-blue-200 text-blue-600 rounded flex justify-center items-center"
+                      "text-sm mr-2 mb-2 bg-blue-200 hover:bg-blue-300 transition-all duration-100 text-blue-600 rounded flex justify-center items-center"
                   },
                   [
-                    _c("a", { attrs: { href: "/categorias/" + categoria } }, [
-                      _vm._v(_vm._s(categoria))
-                    ])
+                    _c(
+                      "a",
+                      {
+                        staticClass: "px-3 py-2",
+                        attrs: { href: "/categorias/" + categoria.categoria }
+                      },
+                      [_vm._v(_vm._s(categoria.categoria))]
+                    )
                   ]
                 )
               }),
@@ -72731,7 +72791,8 @@ var render = function() {
             _c(
               "div",
               {
-                staticClass: "flex flex-col justify-center items-end",
+                staticClass:
+                  "col-span-12 flex flex-col justify-center items-end mb-3 lg:mb-0",
                 attrs: { id: "creador" }
               },
               [
@@ -72958,75 +73019,79 @@ var render = function() {
       attrs: { id: "usuarios" }
     },
     [
-      _c("div", { staticClass: "flex items-center justify-between" }, [
-        _c("h5", { staticClass: "font-bold text-2xl my-6" }, [
-          _vm._v("Usuarios")
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "flex items-center flex-1 justify-end" },
-          [
-            _c("vue-input", {
-              staticClass: "max-w-md",
-              attrs: { placeholder: "Buscar un usuario..." },
-              on: {
-                input: function($event) {
-                  return _vm.busquedaEscrita()
-                }
-              },
-              model: {
-                value: _vm.paginacion.query,
-                callback: function($$v) {
-                  _vm.$set(_vm.paginacion, "query", $$v)
-                },
-                expression: "paginacion.query"
-              }
-            }),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "flex ring-1 ring-gray-600 rounded ml-3" },
-              [
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "min-w-max px-3 py-2 border-r-2 border-gray-600",
-                    class: {
-                      "bg-gray-600 text-white": _vm.paginacion.filtro == "todos"
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.cambiarFiltro("todos")
-                      }
-                    }
-                  },
-                  [_vm._v("Todos")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "min-w-max px-3 py-2 border-gray-600",
-                    class: {
-                      "bg-gray-600 text-white":
-                        _vm.paginacion.filtro == "nuevos_usuarios"
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.cambiarFiltro("nuevos_usuarios")
-                      }
-                    }
-                  },
-                  [_vm._v("Nuevos usuarios")]
-                )
-              ]
-            )
-          ],
-          1
-        )
+      _c("h5", { staticClass: "font-bold text-2xl my-6" }, [
+        _vm._v("Usuarios")
       ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "flex flex-col lg:flex-row items-center flex-1 justify-end mb-4"
+        },
+        [
+          _c("vue-input", {
+            staticClass: "flex-1 lg:mr-4",
+            attrs: { placeholder: "Buscar un usuario..." },
+            on: {
+              input: function($event) {
+                return _vm.busquedaEscrita()
+              }
+            },
+            model: {
+              value: _vm.paginacion.query,
+              callback: function($$v) {
+                _vm.$set(_vm.paginacion, "query", $$v)
+              },
+              expression: "paginacion.query"
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "flex flex-col lg:flex-row ring-1 ring-gray-600 rounded mt-2 lg:mt-0 w-full lg:w-auto"
+            },
+            [
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "flex-1 min-w-max px-3 py-2 border-r-2 border-gray-600",
+                  class: {
+                    "bg-gray-600 text-white": _vm.paginacion.filtro == "todos"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.cambiarFiltro("todos")
+                    }
+                  }
+                },
+                [_vm._v("Todos")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "flex-1 min-w-max px-3 py-2 border-gray-600",
+                  class: {
+                    "bg-gray-600 text-white":
+                      _vm.paginacion.filtro == "nuevos_usuarios"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.cambiarFiltro("nuevos_usuarios")
+                    }
+                  }
+                },
+                [_vm._v("Nuevos usuarios")]
+              )
+            ]
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "div",

@@ -19,52 +19,6 @@ class BusquedaController extends Controller
 		return view('inicio', [
 			'titulo' => 'DevsOverflow'
 		]);
-		// Obtenemos las últimas preguntas realizadas por los usuarios
-		$cantidad_de_preguntas = 15;
-
-		$preguntas = DB::table('preguntas')
-		->orderBy('created_at', 'asc')
-		->offset(0)
-		->limit($cantidad_de_preguntas)
-		->get();
-		$preguntas = json_decode($preguntas, true);
-
-		// Recorremos las preguntas
-		for ($i=0; $i < count($preguntas); $i++) {
-			// Obtenemos el autor de cada pregunta
-			$autor = User::find($preguntas[$i]['user_id']);
-			$preguntas[$i]['autor']['id'] = $autor->id;
-			$preguntas[$i]['autor']['nombre'] = $autor->name;
-
-			// Obtenemos la cantidad de votos de cada pregunta
-			$votos = VotoPregunta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
-			$preguntas[$i]['votos'] = count($votos) > 0 ? count($votos) : 0;
-
-			// Formateamos la fecha de creación
-			$preguntas[$i]['created_at'] = Carbon::parse($preguntas[$i]['created_at'])->diffForHumans();
-
-			// Obtenemos la cantidad de respuestas de cada pregunta
-			$respuestas = Respuesta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
-			$preguntas[$i]['respuestas'] = count($respuestas) > 0 ? count($respuestas) : 0;
-
-			// Obtenemos las categorías de la pregunta
-			$categorias = RelacionCategoriaPregunta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
-
-			// Recorremos las categorías
-			if (count($categorias) > 0) {
-				for ($j=0; $j < count($categorias); $j++) {
-					$categoria = Categoria::find($categorias[$j]['categoria_id']);
-					$preguntas[$i]['categorias'][$j] = $categoria['categoria'];
-				}
-			} else {
-				$preguntas[$i]['categorias'] = [];
-			}
-		}
-
-		return view('inicio', [
-			'titulo' => 'DevsOverflow',
-			'preguntas' => $preguntas
-		]);
 	}
 
 	public function mostrar_vista_resultados($query) {
@@ -167,6 +121,18 @@ class BusquedaController extends Controller
 			// Formateamos la fecha de creación
 			$preguntas[$i]['created_at'] = Carbon::parse($preguntas[$i]['created_at'])->diffForHumans();
 
+			// Obtenemos las categorías de la pregunta
+			$relacion_categorias = RelacionCategoriaPregunta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
+
+			// Recorremos las relaciones
+			for ($j=0; $j < count($relacion_categorias); $j++) {
+				// Obtenemos la categoría
+				$categoria = Categoria::find($relacion_categorias[$j]['categoria_id']);
+
+				// Adjuntamos la categoría a la pregunta
+				$preguntas[$i]['categorias'][] = $categoria;
+			}
+
 			// Obtenemos la cantidad de respuestas de cada pregunta
 			$respuestas = Respuesta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
 			$preguntas[$i]['respuestas'] = count($respuestas) > 0 ? count($respuestas) : 0;
@@ -252,6 +218,18 @@ class BusquedaController extends Controller
 			// Formateamos la fecha de creación
 			$preguntas[$i]['created_at'] = Carbon::parse($preguntas[$i]['created_at'])->diffForHumans();
 
+			// Obtenemos las categorías de la pregunta
+			$relacion_categorias = RelacionCategoriaPregunta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
+
+			// Recorremos las relaciones
+			for ($j=0; $j < count($relacion_categorias); $j++) {
+				// Obtenemos la categoría
+				$categoria = Categoria::find($relacion_categorias[$j]['categoria_id']);
+
+				// Adjuntamos la categoría a la pregunta
+				$preguntas[$i]['categorias'][] = $categoria;
+			}
+
 			// Obtenemos la cantidad de respuestas de cada pregunta
 			$respuestas = Respuesta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
 			$preguntas[$i]['respuestas'] = count($respuestas) > 0 ? count($respuestas) : 0;
@@ -335,6 +313,18 @@ class BusquedaController extends Controller
 				// Formateamos la fecha de creación
 				$preguntas[$i]['created_at'] = Carbon::parse($preguntas[$i]['created_at'])->diffForHumans();
 
+				// Obtenemos las categorías de la pregunta
+				$relacion_categorias = RelacionCategoriaPregunta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
+
+				// Recorremos las relaciones
+				for ($j=0; $j < count($relacion_categorias); $j++) {
+					// Obtenemos la categoría
+					$categoria = Categoria::find($relacion_categorias[$j]['categoria_id']);
+
+					// Adjuntamos la categoría a la pregunta
+					$preguntas[$i]['categorias'][] = $categoria;
+				}
+
 				// Obtenemos la cantidad de respuestas de cada pregunta
 				$respuestas = Respuesta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
 				$preguntas[$i]['respuestas'] = count($respuestas) > 0 ? count($respuestas) : 0;
@@ -410,6 +400,18 @@ class BusquedaController extends Controller
 
 			// Formateamos la fecha de creación
 			$preguntas[$i]['created_at'] = Carbon::parse($preguntas[$i]['created_at'])->diffForHumans();
+
+			// Obtenemos las categorías de la pregunta
+			$relacion_categorias = RelacionCategoriaPregunta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();
+
+			// Recorremos las relaciones
+			for ($j=0; $j < count($relacion_categorias); $j++) {
+				// Obtenemos la categoría
+				$categoria = Categoria::find($relacion_categorias[$j]['categoria_id']);
+
+				// Adjuntamos la categoría a la pregunta
+				$preguntas[$i]['categorias'][] = $categoria;
+			}
 
 			// Obtenemos la cantidad de respuestas de cada pregunta
 			$respuestas = Respuesta::where('pregunta_id', '=', $preguntas[$i]['id'])->get();

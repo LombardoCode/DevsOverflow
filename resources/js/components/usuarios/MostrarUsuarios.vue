@@ -1,13 +1,11 @@
 <template>
 	<div id="usuarios" class="text-xs flex-1 px-3 overflow-y-scroll">
-		<div class="flex items-center justify-between">
-			<h5 class="font-bold text-2xl my-6">Usuarios</h5>
-			<div class="flex items-center flex-1 justify-end">
-				<vue-input class="max-w-md" v-model="paginacion.query" @input="busquedaEscrita()" placeholder="Buscar un usuario..."></vue-input>
-				<div class="flex ring-1 ring-gray-600 rounded ml-3">
-					<button class="min-w-max px-3 py-2 border-r-2 border-gray-600" :class="{'bg-gray-600 text-white': paginacion.filtro == 'todos'}" @click="cambiarFiltro('todos')">Todos</button>
-					<button class="min-w-max px-3 py-2 border-gray-600" :class="{'bg-gray-600 text-white': paginacion.filtro == 'nuevos_usuarios'}" @click="cambiarFiltro('nuevos_usuarios')">Nuevos usuarios</button>
-				</div>
+		<h5 class="font-bold text-2xl my-6">Usuarios</h5>
+		<div class="flex flex-col lg:flex-row items-center flex-1 justify-end mb-4">
+			<vue-input class="flex-1 lg:mr-4" v-model="paginacion.query" @input="busquedaEscrita()" placeholder="Buscar un usuario..."></vue-input>
+			<div class="flex flex-col lg:flex-row ring-1 ring-gray-600 rounded mt-2 lg:mt-0 w-full lg:w-auto">
+				<button class="flex-1 min-w-max px-3 py-2 border-r-2 border-gray-600" :class="{'bg-gray-600 text-white': paginacion.filtro == 'todos'}" @click="cambiarFiltro('todos')">Todos</button>
+				<button class="flex-1 min-w-max px-3 py-2 border-gray-600" :class="{'bg-gray-600 text-white': paginacion.filtro == 'nuevos_usuarios'}" @click="cambiarFiltro('nuevos_usuarios')">Nuevos usuarios</button>
 			</div>
 		</div>
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">

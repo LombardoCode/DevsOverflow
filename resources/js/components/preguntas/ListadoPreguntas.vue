@@ -1,17 +1,16 @@
 <template>
 	<div class="w-full flex-1 px-3 overflow-y-scroll">
 		<div id="contenido_principal" class="flex-1 px-3">
-			<div class="flex justify-between items-center">
-				<h5 class="font-bold text-2xl my-6">{{ titulo }}</h5>
-				<vue-anchor-button href="/pregunta/crear" texto="Crear pregunta"></vue-anchor-button>
+			<div class="flex flex-col lg:flex-row justify-between items-center">
+				<h5 class="w-full lg:w-auto font-bold text-2xl my-6">{{ titulo }}</h5>
+				<vue-anchor-button href="/pregunta/crear" texto="Crear pregunta" class="w-full lg:w-auto text-center lg:text-left"></vue-anchor-button>
 			</div>
 			<p v-if="query" class="text-gray-600 mb-4">Resultados para "{{ query }}"</p>
-			<div id="header-resultados-filtros" class="flex justify-between items-center mt-2 mb-6">
-				<span class="text-lg font-medium">{{ paginacion.totalItems }} resultados</span>
-				<div class="flex flex-wrap ring-1 ring-gray-600 rounded">
-					<span>{{paginacion.filtros}}</span>
-					<button class="px-3 py-2 border-r-2 border-gray-600" :class="{'bg-gray-600 text-white': paginacion.filtro == 'mas_reciente'}" @click="cambiarFiltro('mas_reciente')">Más reciente</button>
-					<button class="px-3 py-2 border-gray-600" :class="{'bg-gray-600 text-white': paginacion.filtro == 'votos'}" @click="cambiarFiltro('votos')">Votos</button>
+			<div id="header-resultados-filtros" class="flex flex-col lg:flex-row justify-between items-center mt-2 mb-6">
+				<span class="text-lg font-medium order-last lg:order-none w-full lg:w-auto mt-3 lg:mt-0">{{ paginacion.totalItems }} {{paginacion.totalItems > 1 ? 'resultados' : 'resultado'}}</span>
+				<div class="flex flex-col lg:flex-row ring-1 ring-gray-600 rounded mt-2 lg:mt-0 w-full lg:w-auto">
+					<button class="flex-1 min-w-max px-3 py-3 lg:py-2 border-r-2 border-gray-600" :class="{'bg-gray-600 text-white': paginacion.filtro == 'mas_reciente'}" @click="cambiarFiltro('mas_reciente')">Más reciente</button>
+					<button class="flex-1 min-w-max px-3 py-3 lg:py-2 border-gray-600" :class="{'bg-gray-600 text-white': paginacion.filtro == 'voto'}" @click="cambiarFiltro('voto')">Votos</button>
 				</div>
 			</div>
 			<div id="preguntas">
