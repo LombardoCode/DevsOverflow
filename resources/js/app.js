@@ -38,7 +38,7 @@ Vue.component('sidebar-izquierda', require('./components/elementos_layout/Sideba
 Vue.component('listado-preguntas', require('./components/preguntas/ListadoPreguntas.vue').default);
 Vue.component('mostrar-pregunta', require('./components/preguntas/MostrarPregunta.vue').default);
 Vue.component('pregunta-en-lista', require('./components/preguntas/PreguntaEnLista.vue').default);
-Vue.component('crear-pregunta', require('./components/auth/CrearPregunta.vue').default);
+Vue.component('crear-y-editar-pregunta', require('./components/auth/CrearYEditarPregunta.vue').default);
 Vue.component('paginacion', require('./components/preguntas/Paginacion.vue').default);
 
 // Modals

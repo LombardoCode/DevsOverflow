@@ -140159,7 +140159,7 @@ video {
   }
 
   .xl\:bg-transparent {
- $  background-color: transparent;
+    background-color: transparent;
   }
 
   .xl\:bg-current {

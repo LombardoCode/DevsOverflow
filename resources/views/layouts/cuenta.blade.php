@@ -6,7 +6,7 @@
 	<body>
 		<div id="app">
 			@include('reusable.navbar')
-			<div id="contenido" style="padding-top: 52px;">
+			<div id="contenido" style="padding-top: 66px;">
 				<div class="container mx-auto text-sm flex h-screen" style="height: calc(100vh - 52px)">
 					@include('reusable.sidebar_cuenta')
 					@yield('contenido-principal')

@@ -11,20 +11,18 @@
 			</div>
 		</div>
 		<div class="w-full">
-			<div>
-				<div class="flex">
-					<a :href="`/pregunta/${pregunta.identificador}`" class="flex-1 text-blue-700 text-base">{{ pregunta.pregunta }}</a>
-					<div v-if="mismo_autor || usuario.id === pregunta.user_id" class="flex">
-						<a id="editar" :href="`/pregunta/${pregunta.identificador}/editar`" class="bg-blue-600 hover:bg-blue-700 transition-all duration-200 text-white px-2 py-2 rounded-md mr-1 cursor-pointer">
-							Editar
-						</a>
-						<div id="eliminar" class="bg-red-600 hover:bg-red-700 transition-all duration-200 text-white px-2 py-2 rounded-md cursor-pointer" @click="abrirModal(pregunta, index)">
-							Eliminar
-						</div>
+			<div class="flex items-start">
+				<a :href="`/pregunta/${pregunta.identificador}`" class="flex-1 text-blue-700 text-base">{{ pregunta.pregunta }}</a>
+				<div v-if="mismo_autor || usuario.id === pregunta.user_id" class="flex">
+					<a id="editar" :href="`/pregunta/${pregunta.identificador}/editar`" class="bg-blue-600 hover:bg-blue-700 transition-all duration-200 text-white px-2 py-2 rounded-md mr-1 cursor-pointer">
+						Editar
+					</a>
+					<div id="eliminar" class="bg-red-600 hover:bg-red-700 transition-all duration-200 text-white px-2 py-2 rounded-md cursor-pointer" @click="abrirModal(pregunta, index)">
+						Eliminar
 					</div>
 				</div>
-				<p>{{ pregunta.descripcion }}</p>
 			</div>
+			<p>{{ pregunta.descripcion }}</p>
 			<div id="secciones-y-creador" class="grid grid-cols-2 mt-2">
 				<div id="secciones" class="flex">
 					<div v-for="(categoria, index) in categorias" :key="index" class="text-sm px-3 mr-2 bg-blue-200 text-blue-600 rounded flex justify-center items-center">

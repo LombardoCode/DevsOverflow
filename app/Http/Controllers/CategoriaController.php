@@ -111,10 +111,22 @@ class CategoriaController extends Controller
 		}
 	}
 
-	public function show($nombre_categoria) {
+	public function show(Request $request) {
+		// Obtenemos las categorías seleccionadas en el front-end
+		$categorias_seleccionadas = $request['seleccionadas'];
+
+		// Obtenemos los ID's de las categorías seleccionadas en el front-end
+		$ids_categorias_seleccionadas = array_column($categorias_seleccionadas, 'id');
+
+		// Obtenemos el input
+		$nombre_categoria = $request['input'];
+
+		// Obtenemos las categorías deacuerdo al input y que no se haya seleccionado previamente en el front-end
 		$busqueda = Categoria::where('categoria', 'LIKE', '%'.$nombre_categoria.'%')
+		->whereNotIn('id', $ids_categorias_seleccionadas)
 		->limit(5)
 		->get();
+
 		return response()->json([
 			'busqueda' => $busqueda
 		]);

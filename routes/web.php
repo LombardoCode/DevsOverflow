@@ -138,7 +138,7 @@ Route::prefix('api')->group(function() {
 		Route::post('/', [UsuarioController::class, 'all']);
 	});
 	Route::prefix('categoria')->group(function() {
-		Route::get('/{nombre_categoria}', [CategoriaController::class, 'show']);
+		Route::post('/obtener', [CategoriaController::class, 'show']);
 		Route::post('/obtener_categorias', [CategoriaController::class, 'obtener_categorias']);
 		Route::post('/', [CategoriaController::class, 'store']);
 		Route::delete('/{categoria_id}', [CategoriaController::class, 'delete']);

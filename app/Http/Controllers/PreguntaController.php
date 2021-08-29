@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Validator;
 class PreguntaController extends Controller
 {
 	public function mostrar_vista_crear_pregunta() {
-		return view('auth.crear_pregunta', [
+		return view('auth.crear_y_editar_pregunta', [
 			'titulo' => 'Crear pregunta'
 		]);
 	}
@@ -44,12 +44,13 @@ class PreguntaController extends Controller
 				$pregunta['categorias'][] = $categoria;
 			}
 
-			return view('auth.crear_pregunta', [
+			return view('auth.crear_y_editar_pregunta', [
 				'titulo' => 'Editar pregunta',
-				'pregunta' => $pregunta
+				'pregunta' => $pregunta,
+				'editar' => true
 			]);
 		} else {
-			return "No";
+			return abort(404);
 		}
 	}
 

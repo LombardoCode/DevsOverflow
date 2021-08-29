@@ -11897,10 +11897,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/CrearPregunta.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/CrearPregunta.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/CrearYEditarPregunta.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/CrearYEditarPregunta.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -11951,11 +11951,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     csrf: String,
-    pregunta: Object
+    pregunta: Object,
+    editar: {
+      type: Boolean,
+      "default": false
+    }
   },
   components: {
     VueEditor: vue2_editor__WEBPACK_IMPORTED_MODULE_0__.VueEditor
@@ -12021,7 +12026,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       if (this.categorias.input.length != 0) {
-        axios.get("/api/categoria/".concat(this.categorias.input)).then(function (res) {
+        axios.post("/api/categoria/obtener", this.categorias).then(function (res) {
           console.log(res.data);
           _this.categorias.busqueda = res.data.busqueda;
         })["catch"](function (err) {
@@ -12060,8 +12065,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fortawesome/fontawesome-svg-core */ "./node_modules/@fortawesome/fontawesome-svg-core/index.es.js");
 /* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
 /* harmony import */ var _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fortawesome/vue-fontawesome */ "./node_modules/@fortawesome/vue-fontawesome/index.es.js");
-//
-//
 //
 //
 //
@@ -12305,12 +12308,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_clickaway__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-clickaway */ "./node_modules/vue-clickaway/dist/vue-clickaway.common.js");
 /* harmony import */ var _NotificacionesContenedor_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./NotificacionesContenedor.vue */ "./resources/js/components/elementos_layout/NotificacionesContenedor.vue");
 /* harmony import */ var _elementos_html_VueInput_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../elementos_html/VueInput.vue */ "./resources/js/components/elementos_html/VueInput.vue");
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -13019,6 +13016,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     usuario: Object,
+    titulo: String,
     todas: Boolean,
     query: String,
     sin_responder: Boolean,
@@ -13392,8 +13390,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     index: Number,
@@ -13608,8 +13604,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -13704,7 +13698,7 @@ Vue.component('sidebar-izquierda', __webpack_require__(/*! ./components/elemento
 Vue.component('listado-preguntas', __webpack_require__(/*! ./components/preguntas/ListadoPreguntas.vue */ "./resources/js/components/preguntas/ListadoPreguntas.vue").default);
 Vue.component('mostrar-pregunta', __webpack_require__(/*! ./components/preguntas/MostrarPregunta.vue */ "./resources/js/components/preguntas/MostrarPregunta.vue").default);
 Vue.component('pregunta-en-lista', __webpack_require__(/*! ./components/preguntas/PreguntaEnLista.vue */ "./resources/js/components/preguntas/PreguntaEnLista.vue").default);
-Vue.component('crear-pregunta', __webpack_require__(/*! ./components/auth/CrearPregunta.vue */ "./resources/js/components/auth/CrearPregunta.vue").default);
+Vue.component('crear-y-editar-pregunta', __webpack_require__(/*! ./components/auth/CrearYEditarPregunta.vue */ "./resources/js/components/auth/CrearYEditarPregunta.vue").default);
 Vue.component('paginacion', __webpack_require__(/*! ./components/preguntas/Paginacion.vue */ "./resources/js/components/preguntas/Paginacion.vue").default); // Modals
 
 Vue.component('modal-eliminar', __webpack_require__(/*! ./components/modals/ModalEliminar.vue */ "./resources/js/components/modals/ModalEliminar.vue").default);
@@ -68839,10 +68833,10 @@ exports.mixin = mixin;
 
 /***/ }),
 
-/***/ "./resources/js/components/auth/CrearPregunta.vue":
-/*!********************************************************!*\
-  !*** ./resources/js/components/auth/CrearPregunta.vue ***!
-  \********************************************************/
+/***/ "./resources/js/components/auth/CrearYEditarPregunta.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/auth/CrearYEditarPregunta.vue ***!
+  \***************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -68850,8 +68844,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _CrearPregunta_vue_vue_type_template_id_403f3cd5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CrearPregunta.vue?vue&type=template&id=403f3cd5& */ "./resources/js/components/auth/CrearPregunta.vue?vue&type=template&id=403f3cd5&");
-/* harmony import */ var _CrearPregunta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CrearPregunta.vue?vue&type=script&lang=js& */ "./resources/js/components/auth/CrearPregunta.vue?vue&type=script&lang=js&");
+/* harmony import */ var _CrearYEditarPregunta_vue_vue_type_template_id_2a226483___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CrearYEditarPregunta.vue?vue&type=template&id=2a226483& */ "./resources/js/components/auth/CrearYEditarPregunta.vue?vue&type=template&id=2a226483&");
+/* harmony import */ var _CrearYEditarPregunta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CrearYEditarPregunta.vue?vue&type=script&lang=js& */ "./resources/js/components/auth/CrearYEditarPregunta.vue?vue&type=script&lang=js&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -68861,9 +68855,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 ;
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
-  _CrearPregunta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
-  _CrearPregunta_vue_vue_type_template_id_403f3cd5___WEBPACK_IMPORTED_MODULE_0__.render,
-  _CrearPregunta_vue_vue_type_template_id_403f3cd5___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _CrearYEditarPregunta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _CrearYEditarPregunta_vue_vue_type_template_id_2a226483___WEBPACK_IMPORTED_MODULE_0__.render,
+  _CrearYEditarPregunta_vue_vue_type_template_id_2a226483___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
   null,
@@ -68873,7 +68867,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/auth/CrearPregunta.vue"
+component.options.__file = "resources/js/components/auth/CrearYEditarPregunta.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -69627,10 +69621,10 @@ component.options.__file = "resources/js/components/usuarios/MostrarUsuarios.vue
 
 /***/ }),
 
-/***/ "./resources/js/components/auth/CrearPregunta.vue?vue&type=script&lang=js&":
-/*!*********************************************************************************!*\
-  !*** ./resources/js/components/auth/CrearPregunta.vue?vue&type=script&lang=js& ***!
-  \*********************************************************************************/
+/***/ "./resources/js/components/auth/CrearYEditarPregunta.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/auth/CrearYEditarPregunta.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -69638,8 +69632,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearPregunta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CrearPregunta.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/CrearPregunta.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearPregunta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearYEditarPregunta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CrearYEditarPregunta.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/CrearYEditarPregunta.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearYEditarPregunta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -69999,19 +69993,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/auth/CrearPregunta.vue?vue&type=template&id=403f3cd5&":
-/*!***************************************************************************************!*\
-  !*** ./resources/js/components/auth/CrearPregunta.vue?vue&type=template&id=403f3cd5& ***!
-  \***************************************************************************************/
+/***/ "./resources/js/components/auth/CrearYEditarPregunta.vue?vue&type=template&id=2a226483&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/auth/CrearYEditarPregunta.vue?vue&type=template&id=2a226483& ***!
+  \**********************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearPregunta_vue_vue_type_template_id_403f3cd5___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearPregunta_vue_vue_type_template_id_403f3cd5___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearYEditarPregunta_vue_vue_type_template_id_2a226483___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearYEditarPregunta_vue_vue_type_template_id_2a226483___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearPregunta_vue_vue_type_template_id_403f3cd5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CrearPregunta.vue?vue&type=template&id=403f3cd5& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/CrearPregunta.vue?vue&type=template&id=403f3cd5&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearYEditarPregunta_vue_vue_type_template_id_2a226483___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CrearYEditarPregunta.vue?vue&type=template&id=2a226483& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/CrearYEditarPregunta.vue?vue&type=template&id=2a226483&");
 
 
 /***/ }),
@@ -70339,10 +70333,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/CrearPregunta.vue?vue&type=template&id=403f3cd5&":
-/*!******************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/CrearPregunta.vue?vue&type=template&id=403f3cd5& ***!
-  \******************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/CrearYEditarPregunta.vue?vue&type=template&id=2a226483&":
+/*!*************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/CrearYEditarPregunta.vue?vue&type=template&id=2a226483& ***!
+  \*************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -70355,9 +70349,9 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { staticClass: "text-xs flex-1 px-3 overflow-y-scroll" }, [
     _c("div", { staticClass: "container mx-auto" }, [
-      _c("h1", { staticClass: "font-bold text-2xl mb-6" }, [
+      _c("h1", { staticClass: "font-bold text-2xl my-6 mb-6" }, [
         _vm._v("Realiza una pregunta a la comunidad")
       ]),
       _vm._v(" "),
@@ -70515,7 +70509,7 @@ var render = function() {
                         attrs: {
                           type: "text",
                           name: "titulo",
-                          placeholder: 'Escriba una categoría..."',
+                          placeholder: "Escriba una categoría...",
                           autocomplete: "off"
                         },
                         on: {
@@ -70536,7 +70530,11 @@ var render = function() {
                         ? _c(
                             "div",
                             {
-                              staticClass: "bg-white ring-2 ring-blue-600",
+                              staticClass: "bg-white",
+                              class: {
+                                "ring-2 ring-blue-600":
+                                  _vm.categorias.busqueda.length > 0
+                              },
                               attrs: { id: "busqueda", autocomplete: "off" }
                             },
                             _vm._l(_vm.categorias.busqueda, function(
@@ -70577,9 +70575,13 @@ var render = function() {
                     "div",
                     { staticClass: "flex flex-col mb-3" },
                     [
-                      _c("vue-input-submit", {
-                        attrs: { value: "Crear pregunta", type: "submit" }
-                      })
+                      !_vm.editar
+                        ? _c("vue-input-submit", {
+                            attrs: { value: "Crear pregunta", type: "submit" }
+                          })
+                        : _c("vue-input-submit", {
+                            attrs: { value: "Editar pregunta", type: "submit" }
+                          })
                     ],
                     1
                   )
@@ -70616,154 +70618,147 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    {
+      staticClass: "flex-1 px-3 overflow-y-scroll",
+      attrs: { id: "categorias" }
+    },
     [
+      _c("h5", { staticClass: "font-bold text-2xl my-6" }, [
+        _vm._v(_vm._s(_vm.titulo))
+      ]),
+      _vm._v(" "),
       _c(
         "div",
-        { attrs: { id: "categorias" } },
+        { staticClass: "flex flex-col lg:flex-row items-center mb-3" },
         [
-          _c(
-            "div",
-            { staticClass: "flex items-center justify-between" },
-            [
-              _c("h5", { staticClass: "font-bold text-2xl my-6" }, [
-                _vm._v(_vm._s(_vm.titulo))
-              ]),
-              _vm._v(" "),
-              _c("vue-input", {
-                staticClass: "max-w-md",
-                attrs: { placeholder: "Buscar una categoria..." },
-                on: {
-                  input: function($event) {
-                    return _vm.busquedaEscrita()
-                  }
-                },
-                model: {
-                  value: _vm.paginacion.query,
-                  callback: function($$v) {
-                    _vm.$set(_vm.paginacion, "query", $$v)
-                  },
-                  expression: "paginacion.query"
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass:
-                    "font-bold bg-blue-600 hover:bg-blue-700 transition duration-100 text-white px-3 py-2 rounded-md flex items-center",
-                  attrs: { href: "/ajustes/categorias/crear" }
-                },
-                [
-                  _c(
-                    "div",
-                    { staticClass: "text-lg mr-2" },
-                    [_c("font-awesome-icon", { attrs: { icon: "plus" } })],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("span", [_vm._v("Crear categoría")])
-                ]
-              )
-            ],
-            1
-          ),
+          _c("vue-input", {
+            staticClass: "flex-1 lg:mr-2",
+            attrs: { placeholder: "Buscar una categoria..." },
+            on: {
+              input: function($event) {
+                return _vm.busquedaEscrita()
+              }
+            },
+            model: {
+              value: _vm.paginacion.query,
+              callback: function($$v) {
+                _vm.$set(_vm.paginacion, "query", $$v)
+              },
+              expression: "paginacion.query"
+            }
+          }),
           _vm._v(" "),
           _c(
-            "div",
+            "a",
             {
               staticClass:
-                "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3"
+                "mt-3 lg:mt-0 w-full lg:w-auto font-bold bg-blue-600 hover:bg-blue-700 transition duration-100 text-white px-3 py-4 lg:py-2 rounded-md flex items-center justify-center",
+              attrs: { href: "/ajustes/categorias/crear" }
             },
-            _vm._l(_vm.categorias, function(categoria, index) {
-              return _c(
+            [
+              _c(
                 "div",
-                {
-                  key: index,
-                  staticClass:
-                    "usuario bg-azul-100 hover:bg-blue-200 px-3 py-4 rounded flex justify-between items-center"
-                },
-                [
-                  _c(
-                    "div",
-                    { staticClass: "flex items-center justify-between w-full" },
-                    [
-                      _c(
-                        "a",
-                        {
-                          attrs: { href: "/categorias/" + categoria.categoria }
-                        },
-                        [
-                          _c(
-                            "p",
-                            { staticClass: "ml-3 text-base mb-1 font-bold" },
-                            [_vm._v(_vm._s(categoria.categoria))]
-                          ),
-                          _vm._v(" "),
-                          _c("p", { staticClass: "ml-3 text-xs italic" }, [
-                            _vm._v(_vm._s(categoria.descripcion))
-                          ])
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _vm.roles.includes("administrador") &&
-                      _vm.permisos.includes("crear-categorias")
-                        ? _c("div", { staticClass: "opciones ml-3 flex" }, [
-                            _c(
-                              "a",
-                              {
-                                staticClass:
-                                  "px-2 py-1 text-lg bg-blue-500 rounded text-white mr-1",
-                                attrs: {
-                                  href: "/ajustes/categorias/" + categoria.id
-                                }
-                              },
-                              [
-                                _c("font-awesome-icon", {
-                                  attrs: { icon: "edit" }
-                                })
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "px-2 py-1 text-lg bg-red-500 rounded text-white cursor-pointer",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.abrirModal(categoria, index)
-                                  }
-                                }
-                              },
-                              [
-                                _c("font-awesome-icon", {
-                                  attrs: { icon: "trash-alt" }
-                                })
-                              ],
-                              1
-                            )
-                          ])
-                        : _vm._e()
-                    ]
-                  )
-                ]
-              )
-            }),
-            0
-          ),
-          _vm._v(" "),
-          _c("paginacion", {
-            attrs: {
-              pagina: _vm.paginacion.pagina,
-              itemsMaxPorPag: _vm.paginacion.itemsMaxPorPag,
-              totalItems: _vm.paginacion.totalItems
-            },
-            on: { datosDesdePaginacion: _vm.desdePaginacion }
-          })
+                { staticClass: "text-lg mr-2" },
+                [_c("font-awesome-icon", { attrs: { icon: "plus" } })],
+                1
+              ),
+              _vm._v(" "),
+              _c("span", [_vm._v("Crear categoría")])
+            ]
+          )
         ],
         1
       ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3"
+        },
+        _vm._l(_vm.categorias, function(categoria, index) {
+          return _c(
+            "div",
+            {
+              key: index,
+              staticClass:
+                "usuario bg-azul-100 hover:bg-blue-200 px-3 py-4 rounded flex justify-between items-center"
+            },
+            [
+              _c(
+                "div",
+                { staticClass: "flex items-center justify-between w-full" },
+                [
+                  _c(
+                    "a",
+                    { attrs: { href: "/categorias/" + categoria.categoria } },
+                    [
+                      _c(
+                        "p",
+                        { staticClass: "ml-3 text-base mb-1 font-bold" },
+                        [_vm._v(_vm._s(categoria.categoria))]
+                      ),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "ml-3 text-xs italic" }, [
+                        _vm._v(_vm._s(categoria.descripcion))
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm.roles.includes("administrador") &&
+                  _vm.permisos.includes("crear-categorias")
+                    ? _c("div", { staticClass: "opciones ml-3 flex" }, [
+                        _c(
+                          "a",
+                          {
+                            staticClass:
+                              "px-2 py-1 text-lg bg-blue-500 rounded text-white mr-1",
+                            attrs: {
+                              href: "/ajustes/categorias/" + categoria.id
+                            }
+                          },
+                          [
+                            _c("font-awesome-icon", { attrs: { icon: "edit" } })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "px-2 py-1 text-lg bg-red-500 rounded text-white cursor-pointer",
+                            on: {
+                              click: function($event) {
+                                return _vm.abrirModal(categoria, index)
+                              }
+                            }
+                          },
+                          [
+                            _c("font-awesome-icon", {
+                              attrs: { icon: "trash-alt" }
+                            })
+                          ],
+                          1
+                        )
+                      ])
+                    : _vm._e()
+                ]
+              )
+            ]
+          )
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _c("paginacion", {
+        attrs: {
+          pagina: _vm.paginacion.pagina,
+          itemsMaxPorPag: _vm.paginacion.itemsMaxPorPag,
+          totalItems: _vm.paginacion.totalItems
+        },
+        on: { datosDesdePaginacion: _vm.desdePaginacion }
+      }),
       _vm._v(" "),
       _vm.modal.mostrar
         ? _c("modal-eliminar", {
@@ -70984,7 +70979,7 @@ var render = function() {
                   { staticClass: "flex items-center" },
                   [
                     _c("notificaciones-contenedor", {
-                      staticClass: "lg:hidden",
+                      staticClass: "lg:hidden mr-6",
                       attrs: { notificaciones: _vm.notificaciones },
                       on: { cerrarMenuMovil: _vm.cerrarMenuMovil }
                     }),
@@ -71055,7 +71050,7 @@ var render = function() {
                         "ul",
                         {
                           staticClass:
-                            "flex flex-col lg:flex-row items-center mt-5 lg:mt-0 text-lg lg:text-sm"
+                            "flex flex-col lg:flex-row items-center mt-5 lg:mt-0 text-lg lg:text-sm mb-2 lg:mb-0"
                         },
                         [_vm._m(1), _vm._v(" "), _vm._m(2)]
                       )
@@ -72115,7 +72110,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "w-full" }, [
+  return _c("div", { staticClass: "w-full flex-1 px-3 overflow-y-scroll" }, [
     _c(
       "div",
       { staticClass: "flex-1 px-3", attrs: { id: "contenido_principal" } },
@@ -72125,7 +72120,7 @@ var render = function() {
           { staticClass: "flex justify-between items-center" },
           [
             _c("h5", { staticClass: "font-bold text-2xl my-6" }, [
-              _vm._v("Resultados de búsqueda")
+              _vm._v(_vm._s(_vm.titulo))
             ]),
             _vm._v(" "),
             _c("vue-anchor-button", {
@@ -72135,14 +72130,16 @@ var render = function() {
           1
         ),
         _vm._v(" "),
-        _c("p", { staticClass: "text-gray-600 mb-4" }, [
-          _vm._v("Resultados para " + _vm._s(_vm.query))
-        ]),
+        _vm.query
+          ? _c("p", { staticClass: "text-gray-600 mb-4" }, [
+              _vm._v('Resultados para "' + _vm._s(_vm.query) + '"')
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _c(
           "div",
           {
-            staticClass: "flex justify-between items-center mb-3",
+            staticClass: "flex justify-between items-center mt-2 mb-6",
             attrs: { id: "header-resultados-filtros" }
           },
           [
@@ -72657,53 +72654,51 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("div", { staticClass: "w-full" }, [
-        _c("div", [
-          _c("div", { staticClass: "flex" }, [
-            _c(
-              "a",
-              {
-                staticClass: "flex-1 text-blue-700 text-base",
-                attrs: { href: "/pregunta/" + _vm.pregunta.identificador }
-              },
-              [_vm._v(_vm._s(_vm.pregunta.pregunta))]
-            ),
-            _vm._v(" "),
-            _vm.mismo_autor || _vm.usuario.id === _vm.pregunta.user_id
-              ? _c("div", { staticClass: "flex" }, [
-                  _c(
-                    "a",
-                    {
-                      staticClass:
-                        "bg-blue-600 hover:bg-blue-700 transition-all duration-200 text-white px-2 py-2 rounded-md mr-1 cursor-pointer",
-                      attrs: {
-                        id: "editar",
-                        href:
-                          "/pregunta/" + _vm.pregunta.identificador + "/editar"
-                      }
-                    },
-                    [_vm._v("\n\t\t\t\t\t\tEditar\n\t\t\t\t\t")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "bg-red-600 hover:bg-red-700 transition-all duration-200 text-white px-2 py-2 rounded-md cursor-pointer",
-                      attrs: { id: "eliminar" },
-                      on: {
-                        click: function($event) {
-                          return _vm.abrirModal(_vm.pregunta, _vm.index)
-                        }
-                      }
-                    },
-                    [_vm._v("\n\t\t\t\t\t\tEliminar\n\t\t\t\t\t")]
-                  )
-                ])
-              : _vm._e()
-          ]),
+        _c("div", { staticClass: "flex items-start" }, [
+          _c(
+            "a",
+            {
+              staticClass: "flex-1 text-blue-700 text-base",
+              attrs: { href: "/pregunta/" + _vm.pregunta.identificador }
+            },
+            [_vm._v(_vm._s(_vm.pregunta.pregunta))]
+          ),
           _vm._v(" "),
-          _c("p", [_vm._v(_vm._s(_vm.pregunta.descripcion))])
+          _vm.mismo_autor || _vm.usuario.id === _vm.pregunta.user_id
+            ? _c("div", { staticClass: "flex" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass:
+                      "bg-blue-600 hover:bg-blue-700 transition-all duration-200 text-white px-2 py-2 rounded-md mr-1 cursor-pointer",
+                    attrs: {
+                      id: "editar",
+                      href:
+                        "/pregunta/" + _vm.pregunta.identificador + "/editar"
+                    }
+                  },
+                  [_vm._v("\n\t\t\t\t\tEditar\n\t\t\t\t")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "bg-red-600 hover:bg-red-700 transition-all duration-200 text-white px-2 py-2 rounded-md cursor-pointer",
+                    attrs: { id: "eliminar" },
+                    on: {
+                      click: function($event) {
+                        return _vm.abrirModal(_vm.pregunta, _vm.index)
+                      }
+                    }
+                  },
+                  [_vm._v("\n\t\t\t\t\tEliminar\n\t\t\t\t")]
+                )
+              ])
+            : _vm._e()
         ]),
+        _vm._v(" "),
+        _c("p", [_vm._v(_vm._s(_vm.pregunta.descripcion))]),
         _vm._v(" "),
         _c(
           "div",
@@ -72956,135 +72951,135 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      { staticClass: "text-xs", attrs: { id: "usuarios" } },
-      [
-        _c("div", { staticClass: "flex items-center justify-between" }, [
-          _c("h5", { staticClass: "font-bold text-2xl my-6" }, [
-            _vm._v("Usuarios")
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "flex items-center flex-1 justify-end" },
-            [
-              _c("vue-input", {
-                staticClass: "max-w-md",
-                attrs: { placeholder: "Buscar un usuario..." },
-                on: {
-                  input: function($event) {
-                    return _vm.busquedaEscrita()
-                  }
-                },
-                model: {
-                  value: _vm.paginacion.query,
-                  callback: function($$v) {
-                    _vm.$set(_vm.paginacion, "query", $$v)
-                  },
-                  expression: "paginacion.query"
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "flex ring-1 ring-gray-600 rounded ml-3" },
-                [
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "min-w-max px-3 py-2 border-r-2 border-gray-600",
-                      class: {
-                        "bg-gray-600 text-white":
-                          _vm.paginacion.filtro == "todos"
-                      },
-                      on: {
-                        click: function($event) {
-                          return _vm.cambiarFiltro("todos")
-                        }
-                      }
-                    },
-                    [_vm._v("Todos")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "min-w-max px-3 py-2 border-gray-600",
-                      class: {
-                        "bg-gray-600 text-white":
-                          _vm.paginacion.filtro == "nuevos_usuarios"
-                      },
-                      on: {
-                        click: function($event) {
-                          return _vm.cambiarFiltro("nuevos_usuarios")
-                        }
-                      }
-                    },
-                    [_vm._v("Nuevos usuarios")]
-                  )
-                ]
-              )
-            ],
-            1
-          )
+  return _c(
+    "div",
+    {
+      staticClass: "text-xs flex-1 px-3 overflow-y-scroll",
+      attrs: { id: "usuarios" }
+    },
+    [
+      _c("div", { staticClass: "flex items-center justify-between" }, [
+        _c("h5", { staticClass: "font-bold text-2xl my-6" }, [
+          _vm._v("Usuarios")
         ]),
         _vm._v(" "),
         _c(
           "div",
-          {
-            staticClass:
-              "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3"
-          },
-          _vm._l(_vm.usuarios, function(usuario, index) {
-            return _c(
-              "div",
-              {
-                key: index,
-                staticClass:
-                  "usuario bg-azul-100 hover:bg-blue-200 px-3 py-2 rounded"
+          { staticClass: "flex items-center flex-1 justify-end" },
+          [
+            _c("vue-input", {
+              staticClass: "max-w-md",
+              attrs: { placeholder: "Buscar un usuario..." },
+              on: {
+                input: function($event) {
+                  return _vm.busquedaEscrita()
+                }
               },
+              model: {
+                value: _vm.paginacion.query,
+                callback: function($$v) {
+                  _vm.$set(_vm.paginacion, "query", $$v)
+                },
+                expression: "paginacion.query"
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "flex ring-1 ring-gray-600 rounded ml-3" },
               [
                 _c(
-                  "a",
+                  "button",
                   {
-                    staticClass: "flex items-center",
-                    attrs: { href: "/usuarios/" + usuario.id }
-                  },
-                  [
-                    _c("img", {
-                      staticStyle: { width: "40px" },
-                      attrs: {
-                        src:
-                          "https://www.uic.mx/posgrados/files/2018/05/default-user.png"
+                    staticClass:
+                      "min-w-max px-3 py-2 border-r-2 border-gray-600",
+                    class: {
+                      "bg-gray-600 text-white": _vm.paginacion.filtro == "todos"
+                    },
+                    on: {
+                      click: function($event) {
+                        return _vm.cambiarFiltro("todos")
                       }
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "ml-3" }, [
-                      _vm._v(_vm._s(usuario.name))
-                    ])
-                  ]
+                    }
+                  },
+                  [_vm._v("Todos")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "min-w-max px-3 py-2 border-gray-600",
+                    class: {
+                      "bg-gray-600 text-white":
+                        _vm.paginacion.filtro == "nuevos_usuarios"
+                    },
+                    on: {
+                      click: function($event) {
+                        return _vm.cambiarFiltro("nuevos_usuarios")
+                      }
+                    }
+                  },
+                  [_vm._v("Nuevos usuarios")]
                 )
               ]
             )
-          }),
-          0
-        ),
-        _vm._v(" "),
-        _c("paginacion", {
-          attrs: {
-            pagina: _vm.paginacion.pagina,
-            itemsMaxPorPag: _vm.paginacion.itemsMaxPorPag,
-            totalItems: _vm.paginacion.totalItems
-          },
-          on: { datosDesdePaginacion: _vm.desdePaginacion }
-        })
-      ],
-      1
-    )
-  ])
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3"
+        },
+        _vm._l(_vm.usuarios, function(usuario, index) {
+          return _c(
+            "div",
+            {
+              key: index,
+              staticClass:
+                "usuario bg-azul-100 hover:bg-blue-200 px-3 py-2 rounded"
+            },
+            [
+              _c(
+                "a",
+                {
+                  staticClass: "flex items-center",
+                  attrs: { href: "/usuarios/" + usuario.id }
+                },
+                [
+                  _c("img", {
+                    staticStyle: { width: "40px" },
+                    attrs: {
+                      src:
+                        "https://www.uic.mx/posgrados/files/2018/05/default-user.png"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "ml-3" }, [
+                    _vm._v(_vm._s(usuario.name))
+                  ])
+                ]
+              )
+            ]
+          )
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _c("paginacion", {
+        attrs: {
+          pagina: _vm.paginacion.pagina,
+          itemsMaxPorPag: _vm.paginacion.itemsMaxPorPag,
+          totalItems: _vm.paginacion.totalItems
+        },
+        on: { datosDesdePaginacion: _vm.desdePaginacion }
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

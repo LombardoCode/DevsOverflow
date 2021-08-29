@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<div class="text-xs flex-1 px-3 overflow-y-scroll">
 		<div class="container mx-auto">
-			<h1 class="font-bold text-2xl mb-6">Realiza una pregunta a la comunidad</h1>
+			<h1 class="font-bold text-2xl my-6 mb-6">Realiza una pregunta a la comunidad</h1>
 			<div class="bg-gray-300 flex-1 mt-3 rounded px-3 pt-4 pb-1">
 				<form v-if="pregunta != null" @submit.prevent="submitFormulario()">
 					<div class="flex flex-col mb-3">
@@ -23,8 +23,8 @@
 								<span class="px-3 py-2 cursor-pointer" @click="eliminarCategoria(categoria_seleccionada, index)">X</span>
 							</span>
 						</div>
-						<vue-input type="text" name="titulo" placeholder='Escriba una categoría..."' @input="escribiendoCategoria()" v-model="categorias.input" autocomplete="off"></vue-input>
-						<div id="busqueda" class="bg-white ring-2 ring-blue-600" v-if="categorias.busqueda" autocomplete="off">
+						<vue-input type="text" name="titulo" placeholder="Escriba una categoría..." @input="escribiendoCategoria()" v-model="categorias.input" autocomplete="off"></vue-input>
+						<div id="busqueda" class="bg-white" :class="{'ring-2 ring-blue-600': categorias.busqueda.length > 0}" v-if="categorias.busqueda" autocomplete="off">
 							<div v-for="(categoria, index) in categorias.busqueda" :key="index" class="px-3 py-2 hover:bg-blue-500 hover:text-white cursor-pointer" @click="agregarCategoria(categoria)">
 								<p class="font-bold">{{ categoria.categoria }}</p>
 								<p class="text-xs italic ">{{ categoria.descripcion }}</p>
@@ -32,7 +32,8 @@
 						</div>
 					</div>
 					<div class="flex flex-col mb-3">
-						<vue-input-submit value="Crear pregunta" type="submit"></vue-input-submit>
+						<vue-input-submit v-if="!editar" value="Crear pregunta" type="submit"></vue-input-submit>
+						<vue-input-submit v-else value="Editar pregunta" type="submit"></vue-input-submit>
 					</div>
 				</form>
 			</div>
@@ -46,7 +47,11 @@ import { VueEditor } from "vue2-editor";
 export default {
 	props: {
 		csrf: String,
-		pregunta: Object
+		pregunta: Object,
+		editar: {
+			type: Boolean,
+			default: false
+		}
 	},
 	components: {
     VueEditor
@@ -114,7 +119,7 @@ export default {
 		},
 		escribiendoCategoria() {
 			if (this.categorias.input.length != 0) {
-				axios.get(`/api/categoria/${this.categorias.input}`)
+				axios.post(`/api/categoria/obtener`, this.categorias)
 				.then(res => {
 					console.log(res.data);
 					this.categorias.busqueda = res.data.busqueda;

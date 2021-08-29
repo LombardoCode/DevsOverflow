@@ -5,7 +5,6 @@
 		style="z-index: 1;"
 		>
 		<div class="container mx-auto">
-
 			<div class="w-full flex flex-wrap justify-between items-center">
 				<div class="w-full lg:w-auto flex justify-between items-center lg:mb-0" :class="{'mb-4': menu_movil_desplegado}">
 					<div id="logo">
@@ -15,7 +14,7 @@
 					</div>
 					<div class="flex items-center">
 						<notificaciones-contenedor
-							class="lg:hidden"
+							class="lg:hidden mr-6"
 							:notificaciones="notificaciones"
 							@cerrarMenuMovil="cerrarMenuMovil"
 						>
@@ -29,7 +28,6 @@
 						</div>
 					</div>
 				</div>
-
 				<div class="lg:flex items-center w-full flex-1" :class="{'hidden': !menu_movil_desplegado}">
 					<div id="barra-de-busqueda" class="flex-1 lg:mx-6">
 						<form :action="`/busqueda/${busqueda_input}`">
@@ -37,7 +35,7 @@
 						</form>
 					</div>
 					<div id="navbar-items">
-						<ul class="flex flex-col lg:flex-row items-center mt-5 lg:mt-0 text-lg lg:text-sm" v-if="!usuario.id">
+						<ul class="flex flex-col lg:flex-row items-center mt-5 lg:mt-0 text-lg lg:text-sm mb-2 lg:mb-0" v-if="!usuario.id">
 							<li class="w-full lg:w-auto lg:mr-3 text-center lg:text-left bg-blue-600 lg:bg-transparent hover:bg-blue-700 lg:hover:bg-transparent transition-all lg:transition-none duration-100 rounded-md text-white lg:text-gray-700 mb-3 lg:mb-0">
 								<a class="inline-block w-full py-3 lg:py-0" href="/registrarse">Registrarse</a>
 							</li>
@@ -72,11 +70,7 @@
 						</div>
 					</div>
 				</div>
-
 			</div>
-
-
-
 		</div>
 	</div>
 </template>

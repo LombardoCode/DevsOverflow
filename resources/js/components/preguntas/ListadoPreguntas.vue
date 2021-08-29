@@ -1,12 +1,12 @@
 <template>
-	<div class="w-full">
+	<div class="w-full flex-1 px-3 overflow-y-scroll">
 		<div id="contenido_principal" class="flex-1 px-3">
 			<div class="flex justify-between items-center">
-				<h5 class="font-bold text-2xl my-6">Resultados de búsqueda</h5>
+				<h5 class="font-bold text-2xl my-6">{{ titulo }}</h5>
 				<vue-anchor-button href="/pregunta/crear" texto="Crear pregunta"></vue-anchor-button>
 			</div>
-			<p class="text-gray-600 mb-4">Resultados para {{ query }}</p>
-			<div id="header-resultados-filtros" class="flex justify-between items-center mb-3">
+			<p v-if="query" class="text-gray-600 mb-4">Resultados para "{{ query }}"</p>
+			<div id="header-resultados-filtros" class="flex justify-between items-center mt-2 mb-6">
 				<span class="text-lg font-medium">{{ paginacion.totalItems }} resultados</span>
 				<div class="flex flex-wrap ring-1 ring-gray-600 rounded">
 					<span>{{paginacion.filtros}}</span>
@@ -39,6 +39,7 @@
 export default {
 	props: {
 		usuario: Object,
+		titulo: String,
 		todas: Boolean,
 		query: String,
 		sin_responder: Boolean,
