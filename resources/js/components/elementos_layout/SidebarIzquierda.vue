@@ -1,5 +1,5 @@
 <template>
-	<div id="secciones" style="min-width: 180px" class="hidden md:block px-2 py-8 text-xs text-gray-700">
+	<div id="secciones" style="min-width: 180px" class="hidden md:block px-2 py-8 text-xs text-gray-700 h-full overflow-y-scroll">
 		<div class="fixed">
 			<nav>
 				<ul>

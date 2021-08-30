@@ -12582,6 +12582,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _elementos_layout_SidebarIzquierda_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../elementos_layout/SidebarIzquierda.vue */ "./resources/js/components/elementos_layout/SidebarIzquierda.vue");
 //
 //
 //
@@ -12599,7 +12600,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    SidebarIzquierda: _elementos_layout_SidebarIzquierda_vue__WEBPACK_IMPORTED_MODULE_0__.default
+  }
+});
 
 /***/ }),
 
@@ -71417,7 +71438,8 @@ var staticRenderFns = [
     return _c(
       "div",
       {
-        staticClass: "hidden md:block px-2 py-8 text-xs text-gray-700",
+        staticClass:
+          "hidden md:block px-2 py-8 text-xs text-gray-700 h-full overflow-y-scroll",
         staticStyle: { "min-width": "180px" },
         attrs: { id: "secciones" }
       },
@@ -71500,24 +71522,89 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "w-full bg-footer text-white" }, [
+    return _c("footer", { staticClass: "w-full bg-footer text-white mt-20" }, [
+      _c("div", { staticClass: "container mx-auto py-10" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "flex flex-col md:flex-row justify-between items-center"
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "w-full px-10 mb-6 md:mb-0 md:px-0 md:w-2/4 lg:w-2/5 xl:w-2/6",
+                attrs: { id: "logo" }
+              },
+              [
+                _c("img", {
+                  attrs: { src: "/imagenes/devsoverflow_logo.png", alt: "" }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-sm", attrs: { id: "items" } }, [
+              _c("ul", [
+                _c("div", { staticClass: "categoria mb-6" }, [
+                  _c("li", { staticClass: "mb-3" }, [
+                    _c("a", { attrs: { href: "/" } }, [_vm._v("Inicio")])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "categoria mb-6" }, [
+                  _c("p", { staticClass: "uppercase mb-3" }, [
+                    _vm._v("PÚBLICO")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", { staticClass: "mb-3 ml-3" }, [
+                    _c("a", { attrs: { href: "/categorias" } }, [
+                      _vm._v("Categorías")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("li", { staticClass: "mb-3 ml-3" }, [
+                    _c("a", { attrs: { href: "/usuarios" } }, [
+                      _vm._v("Usuarios")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("li", { staticClass: "mb-3 ml-3" }, [
+                    _c("a", { attrs: { href: "/sin-responder" } }, [
+                      _vm._v("Sin responder")
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "categoria mb-6" }, [
+                  _c("p", { staticClass: "uppercase mb-3" }, [
+                    _vm._v("MI ACTIVIDAD")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", { staticClass: "mb-3 ml-3" }, [
+                    _c("a", { attrs: { href: "/mis_preguntas" } }, [
+                      _vm._v("Mis preguntas")
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
       _c(
         "div",
         {
-          staticClass:
-            "container mx-auto py-24 flex justify-between items-center"
+          staticClass: "bg-black text-center py-2",
+          attrs: { id: "datos-creador" }
         },
         [
-          _c("div", { attrs: { id: "logo" } }, [_vm._v("\n\t\t\tLOGO\n\t\t")]),
-          _vm._v(" "),
-          _c("div", { attrs: { id: "items" } }, [
-            _c("ul", [
-              _c("li", [_vm._v("asdasd")]),
-              _vm._v(" "),
-              _c("li", [_vm._v("qweqweqwe")]),
-              _vm._v(" "),
-              _c("li", [_vm._v("3tertertert")])
-            ])
+          _c("p", [
+            _vm._v(
+              "Este sitio web fué desarrollado por Lombardo Moreno Rodríguez - 2021"
+            )
           ])
         ]
       )
@@ -72645,7 +72732,7 @@ var render = function() {
   return _c(
     "div",
     {
-      staticClass: "flex flex-col lg:flex-row mb-10 w-full",
+      staticClass: "flex flex-col lg:flex-row mb-12 w-full",
       attrs: { id: "pregunta" }
     },
     [

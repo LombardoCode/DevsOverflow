@@ -1,5 +1,5 @@
 <template>
-	<div id="pregunta" class="flex flex-col lg:flex-row mb-10 w-full">
+	<div id="pregunta" class="flex flex-col lg:flex-row mb-12 w-full">
 		<div id="valoraciones" class="flex flex-col sm:flex-row lg:flex-col  items-stretch lg:mr-4 order-2 lg:order-none">
 			<div class="flex-1 lg:flex-initial text-center bg-blue-500 text-white px-3 py-1 rounded-md lg:mb-2 mb-2 sm:mb-0 sm:mr-1 lg:mr-0">
 				<p>{{ pregunta.votos }}</p>
