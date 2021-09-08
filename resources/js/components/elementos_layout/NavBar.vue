@@ -1,6 +1,7 @@
 <template>
 	<div
-		class="w-full bg-gray-300 text-sm fixed px-3 py-1 select-none"
+		class="w-full bg-gray-300 text-sm fixed px-3 select-none"
+		:class="{'py-1': usuario.id, 'py-3': !usuario.id}"
 		v-on-clickaway="cerrarMenus"
 		style="z-index: 1;"
 		>
@@ -9,7 +10,7 @@
 				<div class="w-full lg:w-auto flex justify-between items-center lg:mb-0" :class="{'mb-4': menu_movil_desplegado}">
 					<div id="logo">
 						<a href="/">
-							<img src="/imagenes/devsoverflow_logo.png" alt="Logo - DevsOverflow" style="height: 38px;">
+							<img src="/svg/devsoverflow.svg" alt="Logo - DevsOverflow" style="height: 38px; width: auto;">
 						</a>
 					</div>
 					<div class="flex items-center">

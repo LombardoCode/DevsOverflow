@@ -10,7 +10,7 @@
 				</div>
 				<div id="cuerpo-respuesta" class="w-full pl-4">
 					<div class="flex">
-						<div v-html="respuesta.contenido_html" class="flex-1"></div>
+						<div v-html="respuesta.contenido_html" class="flex-1 contenido-respuesta"></div>
 						<div class="opciones">
 							<div
 								v-if="usuario.id === respuesta.user_id"
@@ -111,5 +111,27 @@ export default {
 </script>
 
 <style>
+	.contenido-respuesta > pre {
+		background-color: #2b2f3f;
+		color: #FFFFFF;
+		padding: 12px 14px;
+		border-radius: 10px;
+		margin: 5px 0px;
+	}
 
+	.contenido-respuesta a {
+		color: #2563eb;
+	}
+
+	.contenido-respuesta a:hover {
+		text-decoration: underline;
+	}
+
+	.contenido-respuesta > .ql-align-right {
+		text-align: right;
+	}
+
+	.contenido-respuesta > .ql-align-center {
+		text-align: center;
+	}
 </style>

@@ -5,7 +5,7 @@
 				<div id="pregunta" class="mb-14">
 					<div id="encabezado-pregunta" class="mb-6">
 						<h1 class="text-2xl mb-2">{{pregunta.pregunta}}</h1>
-						<p class="text-xs"><span class="mr-5">Formulada hace 7 meses</span><span class="mr-5">Activa hace 7 meses</span><span>Vista 97 veces</span></p>
+						<p class="text-xs">Formulada por <a :href="`/usuarios/${autor.id}`" class="text-blue-600 hover:underline">{{autor.name}}</a> {{pregunta.fecha_de_creacion}}.</p>
 					</div>
 					<div id="descripcion" class="flex">
 						<div id="votos" class="flex items-center flex-col pr-4">
@@ -27,7 +27,7 @@
 				<div id="seccion-respuestas">
 					<div id="encabezado-respuestas" class="mb-6">
 						<h1 class="text-lg mb-3">Tu respuesta</h1>
-						<vue-editor class="bg-white" v-model="respuesta_contenido_html"></vue-editor>
+						<vue-editor v-model="respuesta_contenido_html" :editor-toolbar="editorToolbar" class="bg-white"></vue-editor>
 						<div class="flex justify-end mt-3">
 							<form @submit.prevent="crearRespuesta()">
 								<input type="hidden" name="_token" :value="csrf">
@@ -65,23 +65,39 @@ export default {
 		pregunta_id: {}
 	},
 	components: {
-    VueEditor,
 		ModalInvitacionRegistro,
-		Respuesta
+		Respuesta,
+		VueEditor
   },
 	data() {
 		return {
 			pregunta: {},
 			respuestas: {},
+			autor: {},
 			votacion: {
 				num_votos_positivos: null,
 				num_votos_negativos: null,
 				ha_votado: null
 			},
-			respuesta_contenido_html: null
+			respuesta_contenido_html: null,
+			editorToolbar: [
+				["bold", "italic", "underline", "strike"],
+				[
+					{ align: "" },
+					{ align: "center" },
+					{ align: "right" },
+					{ align: "justify" }
+				],
+				["blockquote", "code-block"],
+				[{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+				[{ indent: "-1" }, { indent: "+1" }],
+				[{ color: [] }, { background: [] }],
+				["link"],
+				["clean"] // remove formatting button
+			]
 		}
 	},
-	mounted() {
+	async mounted() {
 		this.obtenerDatosPregunta();
 	},
 	methods: {
@@ -91,6 +107,9 @@ export default {
 				console.log(res.data)
 				// Obtenemos la pregunta
 				this.pregunta = res.data.pregunta;
+
+				// Obtenemos el autor de la pregunta
+				this.autor = res.data.autor;
 
 				// Obtenemos la votación
 				this.votacion.num_votos_positivos = res.data.pregunta.votos_positivos;
@@ -150,9 +169,35 @@ export default {
 
 <style>
 	#descripcion-pregunta pre {
+		max-width: 400px;
+		overflow: auto hidden;
 		background-color: #2b2f3f;
 		color: #FFFFFF;
 		padding: 18px 20px;
 		border-radius: 10px;
+	}
+
+	@media (min-width: 640px) {
+		#descripcion-pregunta pre {
+			max-width: 600px;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		#descripcion-pregunta pre {
+			max-width: 800px;
+		}
+	}
+
+  @media (min-width: 1280px) {
+		#descripcion-pregunta pre {
+			max-width: 1000px;
+		}
+	}
+
+	@media (min-width: 1535px) {
+		#descripcion-pregunta pre {
+			max-width: 1200px;
+		}
 	}
 </style>

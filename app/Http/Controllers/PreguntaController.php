@@ -9,6 +9,7 @@ use App\Models\Respuesta;
 use App\Models\User;
 use App\Models\VotoPregunta;
 use App\Models\VotoRespuestas;
+use ArrayObject;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -226,7 +227,15 @@ class PreguntaController extends Controller
 				$categoria = Categoria::find($relacion->categoria_id);
 				$categorias[] = strtolower($categoria->categoria);
 			}
+
+			// Obtenemos el autor de la pregunta
+			$autor = User::find($pregunta->user_id);
+
+			// Obtenemos las categorías
 			$pregunta['categorias'] = $categorias;
+
+			// Formateamos la fecha de creación
+			$pregunta->fecha_de_creacion = Carbon::parse($pregunta->created_at)->diffForHumans();
 
 			// Obtenemos la cantidad de votos positivos de la pregunta
 			$votos_positivos = VotoPregunta::where('pregunta_id', '=', $pregunta->id)
@@ -314,6 +323,7 @@ class PreguntaController extends Controller
 			return response()->json([
 				'status' => true,
 				'pregunta' => $pregunta,
+				'autor' => $autor,
 				'ha_votado' => $ha_votado,
 				'respuestas' => $respuestas
 			]);

@@ -12,7 +12,7 @@
 							</div>
 							<div id="nombre-y-descripcion" class="ml-4">
 								<h5 class="font-bold text-2xl mt-6 mb-3">{{ $usuario->name }}</h5>
-								<p class="w-1/2">{{ $usuario->description }}</p>
+								<p class="w-full">{{ $usuario->description }}</p>
 							</div>
 						</div>
 					</div>

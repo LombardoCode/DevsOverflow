@@ -1,11 +1,11 @@
 <template>
 	<div id="pregunta" class="flex flex-col lg:flex-row mb-12 w-full">
 		<div id="valoraciones" class="flex flex-col sm:flex-row lg:flex-col  items-stretch lg:mr-4 order-2 lg:order-none">
-			<div class="flex-1 lg:flex-initial text-center bg-blue-500 text-white px-3 py-1 rounded-md lg:mb-2 mb-2 sm:mb-0 sm:mr-1 lg:mr-0">
+			<div class="flex-1 lg:flex-initial text-center bg-blue-700 text-white px-3 py-1 rounded-md lg:mb-2 mb-2 sm:mb-0 sm:mr-1 lg:mr-0">
 				<p>{{ pregunta.votos }}</p>
 				<p>voto(s)</p>
 			</div>
-			<div class="flex-1 lg:flex-initial text-center bg-green-500 text-white px-3 py-1 rounded-md sm:ml-1 lg:ml-0">
+			<div class="flex-1 lg:flex-initial text-center bg-green-700 text-white px-3 py-1 rounded-md sm:ml-1 lg:ml-0">
 				<p>{{ pregunta.respuestas }}</p>
 				<p>respuesta(s)</p>
 			</div>
@@ -28,7 +28,7 @@
 			<div id="secciones-y-creador" class="grid grid-cols-12 mt-2">
 				<div id="secciones" class="col-span-12 flex flex-wrap  items-end mb-2">
 					<div v-for="(categoria, index) in pregunta.categorias" :key="index" class="text-sm mr-2 mb-2 bg-blue-200 hover:bg-blue-300 transition-all duration-100 text-blue-600 rounded flex justify-center items-center">
-						<a :href="`/categorias/${categoria.categoria}`" class="px-3 py-2">{{categoria.categoria}}</a>
+						<a :href="`/categorias/${categoria.categoria}`" class="px-3 py-2 text-blue-900">{{categoria.categoria}}</a>
 					</div>
 				</div>
 				<div id="creador" class="col-span-12 flex flex-col justify-center items-end mb-3 lg:mb-0">

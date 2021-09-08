@@ -12,7 +12,7 @@
 					<div class="flex flex-col mb-3">
 						<label for="contenido_html" class="mb-1 font-bold text-lg">Cuerpo</label>
 						<p class="mb-2">Incluye toda la información que necesitaría una persona para resolver tu pregunta.</p>
-						<vue-editor class="bg-white" v-model="formulario.contenido_html"></vue-editor>
+						<vue-editor v-model="formulario.contenido_html" :editor-toolbar="formulario.editorToolbar" class="bg-white"></vue-editor>
 					</div>
 					<div class="flex flex-col mb-3">
 						<label for="titulo" class="mb-1 font-bold text-lg">Categorías</label>
@@ -49,18 +49,33 @@ export default {
 		csrf: String,
 		pregunta: Object,
 		editar: {
-			type: Boolean,
+			type: Number,
 			default: false
 		}
 	},
 	components: {
-    VueEditor
-  },
+		VueEditor
+	},
 	data() {
 		return {
 			formulario: {
 				titulo: this.pregunta.pregunta || '',
-				contenido_html: this.pregunta.contenido_html || '',
+				contenido_html: this.pregunta.contenido_html || null,
+				editorToolbar: [
+					["bold", "italic", "underline", "strike"],
+					[
+						{ align: "" },
+						{ align: "center" },
+						{ align: "right" },
+						{ align: "justify" }
+					],
+					["blockquote", "code-block"],
+					[{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+					[{ indent: "-1" }, { indent: "+1" }],
+					[{ color: [] }, { background: [] }],
+					["link"],
+					["clean"] // remove formatting button
+				]
 			},
 			categorias: {
 				input: '',
