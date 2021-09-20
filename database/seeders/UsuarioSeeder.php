@@ -16,14 +16,6 @@ class UsuarioSeeder extends Seeder
      */
     public function run()
     {
-			$faker = \Faker\Factory::create();
-			for ($i=0; $i < 100; $i++) {
-				User::create([
-					'name' => $faker->name,
-					'email' => $faker->email,
-					'description' => $faker->text,
-					'password' => bcrypt("12341234")
-				]);
-			}
+
     }
 }
