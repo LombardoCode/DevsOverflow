@@ -282,9 +282,9 @@ class PreguntaController extends Controller
 			// Recorremos las respuestas
 			for ($i=0; $i < count($respuestas); $i++) {
 				// Obtenemos el autor de la respuesta
-				$autor = User::find($respuestas[$i]['user_id']);
-				$respuestas[$i]['autor']['id'] = $autor->id;
-				$respuestas[$i]['autor']['nombre'] = $autor->name;
+				$autor_respuesta = User::find($respuestas[$i]['user_id']);
+				$respuestas[$i]['autor']['id'] = $autor_respuesta->id;
+				$respuestas[$i]['autor']['nombre'] = $autor_respuesta->name;
 				$respuestas[$i]['ha_votado'] = 0;
 
 				// Formateamos la fecha de creación
