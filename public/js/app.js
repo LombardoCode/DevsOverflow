@@ -55427,7 +55427,7 @@ var render = function() {
               staticStyle: { width: "50px", height: "auto" },
               attrs: {
                 src:
-                  "https://www.uic.mx/posgrados/files/2018/05/default-user.png",
+                  "/svg/user-icon.svg",
                 alt: ""
               }
             }),
@@ -55602,7 +55602,7 @@ var render = function() {
                     staticStyle: { width: "40px" },
                     attrs: {
                       src:
-                        "https://www.uic.mx/posgrados/files/2018/05/default-user.png"
+                        "/svg/user-icon.svg"
                     }
                   }),
                   _vm._v(" "),

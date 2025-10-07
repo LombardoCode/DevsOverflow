@@ -8,7 +8,7 @@
 					<div class="my-6">
 						<div id="datos-usuario" class="flex">
 							<div id="foto-perfil">
-								<img src="https://www.uic.mx/posgrados/files/2018/05/default-user.png" style="width: 250px;">
+								<img src="/svg/user-icon.svg" style="width: 250px;">
 							</div>
 							<div id="nombre-y-descripcion" class="ml-4">
 								<h5 class="font-bold text-2xl mt-6 mb-3">{{ $usuario->name }}</h5>

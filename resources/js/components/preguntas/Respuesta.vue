@@ -25,7 +25,7 @@
 			</div>
 			<div id="autor" class="flex justify-end">
 					<div class="flex items-center">
-						<img style="width: 50px; height: auto;" src="https://www.uic.mx/posgrados/files/2018/05/default-user.png" alt="">
+						<img style="width: 50px; height: auto;" src="/svg/user-icon.svg" alt="">
 						<div class="flex flex-col ml-2">
 							<span class="text-xs mb-1">
 								<a :href="`/usuarios/${respuesta.autor.id}`" class="text-blue-600 hover:underline">{{ respuesta.autor.nombre }}</a>

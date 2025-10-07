@@ -11,7 +11,7 @@
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
 			<div v-for="(usuario, index) in usuarios" :key="index" class="usuario bg-azul-100 hover:bg-blue-200 px-3 py-2 rounded">
 				<a :href="`/usuarios/${usuario.id}`" class="flex items-center">
-					<img src="https://www.uic.mx/posgrados/files/2018/05/default-user.png" style="width: 40px;">
+					<img src="/svg/user-icon.svg" style="width: 40px;">
 					<span class="ml-3">{{usuario.name}}</span>
 				</a>
 			</div>
